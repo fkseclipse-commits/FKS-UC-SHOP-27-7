@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>UC 24/7 DONAT SHOP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body { background-color: #0b0e14; color: #fff; font-family: 'Inter', sans-serif; }
+        .card-bg { background-color: #161b22; border: 1px solid #21262d; }
+        .gradient-btn { background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%); }
+    </style>
+</head>
+<body class="pb-28">
+
+    <!-- Header -->
+    <div class="p-4 flex justify-between items-center card-bg border-b border-gray-800 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
+        <div>
+            <h1 class="font-bold text-base flex items-center gap-2">
+                <span>uc2407 DONAT SHOP</span> <i class="fa-solid fa-gamepad text-yellow-500"></i>
+            </h1>
+            <p class="text-[11px] text-gray-400">XUSH KELIBSIZ <span class="text-yellow-400">👋</span></p>
+        </div>
+        <div class="flex items-center gap-2">
+            <span class="text-[10px] bg-gray-800 px-2 py-1 rounded text-gray-300 border border-gray-700">UZS (so'm)</span>
+            <div class="w-8 h-8 rounded-full bg-yellow-500/10 flex items-center justify-center text-yellow-400 text-sm border border-yellow-500/20">
+                <i class="fa-regular fa-bell"></i>
+            </div>
+        </div>
+    </div>
+
+    <!-- Balance Card -->
+    <div class="m-4 p-4 rounded-2xl card-bg flex justify-between items-center shadow-xl relative overflow-hidden">
+        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-blue-500/10 rounded-full blur-xl"></div>
+        <div>
+            <div class="text-[11px] text-gray-400 flex items-center gap-1">
+                <span>BALANS</span> <i class="fa-solid fa-rotate-right text-[10px] cursor-pointer hover:text-blue-400"></i>
+            </div>
+            <div class="text-2xl font-black mt-1 text-white" id="user-balance">0 so'm</div>
+        </div>
+        <button onclick="openTopupModal()" class="gradient-btn text-white px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-2 shadow-lg shadow-blue-500/20 active:scale-95 transition">
+            <i class="fa-solid fa-plus text-xs"></i> To'ldirish
+        </button>
+    </div>
+
+    <!-- Banner -->
+    <div class="mx-4 mb-5 rounded-2xl overflow-hidden card-bg relative">
+        <div class="p-4 bg-gradient-to-r from-orange-600/20 via-yellow-600/10 to-transparent flex items-center justify-between">
+            <div>
+                <span class="text-[9px] bg-yellow-500 text-black px-2 py-0.5 rounded font-bold uppercase tracking-wider">Official</span>
+                <h2 class="text-lg font-black mt-1 text-yellow-400">24/7 UC SERVICE</h2>
+                <p class="text-[11px] text-gray-300 mt-0.5">Tezkor va ishonchli avtomatik xizmat</p>
+            </div>
+            <i class="fa-solid fa-shield-halved text-3xl text-yellow-500/40"></i>
+        </div>
+    </div>
+
+    <!-- Ommabop o'yinlar -->
+    <div class="px-4 mb-5">
+        <div class="flex justify-between items-center mb-3">
+            <h3 class="font-bold text-xs text-gray-300 uppercase tracking-wider">Ommabop o'yinlar</h3>
+            <span class="text-xs text-blue-400 cursor-pointer font-medium">Barchasi</span>
+        </div>
+        <div class="grid grid-cols-4 gap-2.5">
+            <div onclick="selectGame('pubg')" class="card-bg p-2 rounded-xl flex flex-col items-center cursor-pointer border-blue-500/50 bg-blue-500/5 transition">
+                <div class="w-11 h-11 bg-gray-800 rounded-lg flex items-center justify-center mb-1 shadow-inner">
+                    <i class="fa-solid fa-gamepad text-orange-500 text-lg"></i>
+                </div>
+                <span class="text-[10px] text-center font-medium leading-tight">PUBG Mobile</span>
+            </div>
+            <div class="card-bg p-2 rounded-xl flex flex-col items-center cursor-pointer hover:border-gray-600 transition">
+                <div class="w-11 h-11 bg-gray-800 rounded-lg flex items-center justify-center mb-1">
+                    <i class="fa-solid fa-star text-yellow-400 text-lg"></i>
+                </div>
+                <span class="text-[10px] text-center font-medium leading-tight">Stars</span>
+            </div>
+            <div class="card-bg p-2 rounded-xl flex flex-col items-center cursor-pointer hover:border-gray-600 transition">
+                <div class="w-11 h-11 bg-gray-800 rounded-lg flex items-center justify-center mb-1">
+                    <i class="fa-brands fa-steam text-blue-400 text-lg"></i>
+                </div>
+                <span class="text-[10px] text-center font-medium leading-tight">STEAM</span>
+            </div>
+            <div class="card-bg p-2 rounded-xl flex flex-col items-center cursor-pointer hover:border-gray-600 transition">
+                <div class="w-11 h-11 bg-gray-800 rounded-lg flex items-center justify-center mb-1">
+                    <i class="fa-solid fa-shield text-purple-400 text-lg"></i>
+                </div>
+                <span class="text-[10px] text-center font-medium leading-tight">MLBB</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- PUBG UC Paketlari -->
+    <div class="px-4 mb-6">
+        <div class="flex items-center justify-between mb-3">
+            <h3 class="font-bold text-xs text-gray-300 uppercase tracking-wider">PUBG Mobile V3 (ID orqali)</h3>
+        </div>
+        <div class="grid grid-cols-2 gap-3">
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-gray-700 transition">
+                <div>
+                    <div class="font-extrabold text-sm text-yellow-400">60 UC</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">12 000 so'm</div>
+                </div>
+                <button onclick="openBuyModal(60, 12000)" class="mt-3 bg-gray-800 hover:bg-blue-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-gray-700 transition">
+                <div>
+                    <div class="font-extrabold text-sm text-yellow-400">325 UC</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">60 000 so'm</div>
+                </div>
+                <button onclick="openBuyModal(325, 60000)" class="mt-3 bg-gray-800 hover:bg-blue-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-gray-700 transition">
+                <div>
+                    <div class="font-extrabold text-sm text-yellow-400">660 UC</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">116 000 so'm</div>
+                </div>
+                <button onclick="openBuyModal(660, 116000)" class="mt-3 bg-gray-800 hover:bg-blue-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-gray-700 transition">
+                <div>
+                    <div class="font-extrabold text-sm text-yellow-400">1800 UC</div>
+                    <div class="text-[11px] text-gray-400 mt-0.5">290 000 so'm</div>
+                </div>
+                <button onclick="openBuyModal(1800, 290000)" class="mt-3 bg-gray-800 hover:bg-blue-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals / Popups (Yashirin oynalar) -->
+    <div id="topup-modal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden flex items-end justify-center">
+        <div class="card-bg w-full max-w-md rounded-t-3xl p-5 border-t border-gray-700 animate-slide-up">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="font-bold text-sm text-yellow-400">Balansni to'ldirish</h3>
+                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer text-lg" onclick="closeTopupModal()"></i>
+            </div>
+            <div class="bg-gray-900/50 p-3 rounded-xl border border-gray-800 mb-3 text-xs text-gray-300">
+                <p class="font-semibold text-yellow-400 mb-1">⚠️ Qoidalar:</p>
+                Kartaga pul o'tkazib, summani kiriting. Admin tasdiqlagach balansga qo'shiladi.
+            </div>
+            <input type="number" id="topup-amount" placeholder="Summani kiriting (masalan: 12000)" class="w-full bg-gray-900 border border-gray-700 rounded-xl p-3 text-xs text-white mb-3 focus:outline-none focus:border-blue-500">
+            <button onclick="confirmTopup()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow-lg">Tasdiqlash uchun yuborish</button>
+        </div>
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-gray-800 p-2 flex justify-around items-center text-xs text-gray-400 z-40">
+        <div class="flex flex-col items-center text-blue-500 cursor-pointer">
+            <i class="fa-solid fa-house text-base"></i>
+            <span class="text-[10px] mt-0.5">Bosh</span>
+        </div>
+        <div onclick="openTopupModal()" class="flex flex-col items-center cursor-pointer hover:text-white">
+            <i class="fa-solid fa-wallet text-base"></i>
+            <span class="text-[10px] mt-0.5">Balans</span>
+        </div>
+        <div class="flex flex-col items-center -mt-5">
+            <div onclick="openTopupModal()" class="w-12 h-12 gradient-btn text-white rounded-full flex items-center justify-center shadow-lg text-lg cursor-pointer border-4 border-[#0b0e14]">
+                <i class="fa-solid fa-plus"></i>
+            </div>
+            <span class="text-[10px] mt-0.5">To'ldirish</span>
+        </div>
+        <div onclick="alert('Buyurtmalar tarixi bo`sh')" class="flex flex-col items-center cursor-pointer hover:text-white">
+            <i class="fa-solid fa-clock-rotate-left text-base"></i>
+            <span class="text-[10px] mt-0.5">Buyurtmalar</span>
+        </div>
+        <div onclick="alert('Profil ID: 8269688160\nBalans: ' + balance + ' so\'m')" class="flex flex-col items-center cursor-pointer hover:text-white">
+            <i class="fa-solid fa-user text-base"></i>
+            <span class="text-[10px] mt-0.5">Profil</span>
+        </div>
+    </div>
+
+    <script>
+        let balance = 0;
+
+        function openTopupModal() {
+            document.getElementById('topup-modal').classList.remove('hidden');
+        }
+
+        function closeTopupModal() {
+            document.getElementById('topup-modal').classList.add('hidden');
+        }
+
+        function confirmTopup() {
+            let val = document.getElementById('topup-amount').value;
+            if(val && Number(val) > 0) {
+                balance += Number(val);
+                document.getElementById('user-balance').innerText = balance.toLocaleString() + " so'm";
+                closeTopupModal();
+                alert("Balansni to'ldirish bo'yicha so'rov yuborildi!");
+            } else {
+                alert("Iltimos, to'g'ri summa kiriting!");
+            }
+        }
+
+        function openBuyModal(uc, price) {
+            if(balance >= price) {
+                let playerId = prompt("PUBG Player ID raqamingizni kiriting:");
+                if(playerId) {
+                    balance -= price;
+                    document.getElementById('user-balance').innerText = balance.toLocaleString() + " so'm";
+                    alert(uc + " UC muvaffaqiyatli sotib olindi va ID (" + playerId + ") ga yuborildi!");
+                }
+            } else {
+                alert("Balansingizda yetarli mablag' yo'q! Avval balansni to'ldiring.");
+            }
+        }
+
+        function selectGame(game) {
+            alert(game.toUpperCase() + " do'koni ochildi!");
+        }
+    </script>
+</body>
+</html>
