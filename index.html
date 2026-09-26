@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FKS PUBGM - 24/7 DONAT SHOP</title>
+    <title>FKS PUBGM & PREMIUM - 24/7 SHOP</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -13,130 +13,106 @@
             font-family: 'Orbitron', 'Inter', sans-serif; 
             background-color: #0b0e14; 
             color: #fff; 
+            background-image: linear-gradient(to bottom, rgba(11, 14, 20, 0.82), rgba(11, 14, 20, 0.95)), url('19436.png');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
         }
         .card-bg { 
             background-color: rgba(22, 27, 34, 0.88); 
-            border: 1px solid rgba(239, 68, 68, 0.3); 
+            border: 1px solid rgba(239, 68, 68, 0.35); 
             backdrop-filter: blur(10px);
         }
         .gradient-btn { 
             background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%); 
         }
         .glow-red {
-            box-shadow: 0 0 20px rgba(220, 38, 38, 0.4);
+            box-shadow: 0 0 20px rgba(220, 38, 38, 0.5);
         }
     </style>
 </head>
 <body class="pb-28">
 
-    <!-- Header -->
-    <div class="p-4 card-bg border-b border-red-900/50 sticky top-0 z-55 flex justify-between items-center">
-        <div>
-            <h1 class="font-black text-sm text-red-500">FKS PUBGM SHOP <i class="fa-solid fa-gamepad"></i></h1>
-            <p class="text-[11px] text-gray-400">XUSH KELIBSIZ <span class="text-red-400">👋</span></p>
+    <div class="p-4 card-bg border-b border-red-900/50 sticky top-0 z-50 backdrop-blur-md bg-opacity-90 space-y-2">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="font-black text-sm flex items-center gap-2 text-red-500">
+                    <span>FKS SHOP 24/7</span> <i class="fa-solid fa-gamepad"></i>
+                </h1>
+                <p class="text-[11px] text-gray-400">XUSH KELIBSIZ <span class="text-red-400">👋</span></p>
+            </div>
+            <div class="flex items-center gap-2">
+                <span class="text-[10px] bg-red-950 px-2 py-1 rounded text-red-300 border border-red-800">UZS</span>
+                <div id="live-clock" class="text-[10px] bg-gray-900 border border-red-900 px-2 py-1 rounded text-red-400 font-mono">00:00:00</div>
+            </div>
         </div>
-        <div id="telegram-username" class="text-xs font-bold text-red-400 bg-red-950 px-2 py-1 rounded border border-red-800">Foydalanuvchi</div>
+
+        <div class="flex items-center justify-between pt-1">
+            <div class="flex items-center gap-1.5 text-red-500">
+                <i class="fa-solid fa-heart"></i>
+                <i class="fa-solid fa-fire text-yellow-500"></i>
+                <span id="telegram-username" class="text-xs tracking-wider font-bold text-white ml-2">Foydalanuvchi</span>
+            </div>
+            <div class="flex items-center gap-2 text-red-500">
+                <i class="fa-solid fa-fire"></i>
+                <i class="fa-solid fa-heart"></i>
+            </div>
+        </div>
     </div>
 
-    <!-- Balance Card -->
-    <div class="m-4 p-4 rounded-2xl card-bg flex justify-between items-center shadow-xl glow-red">
+    <div class="m-4 p-4 rounded-2xl card-bg flex justify-between items-center shadow-xl relative overflow-hidden glow-red">
+        <div class="absolute -right-6 -bottom-6 w-24 h-24 bg-red-600/10 rounded-full blur-xl"></div>
         <div>
             <div class="text-[11px] text-gray-400 font-bold">BALANS</div>
             <div class="text-2xl font-black mt-1 text-white" id="user-balance">0 so'm</div>
         </div>
-        <button onclick="openTopupModal()" class="gradient-btn text-white px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-2 shadow-lg">
-            <i class="fa-solid fa-plus"></i> To'ldirish
+        <button onclick="openTopupModal()" class="gradient-btn text-white px-4 py-2 rounded-xl font-semibold text-xs flex items-center gap-2 shadow-lg shadow-red-600/30 active:scale-95 transition">
+            <i class="fa-solid fa-plus text-xs"></i> To'ldirish
         </button>
     </div>
 
-    <!-- PUBG UC Paketlari -->
-    <div class="px-4 mb-6">
-        <h3 class="font-bold text-xs text-gray-300 uppercase tracking-wider mb-3">PUBG Mobile UC Paketlari</h3>
+    <div class="flex mx-4 mb-4 gap-2">
+        <button onclick="switchTab('pubg')" id="btn-pubg" class="flex-1 py-2.5 rounded-xl text-xs font-bold bg-red-600 text-white shadow-lg glow-red transition">PUBG Mobile UC</button>
+        <button onclick="switchTab('premium')" id="btn-premium" class="flex-1 py-2.5 rounded-xl text-xs font-bold card-bg text-gray-400 hover:text-white transition">Telegram Premium</button>
+    </div>
+
+    <div id="section-pubg" class="px-4 mb-6">
+        <h3 class="font-bold text-xs text-red-500 uppercase tracking-wider mb-3"><i class="fa-solid fa-bolt mr-1"></i> PUBG Mobile (Kengaytirilgan Paketlar)</h3>
         <div class="grid grid-cols-2 gap-3">
-            <div class="card-bg p-3 rounded-xl flex flex-col justify-between">
-                <div>
-                    <div class="font-extrabold text-sm text-red-500">60 UC</div>
-                    <div class="text-[11px] text-gray-400 mt-0.5">12,000 so'm</div>
-                </div>
-                <button onclick="buyUC(60, 12000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">60 UC</div><div class="text-[11px] text-gray-400 mt-0.5">12,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 60 UC', 12000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
             </div>
-            <div class="card-bg p-3 rounded-xl flex flex-col justify-between">
-                <div>
-                    <div class="font-extrabold text-sm text-red-500">325 UC</div>
-                    <div class="text-[11px] text-gray-400 mt-0.5">60,000 so'm</div>
-                </div>
-                <button onclick="buyUC(325, 60000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-semibold transition">Sotib olish</button>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">325 UC</div><div class="text-[11px] text-gray-400 mt-0.5">60,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 325 UC', 60000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">660 UC</div><div class="text-[11px] text-gray-400 mt-0.5">120,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 660 UC', 120000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">1800 UC</div><div class="text-[11px] text-gray-400 mt-0.5">320,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 1800 UC', 320000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">3850 UC</div><div class="text-[11px] text-gray-400 mt-0.5">640,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 3850 UC', 640000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition">
+                <div><div class="font-black text-sm text-red-500">8100 UC</div><div class="text-[11px] text-gray-400 mt-0.5">1,250,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 8100 UC', 1250000)" class="mt-3 bg-red-950/60 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded-lg font-bold transition">Sotib olish</button>
+            </div>
+            <div class="card-bg p-3 rounded-xl flex flex-col justify-between hover:border-red-600 transition glow-red col-span-2">
+                <span class="absolute top-2 right-3 bg-red-600 text-white text-[9px] px-2 py-0.5 rounded-full font-bold">MEGA PACK</span>
+                <div><div class="font-black text-base text-red-500">16200 UC (Max)</div><div class="text-[11px] text-gray-400 mt-0.5">2,450,000 so'm</div></div>
+                <button onclick="buyItem('PUBG 16200 UC', 2450000)" class="mt-3 bg-red-600 hover:bg-red-700 text-white text-xs py-2 rounded-lg font-bold transition shadow-md shadow-red-600/50">Sotib olish</button>
             </div>
         </div>
     </div>
 
-    <!-- Topup Modal -->
-    <div id="topup-modal" class="fixed inset-0 bg-black/85 z-50 hidden flex items-end justify-center">
-        <div class="card-bg w-full max-w-md rounded-t-3xl p-5 border-t border-red-900">
-            <div class="flex justify-between items-center mb-4">
-                <h3 class="font-bold text-sm text-red-500 uppercase">Balansni to'ldirish</h3>
-                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer text-lg" onclick="closeTopupModal()"></i>
-            </div>
-            <div class="bg-gray-900 p-3 rounded-xl border border-red-900/60 mb-3 text-xs">
-                <div class="text-gray-400">Karta raqami:</div>
-                <div class="text-sm font-black text-white mt-1">6262 5708 2039 1383</div>
-                <div class="text-[10px] text-red-400 mt-1">RAVSHANOVA XULKAR ISRAILOV</div>
-            </div>
-            <input type="number" id="topup-amount" placeholder="Summani kiriting (masalan: 12000)" class="w-full bg-gray-900 border border-red-900/60 rounded-xl p-3 text-xs text-white mb-3 focus:outline-none">
-            <button onclick="sendTopup()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow-lg">So'rov yuborish</button>
-        </div>
-    </div>
-
-    <script>
-        let userId = "default_user";
-
-        window.addEventListener('DOMContentLoaded', () => {
-            const tg = window.Telegram.WebApp;
-            tg.ready();
-            if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                const user = tg.initDataUnsafe.user;
-                userId = String(user.id);
-                document.getElementById('telegram-username').innerText = user.first_name;
-            }
-            fetchBalance();
-        });
-
-        function fetchBalance() {
-            fetch(`/api/balance?user_id=${userId}`)
-                .then(res => res.json())
-                .then(data => {
-                    document.getElementById('user-balance').innerText = data.balance.toLocaleString() + " so'm";
-                });
-        }
-
-        function openTopupModal() { document.getElementById('topup-modal').classList.remove('hidden'); }
-        function closeTopupModal() { document.getElementById('topup-modal').classList.add('hidden'); }
-
-        function sendTopup() {
-            let amount = document.getElementById('topup-amount').value;
-            if(!amount || amount <= 0) { alert("Summani to'g'ri kiriting!"); return; }
-
-            fetch('/api/topup', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ user_id: userId, amount: amount })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if(data.success) {
-                    document.getElementById('user-balance').innerText = data.new_balance.toLocaleString() + " so'm";
-                    closeTopupModal();
-                    alert("Balans muvaffaqiyatli to'ldirildi!");
-                }
-            });
-        }
-
-        function buyUC(uc, price) {
-            alert(uc + " UC sotib olish uchun balans yetarli ekanligi tekshirilmoqda...");
-        }
-    </script>
-</body>
-</html>
+    <div id
+ 
 
  
  
