@@ -1,31 +1,86 @@
 from flask import Flask, request, jsonify
+import json
+import os
+import requests
 
 app = Flask(__name__)
 
-# Vaqtinchalik baza (kelgusida ma'lumotlar bazasiga ulanadi)
-user_balances = {}
+DB_FILE = '/tmp/database.json'
+
+BOT_TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
+ADMIN_CHAT_ID = "8269688160"
+
+def send_telegram_message(text):
+    try:
+        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
+        requests.post(url, json={"chat_id": ADMIN_CHAT_ID, "text": text, "parse_mode": "Markdown"})
+    except Exception as e:
+        print(f"Xatolik: {e}")
+
+def load_db():
+    if os.path.exists(DB_FILE):
+        with open(DB_FILE, 'r') as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
+
+def save_db(data):
+    with open(DB_FILE, 'w') as f:
+        json.dump(data, f)
 
 @app.route('/api/topup', methods=['POST'])
 def topup():
     data = request.json
-    user_id = data.get('user_id')
+    user_id = str(data.get('user_id'))
     amount = data.get('amount')
+    username = data.get('username', 'Noma\'lum')
     
     if not user_id or not amount:
         return jsonify({'success': False, 'message': 'Ma\'lumotlar yetishmaydi!'})
     
-    # Balansni yangilash
-    if user_id not in user_balances:
-        user_balances[user_id] = 0
-    user_balances[user_id] += int(amount)
+    db = load_db()
+    if user_id not in db:
+        db[user_id] = 0
+    db[user_id] += int(amount)
+    save_db(db)
     
-    return jsonify({'success': True, 'new_balance': user_balances[user_id]})
+    msg = f"💳 *Yangi balans to'ldirish so'rovi!*\n\n👤 Foydalanuvchi: {username} (ID: `{user_id}`)\n💰 Summa: `{int(amount):,} so'm`\n\n_Balans avtomatik qo'shildi._"
+    send_telegram_message(msg)
+    
+    return jsonify({'success': True, 'new_balance': db[user_id]})
+
+@app.route('/api/buy', methods=['POST'])
+def buy_item():
+    data = request.json
+    user_id = str(data.get('user_id'))
+    item_name = data.get('item_name')
+    price = int(data.get('price', 0))
+    username = data.get('username', 'Noma\'lum')
+    extra_info = data.get('extra_info', 'Kiritilmagan')
+    
+    db = load_db()
+    current_balance = db.get(user_id, 0)
+    
+    if current_balance < price:
+        return jsonify({'success': False, 'message': 'Balansda yetarli mablag\' yo\'q!'})
+    
+    db[user_id] = current_balance - price
+    save_db(db)
+    
+    msg = f"🛒 *Yangi xarid amalga oshirildi!*\n\n👤 Foydalanuvchi: {username} (ID: `{user_id}`)\n📦 Mahsulot: *{item_name}*\n💵 Narxi: `{price:,} so'm`\n🎮 Ma'lumot/ID: `{extra_info}`\n\n_Avtomatik yetkazib berish uchun yuborildi!_"
+    send_telegram_message(msg)
+    
+    return jsonify({'success': True, 'new_balance': db[user_id]})
 
 @app.route('/api/balance', methods=['GET'])
 def get_balance():
-    user_id = request.args.get('user_id', 'default')
-    balance = user_balances.get(user_id, 0)
+    user_id = str(request.args.get('user_id', 'default'))
+    db = load_db()
+    balance = db.get(user_id, 0)
     return jsonify({'balance': balance})
 
 if __name__ == '__main__':
     app.run(debug=True)
+
