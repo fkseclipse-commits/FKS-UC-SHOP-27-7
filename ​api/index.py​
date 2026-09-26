@@ -1,0 +1,31 @@
+from flask import Flask, request, jsonify
+
+app = Flask(__name__)
+
+# Vaqtinchalik baza (kelgusida ma'lumotlar bazasiga ulanadi)
+user_balances = {}
+
+@app.route('/api/topup', methods=['POST'])
+def topup():
+    data = request.json
+    user_id = data.get('user_id')
+    amount = data.get('amount')
+    
+    if not user_id or not amount:
+        return jsonify({'success': False, 'message': 'Ma\'lumotlar yetishmaydi!'})
+    
+    # Balansni yangilash
+    if user_id not in user_balances:
+        user_balances[user_id] = 0
+    user_balances[user_id] += int(amount)
+    
+    return jsonify({'success': True, 'new_balance': user_balances[user_id]})
+
+@app.route('/api/balance', methods=['GET'])
+def get_balance():
+    user_id = request.args.get('user_id', 'default')
+    balance = user_balances.get(user_id, 0)
+    return jsonify({'balance': balance})
+
+if __name__ == '__main__':
+    app.run(debug=True)
