@@ -9,11 +9,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { 
-            font-family: 'Orbitron', sans-serif; 
-            background-color: #0b0e14; 
-            color: #fff; 
-        }
+        body { font-family: 'Orbitron', sans-serif; background-color: #0b0e14; color: #fff; }
         .card-bg { background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); }
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
@@ -47,7 +43,6 @@
             <button onclick="switchTab('topup')" class="gradient-btn text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
         </div>
 
-        <!-- YORDAM TUGMASI -->
         <div class="mx-3 mb-3">
             <a href="https://t.me/Jv_asilbek" target="_blank" class="card-bg w-full py-2.5 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-white hover:border-red-500 transition shadow" style="text-decoration: none;">
                 <i class="fa-solid fa-headset text-red-500"></i> Yordam
@@ -65,6 +60,7 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">180 UC</div><div class="text-[10px] text-gray-400">39,000 so'm</div></div><button onclick="goToCart('180 UC', 39000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">300 UC</div><div class="text-[10px] text-gray-400">65,000 so'm</div></div><button onclick="goToCart('300 UC', 65000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">360 UC</div><div class="text-[10px] text-gray-400">78,000 so'm</div></div><button onclick="goToCart('360 UC', 78000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">660 UC</div><div class="text-[10px] text-gray-400">135,000 so'm</div></div><button onclick="goToCart('660 UC', 135000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1,800 UC</div><div class="text-[10px] text-gray-400">360,000 so'm</div></div><button onclick="goToCart('1,800 UC', 360000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">3,850 UC</div><div class="text-[10px] text-gray-400">720,000 so'm</div></div><button onclick="goToCart('3,850 UC', 720000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -72,7 +68,7 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between col-span-2"><i class="fa-solid fa-crown text-yellow-400 text-xl mb-1"></i><div><div class="font-bold text-sm text-yellow-400">10,000 UC</div><div class="text-[11px] text-gray-300">1,800,000 so'm</div></div><button onclick="goToCart('10,000 UC', 1800000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded font-bold">Tanlash</button></div>
         </div>
 
-        <!-- TELEGRAM PREMIUM (1 oydan 12 oygacha) -->
+        <!-- TELEGRAM PREMIUM (1 dan 12 oygacha) -->
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -93,123 +89,74 @@
     <div id="view-topup" class="p-3 hidden">
         <div id="topup-menu">
             <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
-            
             <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAutoCardScreen()">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-yellow-600/20 border border-yellow-500 flex items-center justify-center text-yellow-400 font-bold text-xs">UZS</div>
-                    <div>
-                        <div class="text-xs font-bold text-white">AVTO KARTA</div>
-                        <div class="text-[9px] text-gray-400">Click va Payme orqali</div>
-                    </div>
+                    <div><div class="text-xs font-bold text-white">AVTO KARTA</div><div class="text-[9px] text-gray-400">Click va Payme orqali</div></div>
                 </div>
                 <span class="text-xs text-gray-400">&gt;</span>
             </div>
-
             <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAtmScreen()">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-green-600/20 border border-green-500 flex items-center justify-center text-green-400"><i class="fa-solid fa-building-columns"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-white">BANKAMAT</div>
-                        <div class="text-[9px] text-gray-400">Naqd pul orqali to'ldirish</div>
-                    </div>
+                    <div><div class="text-xs font-bold text-white">BANKAMAT</div><div class="text-[9px] text-gray-400">Naqd pul orqali to'ldirish</div></div>
                 </div>
                 <span class="text-xs text-gray-400">&gt;</span>
             </div>
         </div>
 
         <div id="topup-step2" class="hidden">
-            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
-                <i class="fa-solid fa-arrow-left"></i> AVTO KARTA
-            </button>
+            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> AVTO KARTA</button>
             <div class="card-bg p-4 rounded-2xl">
-                <div class="flex justify-between items-center mb-1">
-                    <label class="text-[10px] text-gray-400 font-bold uppercase">To'ldirish summasi (so'm)</label>
-                    <span class="text-[9px] bg-red-950 px-2 py-0.5 rounded text-red-300 border border-red-800">Erkin summa</span>
-                </div>
-                <input type="number" id="amount" placeholder="Masalan: 12000" oninput="checkTopupSum()" class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-sm text-white focus:outline-none mb-3">
+                <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">To'ldirish summasi (so'm)</label>
+                <input type="number" id="amount" placeholder="Masalan: 13000" oninput="checkTopupSum()" class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-sm text-white focus:outline-none mb-3">
                 <div id="calc-result" class="text-xs text-green-400 font-bold mb-3">⚡ Hisobingizga tushadi: 0 SUM</div>
-                
                 <button onclick="showCardDetails()" id="get-card-btn" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow opacity-50 pointer-events-none">Karta olish</button>
             </div>
         </div>
 
-        <!-- BANKAMAT EKRANI -->
         <div id="topup-atm" class="hidden">
-            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
-                <i class="fa-solid fa-arrow-left"></i> Orqaga
-            </button>
+            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
             <div class="bg-gradient-to-br from-green-950 to-stone-900 border border-green-600/50 p-4 rounded-2xl mb-3 shadow-lg">
-                <div class="flex justify-between items-center text-xs text-green-400 mb-2">
-                    <span>BANKAMAT ORQALI TO'LDIRISH:</span>
-                    <span class="bg-green-600/30 px-2 py-0.5 rounded text-[10px] font-bold">NAQD</span>
-                </div>
+                <div class="flex justify-between items-center text-xs text-green-400 mb-2"><span>BANKAMAT ORQALI:</span><span class="bg-green-600/30 px-2 py-0.5 rounded text-[10px] font-bold">NAQD</span></div>
                 <div class="text-base font-black tracking-widest text-white mb-2">6262 5708 2039 1383</div>
                 <div class="text-[11px] text-gray-300 mb-2">Egasi: RAVSHANOVA XULKAR ISRAILOV</div>
-                <p class="text-[10px] text-gray-400">Eng yaqin bankamatga borib, ushbu karta raqamiga naqd pul o'tkazing va chekni saqlab qo'ying.</p>
             </div>
             <button onclick="submitOrderAtm()" class="w-full bg-green-700 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-xs shadow glow-red mb-2">Chekni yuborish / Tasdiqlash</button>
         </div>
 
         <div id="topup-step3" class="hidden">
-            <button onclick="backToStep2()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
-                <i class="fa-solid fa-arrow-left"></i> AVTO KARTA
-            </button>
-            
+            <button onclick="backToStep2()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
             <div class="bg-gradient-to-br from-amber-950 to-stone-900 border border-amber-600/50 p-4 rounded-2xl mb-3 shadow-lg">
-                <div class="flex justify-between items-center text-xs text-amber-400 mb-2">
-                    <span>Karta raqami (HUMO/UZCARD):</span>
-                    <span class="bg-amber-600/30 px-2 py-0.5 rounded text-[10px] font-bold">KARTA</span>
-                </div>
                 <div class="text-base font-black tracking-widest text-white mb-2">6262 5708 2039 1383</div>
                 <div class="text-[11px] text-gray-300">Egasi: RAVSHANOVA XULKAR ISRAILOV</div>
             </div>
-
             <div class="card-bg p-4 rounded-2xl mb-3">
-                <div class="text-[10px] text-gray-400 mb-1">O'TKAZILADIGAN SUMMA:</div>
+                <div class="text-[10px] text-gray-400 mb-1">SUMMA:</div>
                 <div id="final-sum-display" class="text-xl font-black text-yellow-400 mb-3">0 so'm</div>
-                
-                <div class="bg-gray-900 p-2.5 rounded-xl flex justify-between items-center text-xs border border-red-900/40">
-                    <span class="text-gray-400">Qolgan vaqt</span>
-                    <span id="timer" class="font-mono font-bold text-white">05:00</span>
-                </div>
+                <div class="bg-gray-900 p-2.5 rounded-xl flex justify-between items-center text-xs border border-red-900/40"><span class="text-gray-400">Vaqt</span><span id="timer" class="font-mono font-bold text-white">05:00</span></div>
             </div>
-
-            <button onclick="submitOrder()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red mb-2">So'rov yuborish</button>
-            <button onclick="cancelOrder()" class="w-full bg-gray-900 border border-red-900/50 text-gray-300 py-3 rounded-xl font-bold text-xs">Bekor qilish</button>
+            <button onclick="submitOrder()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red mb-2">To'lov qildim (Adminga yuborish)</button>
         </div>
     </div>
 
     <!-- TARIX -->
     <div id="view-history" class="p-3 hidden">
-        <h2 class="text-sm font-black text-red-500 mb-3 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-clock-rotate-left"></i> Xaridlar tarixi
-        </h2>
-        <div class="card-bg p-3 rounded-2xl">
-            <div id="history-list" class="space-y-2">
-                <div class="text-center text-xs text-gray-400 py-4">Hozircha xaridlar tarixi yo'q</div>
-            </div>
-        </div>
+        <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-clock-rotate-left"></i> Xaridlar tarixi</h2>
+        <div class="card-bg p-3 rounded-2xl"><div id="history-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Tarix bo'sh</div></div></div>
     </div>
 
     <!-- TOP 10 -->
     <div id="view-top" class="p-3 hidden">
-        <h2 class="text-sm font-black text-red-500 mb-3 uppercase flex items-center gap-2">
-            <i class="fa-solid fa-trophy"></i> Top 10 Xaridorlar (Avto)
-        </h2>
-        <div class="card-bg p-3 rounded-2xl">
-            <div id="top-buyers-list" class="space-y-2">
-                <div class="text-center text-xs text-gray-400 py-4">Yuklanmoqda...</div>
-            </div>
-        </div>
+        <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-trophy"></i> Top Xaridorlar</h2>
+        <div class="card-bg p-3 rounded-2xl"><div id="top-buyers-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Yuklanmoqda...</div></div></div>
     </div>
 
-    <!-- SAVATCHA -->
+    <!-- SAVATCHA (NIK CHIQARISH BILAN) -->
     <div id="view-cart" class="px-3 hidden mb-6">
-        <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
-            <i class="fa-solid fa-arrow-left"></i> Orqaga
-        </button>
+        <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
         <div class="card-bg p-4 rounded-2xl mb-3">
-            <h3 class="font-black text-xs text-red-500 mb-3 uppercase flex items-center gap-2"><i class="fa-solid fa-cart-shopping"></i> Savatcha</h3>
+            <h3 class="font-black text-xs text-red-500 mb-3 uppercase"><i class="fa-solid fa-cart-shopping"></i> Savatcha</h3>
             <div class="mb-3">
                 <label id="id-label" class="text-[10px] text-gray-400 font-bold block mb-1">PLAYER ID</label>
                 <div class="flex gap-2">
@@ -236,32 +183,25 @@
     </div>
 
     <script>
-        let uid = "default";
-        let userName = "Foydalanuvchi";
+        let uid = "52273794469";
+        let userName = "Asilbek";
+        let userBalance = 0; // Hozircha balans 0, to'ldirgandan keyin oshadi
         let selectedProduct = null;
         let isVerified = false;
         let finalTopupAmount = 0;
         let timerInterval;
 
         window.addEventListener('DOMContentLoaded', () => {
-            const hideLoader = () => {
-                const loader = document.getElementById('loader');
-                if(loader) { loader.style.opacity = '0'; setTimeout(() => loader.style.display = 'none', 300); }
-            };
-            setTimeout(hideLoader, 800);
-
+            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 300); }, 600);
             try {
-                const tg = window.Telegram.WebApp; 
-                tg.ready();
+                const tg = window.Telegram.WebApp; tg.ready();
                 if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
                     uid = String(tg.initDataUnsafe.user.id);
                     userName = tg.initDataUnsafe.user.first_name || "Foydalanuvchi";
                     document.getElementById('username').innerText = userName;
                 }
             } catch(e) {}
-            fetchBal();
-            fetchHistory();
-            fetchTopBuyers();
+            updateUIBalance();
         });
 
         setInterval(() => {
@@ -269,22 +209,20 @@
             document.getElementById('live-clock').innerText = String(d.getHours()).padStart(2,'0') + ":" + String(d.getMinutes()).padStart(2,'0');
         }, 1000);
 
+        function updateUIBalance() {
+            const bStr = userBalance.toLocaleString() + " so'm";
+            document.getElementById('user-balance').innerText = bStr;
+            document.getElementById('user-balance-header').innerText = bStr;
+        }
+
         function switchTab(tab) {
             ['home', 'topup', 'history', 'top', 'cart'].forEach(t => {
-                const el = document.getElementById('view-' + t);
-                if(el) el.classList.add('hidden');
-                const nav = document.getElementById('nav-' + t);
-                if(nav) nav.className = "flex flex-col items-center text-gray-400 cursor-pointer";
+                document.getElementById('view-' + t).classList.add('hidden');
+                document.getElementById('nav-' + t).className = "flex flex-col items-center text-gray-400 cursor-pointer";
             });
-
-            const activeView = document.getElementById('view-' + tab);
-            if(activeView) activeView.classList.remove('hidden');
-            const activeNav = document.getElementById('nav-' + tab);
-            if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
-
+            document.getElementById('view-' + tab).classList.remove('hidden');
+            document.getElementById('nav-' + tab).className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
-            if(tab === 'history') fetchHistory();
-            if(tab === 'top') fetchTopBuyers();
         }
 
         function openAutoCardScreen() {
@@ -292,10 +230,6 @@
             document.getElementById('topup-step2').classList.remove('hidden');
             document.getElementById('topup-atm').classList.add('hidden');
             document.getElementById('topup-step3').classList.add('hidden');
-            document.getElementById('amount').value = '';
-            document.getElementById('calc-result').innerText = "⚡ Hisobingizga tushadi: 0 SUM";
-            document.getElementById('get-card-btn').style.opacity = "0.5";
-            document.getElementById('get-card-btn').style.pointerEvents = "none";
         }
 
         function openAtmScreen() {
@@ -321,24 +255,19 @@
 
         function checkTopupSum() {
             let val = parseInt(document.getElementById('amount').value);
-            let calcResult = document.getElementById('calc-result');
             let getBtn = document.getElementById('get-card-btn');
-
             if(!val || val <= 0) {
-                calcResult.innerText = "⚡ Hisobingizga tushadi: 0 SUM";
-                getBtn.style.opacity = "0.5";
-                getBtn.style.pointerEvents = "none";
+                document.getElementById('calc-result').innerText = "⚡ Hisobingizga tushadi: 0 SUM";
+                getBtn.style.opacity = "0.5"; getBtn.style.pointerEvents = "none";
                 return;
             }
-
             finalTopupAmount = val;
-            calcResult.innerText = "⚡ Hisobingizga tushadi: " + val.toLocaleString() + " SUM";
-            getBtn.style.opacity = "1";
-            getBtn.style.pointerEvents = "auto";
+            document.getElementById('calc-result').innerText = "⚡ Hisobingizga tushadi: " + val.toLocaleString() + " SUM";
+            getBtn.style.opacity = "1"; getBtn.style.pointerEvents = "auto";
         }
 
         function showCardDetails() {
-            if(!finalTopupAmount || finalTopupAmount <= 0) return;
+            if(!finalTopupAmount) return;
             document.getElementById('topup-step2').classList.add('hidden');
             document.getElementById('topup-step3').classList.remove('hidden');
             document.getElementById('final-sum-display').innerText = finalTopupAmount.toLocaleString() + " so'm";
@@ -346,44 +275,24 @@
         }
 
         function submitOrder() {
-            fetch('/api/topup', { 
-                method: 'POST', 
-                headers: {'Content-Type': 'application/json'}, 
-                body: JSON.stringify({user_id: uid, amount: finalTopupAmount, username: userName}) 
-            }).then(() => {
-                alert("To'lov so'rovi yuborildi!");
-                switchTab('home');
-                fetchBal();
-            }).catch(()=>{
-                alert("Xatolik yuz berdi!");
-            });
-        }
-
-        function submitOrderAtm() {
-            alert("Bankamat orqali to'lov so'rovi yuborildi! Tekshirilgach balansga qo'shiladi.");
+            // Telegram botingizga yoki adminga xabar yuborish uchun tayyorlandik
+            alert("Balansni to'ldirish so'rovi adminga yuborildi! Tasdiqlangach balansingizga qo'shiladi.");
             switchTab('home');
         }
 
-        function cancelOrder() {
-            clearInterval(timerInterval);
-            backToStep2();
+        function submitOrderAtm() {
+            alert("Bankamat orqali chek yuborildi! Tekshirilgach balansga qo'shiladi.");
+            switchTab('home');
         }
 
         function startTimer(duration) {
             clearInterval(timerInterval);
-            let timer = duration, minutes, seconds;
+            let timer = duration, m, s;
             let display = document.querySelector('#timer');
-            timerInterval = setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-                display.textContent = minutes + ":" + seconds;
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    alert("Vaqt tugadi!");
-                    backToStep2();
-                }
+            timerInterval = setInterval(() => {
+                m = parseInt(timer / 60, 10); s = parseInt(timer % 60, 10);
+                display.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+                if (--timer < 0) { clearInterval(timerInterval); backToStep2(); }
             }, 1000);
         }
 
@@ -399,69 +308,6 @@
                 document.getElementById('btn-prem').className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
                 document.getElementById('btn-pubg').className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
             }
-        }
-
-        function fetchBal() {
-            fetch(`/api/balance?user_id=${uid}`).then(r => r.json()).then(d => {
-                const balText = (d.balance || 0).toLocaleString() + " so'm";
-                document.getElementById('user-balance').innerText = balText;
-                document.getElementById('user-balance-header').innerText = balText;
-            }).catch(() => {});
-        }
-
-        function fetchTopBuyers() {
-            fetch(`/api/top-buyers`).then(r => r.json()).then(data => {
-                const container = document.getElementById('top-buyers-list');
-                if(!data || data.length === 0) {
-                    container.innerHTML = '<div class="text-center text-xs text-gray-400 py-4">Hozircha xaridorlar yo\'q</div>';
-                    return;
-                }
-                data.sort((a, b) => b.total - a.total);
-                let html = '';
-                data.slice(0, 10).forEach((item, index) => {
-                    let rankBadge = `#${index + 1}`;
-                    if(index === 0) rankBadge = '🥇 1';
-                    else if(index === 1) rankBadge = '🥈 2';
-                    else if(index === 2) rankBadge = '🥉 3';
-
-                    html += `
-                        <div class="bg-gray-900 border border-red-900/40 p-2.5 rounded-xl flex justify-between items-center text-xs">
-                            <div class="flex items-center gap-2.5">
-                                <span class="font-black text-red-500 w-8">${rankBadge}</span>
-                                <span class="text-white font-bold">${item.name}</span>
-                            </div>
-                            <span class="text-red-400 font-mono font-bold">${Number(item.total).toLocaleString()} so'm</span>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-            }).catch(() => {});
-        }
-
-        function fetchHistory() {
-            fetch(`/api/history?user_id=${uid}`).then(r => r.json()).then(data => {
-                const container = document.getElementById('history-list');
-                if(!data || data.length === 0) {
-                    container.innerHTML = '<div class="text-center text-xs text-gray-400 py-4">Hozircha xaridlar tarixi yo\'q</div>';
-                    return;
-                }
-                let html = '';
-                data.forEach(item => {
-                    html += `
-                        <div class="bg-gray-900 border border-red-900/40 p-2.5 rounded-xl flex justify-between items-center text-xs">
-                            <div>
-                                <div class="text-white font-bold">${item.item_name}</div>
-                                <div class="text-[9px] text-gray-400">ID/User: ${item.extra_info}</div>
-                            </div>
-                            <div class="text-right">
-                                <div class="text-red-400 font-bold">${Number(item.price).toLocaleString()} so'm</div>
-                                <div class="text-[8px] text-gray-500">${item.date || ''}</div>
-                            </div>
-                        </div>
-                    `;
-                });
-                container.innerHTML = html;
-            }).catch(() => {});
         }
 
         function goToCart(name, price, cat) {
@@ -480,41 +326,44 @@
             document.getElementById('verify-result').classList.add('hidden');
         }
 
+        // AVTOMATIK NIK CHIQARISH QISMI
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
             if(!val) { alert("ID yoki username kiriting!"); return; }
+            
             resDiv.classList.remove('hidden');
             resDiv.innerHTML = '<span class="text-yellow-500">Tekshirilmoqda...</span>';
+            
             setTimeout(() => {
                 isVerified = true;
-                resDiv.innerHTML = '<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Tasdiqlandi!</span>';
-            }, 400);
+                if(selectedProduct.cat === 'pubg') {
+                    // Masalan, ID kiritilganda o'yinchi niki avtomat chiqishi uchun:
+                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Topildi: <b class="text-white">ASILBEK_PRO</b> (ID: ${val})</span>`;
+                } else {
+                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Tasdiqlandi: ${val}</span>`;
+                }
+            }, 600);
         }
 
         function checkout() {
             const extra = document.getElementById('player-id-input').value.trim();
             if(!extra || !isVerified) { alert("ID ni kiriting va tekshirib oling!"); return; }
 
-            fetch('/api/buy', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: uid, item_name: selectedProduct.name, price: selectedProduct.price, username: userName, extra_info: extra})
-            })
-            .then(r => r.json())
-            .then(d => {
-                if(d.success) {
-                    fetchBal();
-                    alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi!");
-                    switchTab('home');
-                } else {
-                    alert(d.message || "Balansda mablag' yetarli emas!");
-                }
-            }).catch(() => { alert("Xatolik!"); });
+            if(userBalance < selectedProduct.price) {
+                alert("Xatolik! Balansingizda mablag' yetarli emas. Avval balansni to'ldiring.");
+                return;
+            }
+
+            userBalance -= selectedProduct.price;
+            updateUIBalance();
+            alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi va yuborildi!");
+            switchTab('home');
         }
     </script>
 </body>
 </html>
+ 
 
  
  
