@@ -3,91 +3,47 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>UC 24/7 DONAT SHOP</title>
+    <title>FKS PUBG SHOP</title>
     <style>
         body {
             background-color: #0c0c0c;
             color: #fff;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 85px;
+            padding-bottom: 70px;
         }
         .header {
-            padding: 12px 16px;
+            padding: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
             background: #141414;
             border-bottom: 1px solid #222;
-            font-size: 13px;
         }
         .container {
-            padding: 16px;
+            padding: 15px;
             display: none;
         }
         .container.active {
             display: block;
         }
-        .balance-card {
-            background: #161616;
-            border: 1px solid #2a2a2a;
-            border-radius: 16px;
-            padding: 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .topup-btn {
-            background: linear-gradient(135deg, #ff2222, #b30000);
-            color: white;
-            border: none;
-            padding: 10px 18px;
-            border-radius: 12px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .action-card {
-            background: #161616;
-            border: 1px solid #2a2a2a;
+        .banner {
+            background: linear-gradient(135deg, #2b1111, #141414);
+            border: 1px solid #ff2222;
             border-radius: 14px;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            cursor: pointer;
-        }
-        .banner-card {
-            background: #161616;
-            border: 1px solid #2a2a2a;
-            border-radius: 14px;
-            padding: 16px;
+            padding: 15px;
             margin-bottom: 20px;
-            cursor: pointer;
-            position: relative;
-        }
-        .badge-yangilik {
-            background: #ff2222;
-            color: white;
-            font-size: 10px;
-            font-weight: bold;
-            padding: 2px 6px;
-            border-radius: 4px;
-            display: inline-block;
-            margin-bottom: 6px;
-        }
-        .section-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 12px;
-            font-size: 13px;
+            cursor: pointer;
+        }
+        .section-title {
+            font-size: 16px;
             font-weight: bold;
-            color: #aaa;
-            letter-spacing: 0.5px;
+            margin-bottom: 12px;
+            color: #ff5555;
         }
         .games-grid {
             display: grid;
@@ -97,31 +53,36 @@
         .game-card {
             background: #161616;
             border: 1px solid #2a2a2a;
-            border-radius: 14px;
+            border-radius: 12px;
             padding: 16px;
-            position: relative;
+            text-align: center;
             cursor: pointer;
+            transition: 0.2s;
         }
-        .game-card-icon {
-            background: #222;
-            width: 38px;
-            height: 38px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+        .game-card:active {
+            border-color: #ff2222;
+        }
+        .game-icon {
+            font-size: 32px;
+            margin-bottom: 8px;
+        }
+        .menu-btn {
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
             margin-bottom: 12px;
-            font-size: 18px;
+            text-align: left;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
-        .game-tag {
-            position: absolute;
-            top: 14px;
-            right: 14px;
-            background: #222;
-            padding: 2px 6px;
-            border-radius: 6px;
-            font-size: 11px;
-            color: #ffaa00;
+        .menu-btn:active {
+            border-color: #ff2222;
         }
         .modal {
             display: none;
@@ -165,9 +126,9 @@
             cursor: pointer;
         }
         .card-number {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 1.5px;
             color: #ff5555;
             margin: 12px 0;
             cursor: pointer;
@@ -179,40 +140,26 @@
             color: #ff3333;
             margin: 10px 0;
         }
-        
-        /* Chiroyli va toza pastki menyu */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; width: 100%;
-            background: #141414;
+            background: #121212;
             border-top: 1px solid #222;
             display: flex;
             justify-content: space-around;
-            align-items: center;
-            height: 65px;
+            padding: 8px 0;
             z-index: 999;
         }
         .nav-item {
             color: #777;
             text-align: center;
-            font-size: 11px;
+            font-size: 12px;
             text-decoration: none;
             cursor: pointer;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            gap: 4px;
-            transition: 0.2s;
         }
         .nav-item.active {
             color: #ff2222;
-            font-weight: 600;
-        }
-        .nav-icon {
-            font-size: 20px;
-            line-height: 1;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -220,243 +167,18 @@
 
     <div class="header">
         <div>
-            <b style="color: #ff5555;">UC 24/7 DONAT SHOP 🎮</b><br>
-            <span style="color: #888;">XUSH KELIBSIZ <span id="username-display">Foydalanuvchi</span></span>
+            <b>FKS PUBG SHOP</b><br>
+            <small style="color: #888;">XUSH KELIBSIZ <span id="username-display">Foydalanuvchi</span></small>
         </div>
-        <div style="display: flex; align-items: center; gap: 8px;">
-            <div style="background: #1a1a1a; padding: 4px 10px; border-radius: 12px; border: 1px solid #333; font-size: 12px;">
-                <span id="user-balance-header">0</span> so'm
-            </div>
-            <span style="color: #888; font-size: 12px;" id="current-time">10:50</span>
+        <div style="background: #1a1a1a; padding: 6px 14px; border-radius: 20px; border: 1px solid #ff2222;">
+            <span id="user-balance" style="color: #ff5555; font-weight: bold;">0</span> so'm
         </div>
     </div>
 
-    <!-- 1. BOSH SAHIFA -->
     <div class="container active" id="tab-bosh">
-        <div class="balance-card">
+        <div class="banner" onclick="alert('Telegram Stars bo\'limi')">
             <div>
-                <div style="font-size: 11px; color: #888; margin-bottom: 4px;">BALANS 🔄</div>
-                <div style="font-size: 22px; font-weight: bold;"><span id="user-balance">0</span> so'm</div>
-            </div>
-            <button class="topup-btn" onclick="switchTab('toldirish', document.getElementById('nav-toldirish'))">+ To'ldirish</button>
-        </div>
 
-        <div class="action-card" onclick="alert('Yordam bo\'limi')">
-            <span style="font-weight: 500;">🎧 Yordam</span>
-            <span style="color: #666;">›</span>
-        </div>
-
-        <div class="banner-card" onclick="alert('Telegram Stars bo\'limi')">
-            <div class="badge-yangilik">YANGI</div>
-            <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">TELEGRAM STARS</div>
-            <div style="font-size: 12px; color: #888;">Eng arzon narxda xarid qiling</div>
-            <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 28px;">⭐</div>
-        </div>
-
-        <div class="section-header">
-            <span>OMMABOP O'YINLAR</span>
-            <span style="color: #ff2222; cursor: pointer;" onclick="switchTab('oyinlar', document.getElementById('nav-oyinlar'))">Barchasi</span>
-        </div>
-
-        <div class="games-grid">
-            <div class="game-card" onclick="alert('PUBG Mobile UC')">
-                <div class="game-tag">⚡ 5</div>
-                <div class="game-card-icon">🎮</div>
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">PUBG Mobile UC</div>
-                <div style="font-size: 11px; color: #888;">Tezkor yetkazish</div>
-            </div>
-            <div class="game-card" onclick="alert('Telegram Stars')">
-                <div class="game-tag">⭐ 5</div>
-                <div class="game-card-icon">⭐</div>
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">Telegram Stars</div>
-                <div style="font-size: 11px; color: #888;">Avtomatik</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 2. O'YINLAR SAHIFASI -->
-    <div class="container" id="tab-oyinlar">
-        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">🎮 Barcha O'yinlar va Xizmatlar</h3>
-        <div class="games-grid">
-            <div class="game-card" onclick="alert('PUBG Mobile UC')">
-                <div class="game-card-icon">🎮</div>
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">PUBG Mobile UC</div>
-                <div style="font-size: 11px; color: #888;">Tezkor yetkazish</div>
-            </div>
-            <div class="game-card" onclick="alert('Telegram Stars')">
-                <div class="game-card-icon">⭐</div>
-                <div style="font-weight: bold; font-size: 14px; margin-bottom: 4px;">Telegram Stars</div>
-                <div style="font-size: 11px; color: #888;">Avtomatik</div>
-            </div>
-        </div>
-    </div>
-
-    <!-- 3. TO'LDIRISH SAHIFASI -->
-    <div class="container" id="tab-toldirish">
-        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">BALANSNI TO'LDIRISH</h3>
-        
-        <div class="action-card" onclick="openModal()">
-            <div>
-                <b style="color: #ff5555;">💳 AVTO KARTA (Click / Payme)</b>
-                <div style="font-size: 12px; color: #888; margin-top: 2px;">Avtomatik tarzda hisobni to'ldirish</div>
-            </div>
-            <span style="color: #ff2222;">›</span>
-        </div>
-    </div>
-
-    <!-- 4. BUYURTMALAR SAHIFASI -->
-    <div class="container" id="tab-buyurtmalar">
-        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">📦 Buyurtmalar tarixi</h3>
-        <p style="color: #888;">Hozircha buyurtmalar mavjud emas.</p>
-    </div>
-
-    <!-- Modal / Karta oynasi -->
-    <div class="modal" id="payModal">
-        <div class="modal-content" id="modalBody">
-            <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
-            <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
-            <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
-            <button class="action-btn" onclick="generateCard()">Karta olish</button>
-            <button onclick="closeModal()" style="background:transparent; border:none; color:#888; width:100%; margin-top:10px; cursor:pointer;">Bekor qilish</button>
-        </div>
-    </div>
-
-    <!-- Pastki Navigatsiya Menyu -->
-    <div class="bottom-nav">
-        <div class="nav-item active" id="nav-bosh" onclick="switchTab('bosh', this)">
-            <span class="nav-icon">🏠</span>
-            <span>Bosh</span>
-        </div>
-        <div class="nav-item" id="nav-oyinlar" onclick="switchTab('oyinlar', this)">
-            <span class="nav-icon">🎮</span>
-            <span>O'yinlar</span>
-        </div>
-        <div class="nav-item" id="nav-toldirish" onclick="switchTab('toldirish', this)">
-            <span class="nav-icon">➕</span>
-            <span>To'ldirish</span>
-        </div>
-        <div class="nav-item" id="nav-buyurtmalar" onclick="switchTab('buyurtmalar', this)">
-            <span class="nav-icon">📦</span>
-            <span>Buyurtmalar</span>
-        </div>
-    </div>
-
-    <script>
-        let uid = Telegram.WebApp.initDataUnsafe?.user?.id || "12345678";
-        let userName = Telegram.WebApp.initDataUnsafe?.user?.first_name || "Foydalanuvchi";
-        document.getElementById('username-display').innerText = userName;
-
-        function updateTime() {
-            let now = new Date();
-            let hours = String(now.getHours()).padStart(2, '0');
-            let minutes = String(now.getMinutes()).padStart(2, '0');
-            document.getElementById('current-time').innerText = `${hours}:${minutes}`;
-        }
-        updateTime();
-        setInterval(updateTime, 10000);
-
-        function fetchBalance() {
-            fetch(`/api/balance?user_id=${uid}`)
-            .then(res => res.json())
-            .then(data => {
-                let bal = Number(data.balance).toLocaleString();
-                document.getElementById('user-balance').innerText = bal;
-                document.getElementById('user-balance-header').innerText = bal;
-            }).catch(() => {});
-        }
-        fetchBalance();
-        setInterval(fetchBalance, 5000);
-
-        function switchTab(tabName, element) {
-            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
-
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
-        }
-
-        function openModal() {
-            document.getElementById('payModal').style.display = 'flex';
-            document.getElementById('modalBody').innerHTML = `
-                <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
-                <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
-                <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
-                <button class="action-btn" onclick="generateCard()">Karta olish</button>
-                <button onclick="closeModal()" style="background:transparent; border:none; color:#888; width:100%; margin-top:10px; cursor:pointer;">Bekor qilish</button>
-            `;
-        }
-
-        function closeModal() {
-            document.getElementById('payModal').style.display = 'none';
-        }
-
-        let timerInterval;
-        function generateCard() {
-            let am = document.getElementById('amount').value;
-            if(!am || am <= 1000) { alert("Iltimos, to'g'ri summa kiriting!"); return; }
-
-            fetch('/api/topup', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: uid, amount: am, username: userName, payment_method: 'Avto Karta'})
-            }).catch(() => {});
-
-            let cardNum = "6262570820391383";
-            let cardHolder = "RAVSHANOVA XULKAR ISRAILOV";
-            
-            document.getElementById('modalBody').innerHTML = `
-                <div style="font-size: 12px; color: #888;">Avto karta <span style="float:right; background:#ff2222; color:white; padding:2px 8px; border-radius:4px; font-weight:bold;">HUMO</span></div>
-                <div class="card-number" onclick="copyCard('${cardNum}')" title="Nusxalash uchun bosing">${cardNum.match(/.{1,4}/g).join(' ')} 📋</div>
-                <div style="font-size: 12px; color: #ccc;">${cardHolder}</div>
-                <hr style="border-color:#333; margin:12px 0;">
-                <div style="font-size: 12px; color: #888;">ANIQ SHU SUMMANI O'TKAZING</div>
-                <div style="font-size: 22px; font-weight: bold; color: #ff5555; margin: 5px 0;">${Number(am).toLocaleString()} so'm</div>
-                <div style="font-size: 12px; color: #888;">Qolgan vaqt</div>
-                <div class="timer" id="countdown">05:00</div>
-                <div style="text-align:center; font-size: 13px; color: #ff2222; margin: 10px 0;">⏳ To'lovingiz kutilmoqda...</div>
-                <button class="action-btn" style="background:#222; color:white; border:1px solid #444; margin-top:5px;" onclick="openModal()">Bekor qilish / Boshqa summa</button>
-            `;
-
-            startTimer(300);
-        }
-
-        function copyCard(num) {
-            navigator.clipboard.writeText(num);
-            alert("Karta raqami nusxalandi!");
-        }
-
-        function startTimer(duration) {
-            let timer = duration, minutes, seconds;
-            clearInterval(timerInterval);
-            timerInterval = setInterval(function () {
-                minutes = parseInt(timer / 60, 10);
-                seconds = parseInt(timer % 60, 10);
-
-                minutes = minutes < 10 ? "0" + minutes : minutes;
-                seconds = seconds < 10 ? "0" + seconds : seconds;
-
-                let timerElement = document.getElementById('countdown');
-                if(timerElement) {
-                    timerElement.textContent = minutes + ":" + seconds;
-                }
-
-                if (--timer < 0) {
-                    clearInterval(timerInterval);
-                    if(timerElement) timerElement.textContent = "Vaqt tugadi!";
-                }
-            }, 1000);
-        }
-    </script>
-</body>
-</html>
- 
-
-
- 
- 
-
- 
- 
  
  
 
