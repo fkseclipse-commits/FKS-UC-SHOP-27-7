@@ -274,14 +274,41 @@
             startTimer(300);
         }
 
+        // TELEGRAMGA XABAR YUBORISH FUNKSIYALARI (QO'SHILDI)
         function submitOrder() {
+            const amountText = document.getElementById('final-sum-display').innerText;
+            const message = `🔔 Yangi to'lov so'rovi (Avto Karta)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💰 Summa: ${amountText}`;
+            
+            sendTelegramMessage(message);
+
             alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
             switchTab('home');
         }
 
         function submitOrderAtm() {
+            const message = `🔔 Yangi to'lov so'rovi (Bankamat Naqd)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💵 Usul: Bankamat orqali chek yuborildi`;
+            
+            sendTelegramMessage(message);
+
             alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
             switchTab('home');
+        }
+
+        function sendTelegramMessage(text) {
+            const token = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
+            const chatId = "8269688160";
+            
+            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text,
+                    parse_mode: "Markdown"
+                })
+            }).catch(err => console.log("Telegram xatolik:", err));
         }
 
         function startTimer(duration) {
@@ -387,7 +414,6 @@
             document.getElementById('verify-result').classList.add('hidden');
         }
 
-        // Yangilangan ID tekshirish funksiyasi
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
@@ -399,7 +425,6 @@
                 return;
             }
 
-            // Agar PUBG ID 8 tadan qisqa yozilsa - Topilmadi deb chiqaradi
             if(selectedProduct.cat === 'pubg' && val.length < 8) {
                 isVerified = false;
                 resDiv.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-xmark"></i> ID topilmadi: ${val}</span>`;
@@ -423,7 +448,7 @@
             if(!extra || !isVerified) { alert("ID ni to'g'ri kiriting va tekshirib oling!"); return; }
 
             if(userBalance < selectedProduct.price) {
-                alert("Balansda mablag' yetarli emas! Avval balansni to'ldiring.");
+                alert("Balansda mablag' yetarli emas! Avval balansni to'ldirish.");
                 return;
             }
 
@@ -447,6 +472,7 @@
     </script>
 </body>
 </html>
+ 
 
  
  
