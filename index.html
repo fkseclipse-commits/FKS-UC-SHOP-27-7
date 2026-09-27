@@ -172,7 +172,7 @@
         <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash (0 so'm)</button>
     </div>
 
-    <!-- To'lov Modal Oynasi (Tugmalar to'g'rilandi) -->
+    <!-- To'lov Modal Oynasi -->
     <div id="modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-end justify-center">
         <div class="card-bg w-full max-w-md rounded-t-3xl p-4 border-t border-red-900">
             <div class="flex justify-between items-center mb-3">
@@ -186,7 +186,7 @@
             </div>
             <input type="number" id="amount" placeholder="Summani kiriting (so'm)..." class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-xs text-white mb-3 focus:outline-none">
             
-            <!-- Click va Payme tugmalari (kengaytirildi va matnlar to'g'ri sig'adigan qilindi) -->
+            <!-- Click va Payme tugmalari -->
             <div class="grid grid-cols-2 gap-2 pb-4">
                 <button onclick="payVia('Click')" class="bg-blue-950 border border-blue-500 text-blue-300 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-blue-900 transition">
                     <i class="fa-solid fa-bolt text-sm"></i> Click
@@ -329,14 +329,17 @@
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify({user_id: uid, amount: am, username: userName, payment_method: `${selectedPaymentMethod} (${method})`}) 
-            })
-            .then(r => r.json()).then(d => {
-                closeModal();
-                alert(`${method} orqali ${Number(am).toLocaleString()} so'm to'ldirish so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.`);
-            }).catch(e => {
-                closeModal();
-                alert(`${method} orqali so'rov yuborildi!`);
-            });
+            }).catch(e => console.log(e));
+
+            closeModal();
+            
+            if(method === 'Click') {
+                // Click orqali o'tkazma havolasi
+                window.open(`https://my.click.uz/services/pay?service_id=0&merchant_id=0&amount=${am}&account_number=6262570820391383`, '_blank');
+            } else {
+                // Payme orqali to'lov havolasi (kerakli merchant havolasini qo'yishingiz mumkin)
+                window.open(`https://checkout.paycom.uz/...`, '_blank');
+            }
         }
 
         function checkout() {
@@ -363,6 +366,7 @@
     </script>
 </body>
 </html>
+
  
  
  
