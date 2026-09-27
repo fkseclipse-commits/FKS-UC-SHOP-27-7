@@ -14,11 +14,10 @@
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
         
-        /* Slayder uchun orqa fon stili */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 180px;
+            height: 190px;
             border-radius: 1rem;
             overflow: hidden;
             margin-bottom: 12px;
@@ -37,6 +36,7 @@
 </head>
 <body class="pb-24">
 
+    <!-- HEADER -->
     <div class="p-3 card-bg border-b border-red-900/50 sticky top-0 z-40 flex justify-between items-center">
         <div>
             <h1 class="font-black text-xs text-red-500">FKS PUBGM SHOP <i class="fa-solid fa-gamepad"></i></h1>
@@ -59,11 +59,11 @@
             <button onclick="switchTab('topup')" class="gradient-btn text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
         </div>
 
-        <!-- ORQA FON SLAYDERI (3 TA RASM) -->
+        <!-- ORQA FON SLAYDERI (Siz tashlagan 3 ta rasm) -->
         <div class="mx-3 slider-container">
-            <div class="slide active" style="background-image: url('https://i.imgur.com/3Z616vR.png')"></div>
-            <div class="slide" style="background-image: url('https://i.imgur.com/G3616vR.png')"></div>
-            <div class="slide" style="background-image: url('https://i.imgur.com/F3616vR.png')"></div>
+            <div class="slide active" style="background-image: url('19437.png')"></div>
+            <div class="slide" style="background-image: url('19436.png')"></div>
+            <div class="slide" style="background-image: url('19435.png')"></div>
             <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
                 <span class="dot w-2 h-2 rounded-full bg-red-500"></span>
                 <span class="dot w-2 h-2 rounded-full bg-gray-500"></span>
@@ -71,18 +71,20 @@
             </div>
         </div>
 
+        <!-- YORDAM TUGMASI -->
         <div class="mx-3 mb-3">
             <a href="https://t.me/Jv_asilbek" target="_blank" class="card-bg w-full py-2.5 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-white hover:border-red-500 transition shadow" style="text-decoration: none;">
                 <i class="fa-solid fa-headset text-red-500"></i> Yordam
             </a>
         </div>
 
+        <!-- KATEGoriya TUGMALARI -->
         <div class="flex mx-3 mb-3 gap-2">
             <button onclick="switchCategory('pubg')" id="btn-pubg" class="flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red">PUBG UC</button>
             <button onclick="switchCategory('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
         </div>
 
-        <!-- PUBG UC -->
+        <!-- PUBG UC MAHSULOTLARI -->
         <div id="sec-pubg" class="px-3 mb-4 grid grid-cols-2 gap-2.5">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">60 UC</div><div class="text-[10px] text-gray-400">13,000 so'm</div></div><button onclick="goToCart('60 UC', 13000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -92,14 +94,14 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">660 UC</div><div class="text-[10px] text-gray-400">135,000 so'm</div></div><button onclick="goToCart('660 UC', 135000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
 
-        <!-- TELEGRAM PREMIUM -->
+        <!-- TELEGRAM PREMIUM MAHSULOTLARI -->
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
     </div>
 
-    <!-- BALANS TO'LDIRISH -->
+    <!-- BALANSNI TO'LDIRISH BO'LIMI -->
     <div id="view-topup" class="p-3 hidden">
         <div id="topup-menu">
             <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
@@ -180,12 +182,13 @@
     </div>
 
     <script>
-        // Slayderni boshqarish
+        // Slayder vaqt bo'yicha almashinuvi
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
 
         function nextSlide() {
+            if(slides.length === 0) return;
             slides[currentSlide].classList.remove('active');
             dots[currentSlide].classList.replace('bg-red-500', 'bg-gray-500');
             currentSlide = (currentSlide + 1) % slides.length;
@@ -194,8 +197,18 @@
         }
         setInterval(nextSlide, 3500);
 
-        let uid = "default";
-        let userName = "Foydalanuvchi";
+        // Vaqtni ko'rsatish
+        function updateClock() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            const seconds = String(now.getSeconds()).padStart(2, '0');
+            const clockEl = document.getElementById('live-clock');
+            if(clockEl) clockEl.innerText = `${hours}:${minutes}:${seconds}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
         let userBalance = 0;
         let selectedProduct = null;
         let isVerified = false;
@@ -209,12 +222,30 @@
             if(activeView) activeView.classList.remove('hidden');
         }
 
+        function switchCategory(cat) {
+            const btnPubg = document.getElementById('btn-pubg');
+            const btnPrem = document.getElementById('btn-prem');
+            const secPubg = document.getElementById('sec-pubg');
+            const secPrem = document.getElementById('sec-prem');
+
+            if(cat === 'pubg') {
+                btnPubg.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
+                btnPrem.className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
+                secPubg.classList.remove('hidden');
+                secPrem.classList.add('hidden');
+            } else {
+                btnPrem.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
+                btnPubg.className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
+                secPrem.classList.remove('hidden');
+                secPubg.classList.add('hidden');
+            }
+        }
+
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
             resDiv.classList.remove('hidden');
 
-            // TO'G'RI TEKSHIRISH: Agar ID bo'sh bo'lsa yoki 5 tadan qisqa bo'lsa - XATO DEYDI
             if(!val || val.length < 5) {
                 isVerified = false;
                 resDiv.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-xmark"></i> ID topilmadi: ${val || "bo'sh"}</span>`;
@@ -222,7 +253,6 @@
             }
 
             resDiv.innerHTML = '<span class="text-yellow-500">Tekshirilmoqda...</span>';
-            
             setTimeout(() => {
                 isVerified = true;
                 resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Topildi! ID: <b class="text-white">${val}</b></span>`;
@@ -246,9 +276,48 @@
             alert("Buyurtma qabul qilindi!");
             switchTab('home');
         }
+
+        function openAutoCardScreen() {
+            document.getElementById('topup-menu').classList.add('hidden');
+            document.getElementById('topup-step2').classList.remove('hidden');
+        }
+        function openAtmScreen() {
+            document.getElementById('topup-menu').classList.add('hidden');
+            document.getElementById('topup-atm').classList.remove('hidden');
+        }
+        function backToTopupMenu() {
+            document.getElementById('topup-step2').classList.add('hidden');
+            document.getElementById('topup-atm').classList.add('hidden');
+            document.getElementById('topup-menu').classList.remove('hidden');
+        }
+        function checkTopupSum() {
+            const val = document.getElementById('amount').value;
+            const btn = document.getElementById('get-card-btn');
+            const res = document.getElementById('calc-result');
+            if(val > 0) {
+                res.innerText = `⚡ Hisobingizga tushadi: ${Number(val).toLocaleString()} SUM`;
+                btn.classList.remove('opacity-50', 'pointer-events-none');
+            } else {
+                res.innerText = `⚡ Hisobingizga tushadi: 0 SUM`;
+                btn.classList.add('opacity-50', 'pointer-events-none');
+            }
+        }
+        function showCardDetails() {
+            const val = document.getElementById('amount').value;
+            document.getElementById('topup-step2').classList.add('hidden');
+            document.getElementById('topup-step3').classList.remove('hidden');
+            document.getElementById('final-sum-display').innerText = Number(val).toLocaleString() + " so'm";
+        }
+        function backToStep2() {
+            document.getElementById('topup-step3').classList.add('hidden');
+            document.getElementById('topup-step2').classList.remove('hidden');
+        }
+        function submitOrder() { alert("So'rov yuborildi!"); switchTab('home'); }
+        function submitOrderAtm() { alert("Chek yuborildi!"); switchTab('home'); }
     </script>
 </body>
 </html>
+ 
 
  
  
