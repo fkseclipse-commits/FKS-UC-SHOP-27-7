@@ -126,7 +126,7 @@
         </div>
     </div>
 
-    <!-- CART / SAVATCHA VIEW (Videodagidek) -->
+    <!-- CART / SAVATCHA VIEW -->
     <div id="view-cart" class="px-3 hidden mb-6">
         <button onclick="goBackHome()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
             <i class="fa-solid fa-arrow-left"></i> Orqaga
@@ -141,7 +141,7 @@
                     <input type="text" id="player-id-input" placeholder="ID kiriting..." class="flex-1 bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white focus:outline-none">
                     <button onclick="verifyId()" class="bg-red-950 border border-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-red-600 transition">Tekshirish</button>
                 </div>
-                <!-- ID tekshirilganda nik chiqadigan joy -->
+                <!-- ID tekshirilganda foydalanuvchi yozgan ID chiqadigan joy -->
                 <div id="verify-result" class="mt-2 text-xs font-bold hidden"></div>
             </div>
 
@@ -255,7 +255,7 @@
             switchTab('pubg');
         }
 
-        // ID ni tekshirish va nik chiqarish
+        // ID ni tekshirish va kiritilgan ID ni chiqarish
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
@@ -266,8 +266,9 @@
             
             setTimeout(() => {
                 isVerified = true;
-                let nickName = selectedProduct.cat === 'pubg' ? "FKSjEclipsei" : "@" + val.replace('@','');
-                resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> TOPILDI: ${nickName}</span>`;
+                // Endi FKSjEclipsei o'rniga foydalanuvchi o'zi kiritgan ID chiqadi
+                let displayName = selectedProduct.cat === 'pubg' ? "ID: " + val : "@" + val.replace('@','');
+                resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> TOPILDI: ${displayName}</span>`;
             }, 800);
         }
 
@@ -315,6 +316,7 @@
     </script>
 </body>
 </html>
+ 
 
  
  
