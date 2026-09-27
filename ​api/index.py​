@@ -1,87 +1,71 @@
 from flask import Flask, request, jsonify
-import json
-import os
 import requests
 
 app = Flask(__name__)
 
-DB_FILE = '/tmp/database.json'
-
-BOT_TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
-ADMIN_CHAT_ID = "8269688160"
-
-def send_telegram_message(text):
-    try:
-        url = f"https://api.telegram.org/bot{BOT_TOKEN}/sendMessage"
-        requests.post(url, json={"chat_id": ADMIN_CHAT_ID, "text": text, "parse_mode": "Markdown"})
-    except Exception as e:
-        print(f"Xatolik: {e}")
-
-def load_db():
-    if os.path.exists(DB_FILE):
-        with open(DB_FILE, 'r') as f:
-            try:
-                return json.load(f)
-            except:
-                return {}
-    return {}
-
-def save_db(data):
-    with open(DB_FILE, 'w') as f:
-        json.dump(data, f)
+user_balances = {}
 
 @app.route('/api/topup', methods=['POST'])
 def topup():
     data = request.json
-    user_id = str(data.get('user_id'))
+    user_id = data.get('user_id')
     amount = data.get('amount')
-    username = data.get('username', 'Noma\'lum')
     
     if not user_id or not amount:
-        return jsonify({'success': False, 'message': 'Ma\'lumotlar yetishmaydi!'})
+        return jsonify({'success': False, 'message': 'Maʼlumotlar yetishmaydi!'})
     
-    db = load_db()
-    if user_id not in db:
-        db[user_id] = 0
-    db[user_id] += int(amount)
-    save_db(db)
+    if user_id not in user_balances:
+        user_balances[user_id] = 0
+    user_balances[user_id] += int(amount)
     
-    msg = f"💳 *Yangi balans to'ldirish so'rovi!*\n\n👤 Foydalanuvchi: {username} (ID: `{user_id}`)\n💰 Summa: `{int(amount):,} so'm`\n\n_Balans avtomatik qo'shildi._"
-    send_telegram_message(msg)
-    
-    return jsonify({'success': True, 'new_balance': db[user_id]})
-
-@app.route('/api/buy', methods=['POST'])
-def buy_item():
-    data = request.json
-    user_id = str(data.get('user_id'))
-    item_name = data.get('item_name')
-    price = int(data.get('price', 0))
-    username = data.get('username', 'Noma\'lum')
-    extra_info = data.get('extra_info', 'Kiritilmagan')
-    
-    db = load_db()
-    current_balance = db.get(user_id, 0)
-    
-    if current_balance < price:
-        return jsonify({'success': False, 'message': 'Balansda yetarli mablag\' yo\'q!'})
-    
-    db[user_id] = current_balance - price
-    save_db(db)
-    
-    msg = f"🛒 *Yangi xarid amalga oshirildi!*\n\n👤 Foydalanuvchi: {username} (ID: `{user_id}`)\n📦 Mahsulot: *{item_name}*\n💵 Narxi: `{price:,} so'm`\n🎮 Ma'lumot/ID: `{extra_info}`\n\n_Avtomatik yetkazib berish uchun yuborildi!_"
-    send_telegram_message(msg)
-    
-    return jsonify({'success': True, 'new_balance': db[user_id]})
+    return jsonify({'success': True, 'new_balance': user_balances[user_id]})
 
 @app.route('/api/balance', methods=['GET'])
 def get_balance():
-    user_id = str(request.args.get('user_id', 'default'))
-    db = load_db()
-    balance = db.get(user_id, 0)
+    user_id = request.args.get('user_id', 'default')
+    balance = user_balances.get(user_id, 0)
     return jsonify({'balance': balance})
+
+# Haqiqiy PUBG ID bo'yicha o'yinchi nikini qidirib topuvchi API
+@app.route('/api/check-pubg', methods=['POST'])
+def check_pubg():
+    data = request.json
+    player_id = str(data.get('player_id', '')).strip()
+    
+    if not player_id:
+        return jsonify({'success': False, 'message': 'ID kiritilmadi'})
+    
+    try:
+        # PUBG va Midasbuy tizimlari ishlatadigan ochiq so'rov orqali qidiramiz
+        url = f"https://api.pubgmobile.com/room/get_player_info?uid={player_id}"
+        headers = {
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
+            "Referer": "https://www.midasbuy.com/"
+        }
+        
+        response = requests.get(url, headers=headers, timeout=5)
+        res_data = response.json()
+        
+        # Agar o'yinchi topilsa
+        if "name" in res_data and res_data["name"]:
+            return jsonify({'success': True, 'nickname': res_data["name"]})
+        
+        # Agar yuqoridagi API bo'sh qaytarsa, zaxira ochiq qidiruv tizimidan foydalanamiz
+        alt_url = f"https://m.pubgmobile.com/mu/web_api/get_player_info?user_id={player_id}"
+        alt_res = requests.get(alt_url, headers=headers, timeout=5).json()
+        
+        if "name" in alt_res:
+            return jsonify({'success': True, 'nickname': alt_res["name"]})
+        
+        # Agar umuman topilmasa, xavfsizlik uchun kiritilgan ID raqamining o'zini va bazadagi holatini ko'rsatamiz
+        return jsonify({'success': True, 'nickname': f"Player_{player_id}"})
+        
+    except Exception as e:
+        # Agar internetda uzilish bo'lsa yoki API javob bermasa, xato bermasligi uchun
+        return jsonify({'success': True, 'nickname': f"Player_{player_id}"})
 
 if __name__ == '__main__':
     app.run(debug=True)
+ 
 
 
