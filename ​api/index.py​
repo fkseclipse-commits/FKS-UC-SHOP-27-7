@@ -4,6 +4,7 @@ import requests
 app = Flask(__name__)
 
 user_balances = {}
+purchases_db = []  # Avtomatik xaridlar ro'yxati (bo'sh boshlanadi)
 
 TELEGRAM_BOT_TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 ADMIN_CHAT_ID = "8269688160"
@@ -41,7 +42,7 @@ def topup():
         ]
     }
     
-    msg = f"💳 <b>Yangi to'lov so'rovi! (@Jv_asilbek)</b>\n\n" \
+    msg = f"💳 <b>Yangi to'lov so'rovi!</b>\n\n" \
           f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n" \
           f"💵 Summa: <b>{amount_int:,} so'm</b>\n" \
           f"📲 Usul: <b>{payment_method}</b>\n\n" \
@@ -111,7 +112,7 @@ def buy():
     user_id = data.get('user_id', 'default')
     price = int(data.get('price', 0))
     item_name = data.get('item_name')
-    username = data.get('username')
+    username = data.get('username', 'Foydalanuvchi')
     extra_info = data.get('extra_info')
     
     current_balance = user_balances.get(user_id, 0)
@@ -119,6 +120,16 @@ def buy():
         return jsonify({'success': False, 'message': "Balansda yetarli mablag' yo'q!"})
     
     user_balances[user_id] -= price
+    
+    # Avtomatik ravishda Top xaridorlar bazasiga qo'shish yoki yangilash
+    found = False
+    for user in purchases_db:
+        if user['name'] == username:
+            user['total'] += price
+            found = True
+            break
+    if not found:
+        purchases_db.append({"name": username, "total": price})
     
     buy_msg = f"🛒 <b>Yangi xarid!</b>\n\n" \
               f"👤 Foydalanuvchi: {username}\n" \
@@ -129,8 +140,15 @@ def buy():
     
     return jsonify({'success': True, 'new_balance': user_balances[user_id]})
 
+# Top 10 xaridorlarni avtomatik chiqarib beruvchi qism
+@app.route('/api/top-buyers', methods=['GET'])
+def get_top_buyers():
+    sorted_buyers = sorted(purchases_db, key=lambda x: x['total'], reverse=True)
+    return jsonify(sorted_buyers[:10])
+
 if __name__ == '__main__':
     app.run(debug=True)
+ 
  
  
 
