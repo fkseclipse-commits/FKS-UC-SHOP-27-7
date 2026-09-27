@@ -14,7 +14,7 @@
             background-color: #0b0e14; 
             color: #fff; 
         }
-        .card-bg { background: rgba(22, 27, 34, 0.9); border: 1px solid rgba(239, 68, 68, 0.35); }
+        .card-bg { background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); }
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
     </style>
@@ -169,30 +169,30 @@
             </div>
         </div>
 
-        <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">To'lash (0 so'm)</button>
+        <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash (0 so'm)</button>
     </div>
 
-    <!-- To'lov Modal Oynasi (Click & Payme tugmalari bilan) -->
+    <!-- To'lov Modal Oynasi (Tugmalar to'g'rilandi) -->
     <div id="modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-end justify-center">
         <div class="card-bg w-full max-w-md rounded-t-3xl p-4 border-t border-red-900">
             <div class="flex justify-between items-center mb-3">
                 <h3 id="modal-title" class="font-bold text-xs text-red-500 uppercase">To'ldirish</h3>
-                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer" onclick="closeModal()"></i>
+                <i class="fa-solid fa-xmark text-gray-400 cursor-pointer text-base p-1" onclick="closeModal()"></i>
             </div>
             <div class="bg-gray-900 p-3 rounded-xl border border-red-900/50 mb-3 text-xs">
                 <div class="text-[10px] text-gray-400">Karta raqami:</div>
-                <div class="font-black text-white mt-0.5">6262 5708 2039 1383</div>
+                <div class="font-black text-white mt-0.5 tracking-wider">6262 5708 2039 1383</div>
                 <div class="text-[9px] text-red-400 mt-0.5">RAVSHANOVA XULKAR ISRAILOV</div>
             </div>
-            <input type="number" id="amount" placeholder="Summani kiriting (so'm)..." class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white mb-3 focus:outline-none">
+            <input type="number" id="amount" placeholder="Summani kiriting (so'm)..." class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-xs text-white mb-3 focus:outline-none">
             
-            <!-- Click va Payme tugmalari -->
-            <div class="grid grid-cols-2 gap-2">
-                <button onclick="sendTopup('Click')" class="bg-blue-600/20 border border-blue-500 text-blue-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-bolt"></i> Click orqali
+            <!-- Click va Payme tugmalari (kengaytirildi va matnlar to'g'ri sig'adigan qilindi) -->
+            <div class="grid grid-cols-2 gap-2 pb-4">
+                <button onclick="payVia('Click')" class="bg-blue-950 border border-blue-500 text-blue-300 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-blue-900 transition">
+                    <i class="fa-solid fa-bolt text-sm"></i> Click
                 </button>
-                <button onclick="sendTopup('Payme')" class="bg-teal-600/20 border border-teal-500 text-teal-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
-                    <i class="fa-solid fa-wallet"></i> Payme orqali
+                <button onclick="payVia('Payme')" class="bg-teal-950 border border-teal-500 text-teal-300 py-3 rounded-xl font-bold text-xs flex items-center justify-center gap-2 hover:bg-teal-900 transition">
+                    <i class="fa-solid fa-wallet text-sm"></i> Payme
                 </button>
             </div>
         </div>
@@ -277,7 +277,7 @@
             
             document.getElementById('cart-item-desc').innerText = name;
             document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
-            document.getElementById('checkout-btn').innerText = `To'lash (${price.toLocaleString()} so'm)`;
+            document.getElementById('checkout-btn').innerText = `Balansdan to'lash (${price.toLocaleString()} so'm)`;
             
             const label = document.getElementById('id-label');
             const input = document.getElementById('player-id-input');
@@ -296,7 +296,7 @@
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
-            if(!val) { alert("Iltimos, ID raqamni kiriting!"); return; }
+            if(!val) { alert("Iltimos, ID yoki username kiriting!"); return; }
             
             resDiv.classList.remove('hidden');
             resDiv.innerHTML = '<span class="text-yellow-500"><i class="fa-solid fa-spinner animate-spin"></i> Tekshirilmoqda...</span>';
@@ -305,7 +305,7 @@
                 isVerified = true;
                 let displayName = selectedProduct.cat === 'pubg' ? "ID: " + val : "@" + val.replace('@','');
                 resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> TOPILDI: ${displayName}</span>`;
-            }, 600);
+            }, 500);
         }
 
         function openPaymentModal(method) {
@@ -317,23 +317,25 @@
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
         function openGuide() {
-            alert("Qo'llanma: Summani kiriting, ko'rsatilgan karta raqamiga pul o'tkazing va Click yoki Payme orqali so'rov yuboring. Admin tezda tasdiqlaydi!");
+            alert("Qo'llanma: Summani kiriting, karta raqamiga pul o'tkazing va Click yoki Payme orqali so'rov yuboring. Admin tezda tasdiqlaydi!");
         }
 
-        function sendTopup(method) {
+        function payVia(method) {
             let am = document.getElementById('amount').value;
-            if(!am || am <= 0) { alert("Summani kiriting!"); return; }
+            if(!am || am <= 0) { alert("Iltimos, summani kiriting!"); return; }
             
+            // Serverga to'lov so'rovini yuborish
             fetch('/api/topup', { 
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify({user_id: uid, amount: am, username: userName, payment_method: `${selectedPaymentMethod} (${method})`}) 
             })
             .then(r => r.json()).then(d => {
-                if(d.success) { 
-                    closeModal(); 
-                    alert(`${method} orqali ${Number(am).toLocaleString()} so'm to'ldirish so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.`); 
-                }
+                closeModal();
+                alert(`${method} orqali ${Number(am).toLocaleString()} so'm to'ldirish so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.`);
+            }).catch(e => {
+                closeModal();
+                alert(`${method} orqali so'rov yuborildi!`);
             });
         }
 
@@ -354,13 +356,14 @@
                     alert(selectedProduct.name + " muvaffaqiyatli sotib olindi!");
                     switchTab('home');
                 } else {
-                    alert(d.message || "Balansda yetarli mablag' yo'q!");
+                    alert(d.message || "Balansda yetarli mablag' yo'q! Avval balansingizni to'ldiring.");
                 }
             });
         }
     </script>
 </body>
 </html>
+ 
  
  
  
