@@ -3,19 +3,20 @@ import requests
 
 app = Flask(__name__)
 
-# Foydalanuvchi balanslarini saqlash uchun lug'at
 user_balances = {}
 
-# Siz bergan bot token va admin ID raqami
 TELEGRAM_BOT_TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 ADMIN_CHAT_ID = "8269688160"
 
-def send_telegram_admin_notification(text):
+def send_telegram_admin_notification(text, reply_markup=None):
     try:
         url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
-        requests.post(url, json={"chat_id": ADMIN_CHAT_ID, "text": text, "parse_mode": "HTML"}, timeout=5)
+        payload = {"chat_id": ADMIN_CHAT_ID, "text": text, "parse_mode": "HTML"}
+        if reply_markup:
+            payload["reply_markup"] = reply_markup
+        requests.post(url, json=payload, timeout=5)
     except Exception as e:
-        print(f"Xabar yuborishda xatolik: {e}")
+        print(f"Xatolik: {e}")
 
 @app.route('/api/topup', methods=['POST'])
 def topup():
@@ -23,35 +24,86 @@ def topup():
     user_id = data.get('user_id')
     amount = data.get('amount')
     username = data.get('username', 'Foydalanuvchi')
-    payment_method = data.get('payment_method', 'Karta')
+    payment_method = data.get('payment_method', 'Avto Karta')
     
     if not user_id or not amount:
         return jsonify({'success': False, 'message': 'Maʼlumotlar yetishmaydi!'})
     
-    # Click yoki Payme orqali to'lov so'rovi kelganda sizga Telegramga xabar yuboradi
+    amount_int = int(amount)
+    
+    # Adminga Tasdiqlash va Rad etish tugmalari bilan xabar yuboramiz
+    keyboard = {
+        "inline_keyboard": [
+            [
+                {"text": "✅ Tasdiqlash", "callback_data": f"approve_{user_id}_{amount_int}"},
+                {"text": "❌ Rad etish", "callback_data": f"reject_{user_id}"}
+            ]
+        ]
+    }
+    
     msg = f"💳 <b>Yangi to'lov so'rovi! (@Jv_asilbek)</b>\n\n" \
           f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n" \
-          f"💵 Summa: <b>{int(amount):,} so'm</b>\n" \
-          f"📲 To'lov usuli: <b>{payment_method}</b>\n\n" \
-          f"<i>Pulni kartangizda tekshirib, foydalanuvchi balansini qo'shib qo'yishingiz mumkin.</i>"
+          f"💵 Summa: <b>{amount_int:,} so'm</b>\n" \
+          f"📲 Usul: <b>{payment_method}</b>\n\n" \
+          f"<i>Kartangizni tekshirib, quyidagi tugmani bosing:</i>"
     
-    send_telegram_admin_notification(msg)
+    send_telegram_admin_notification(msg, reply_markup=keyboard)
     
     return jsonify({'success': True, 'message': 'So\'rov yuborildi'})
+
+# Botdagi tugmalar bosilganda ishlaydigan webhook
+@app.route('/api/telegram-webhook', methods=['POST'])
+def telegram_webhook():
+    data = request.json
+    if "callback_query" in data:
+        callback = data["callback_query"]
+        callback_data = callback["data"]
+        chat_id = callback["message"]["chat"]["id"]
+        message_id = callback["message"]["message_id"]
+        
+        parts = callback_data.split("_")
+        action = parts[0]
+        user_id = parts[1]
+        
+        if action == "approve":
+            amount = int(parts[2])
+            if user_id not in user_balances:
+                user_balances[user_id] = 0
+            user_balances[user_id] += amount
+            
+            # Xabarni yangilaymiz
+            requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/editMessageText", json={
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "text": f"✅ <b>To'lov tasdiqlandi!</b>\n\nFoydalanuvchi (ID: {user_id}) balansiga <b>{amount:,} so'm</b> qo'shildi.",
+                "parse_mode": "HTML"
+            })
+            
+            # Foydalanuvchining o'ziga ham xabar yuborish
+            try:
+                requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage", json={
+                    "chat_id": user_id,
+                    "text": f"🎉 Tabriklaymiz! Balansingizga {amount:,} so'm qo'shildi.",
+                    "parse_mode": "HTML"
+                })
+            except:
+                pass
+                
+        elif action == "reject":
+            requests.post(f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/editMessageText", json={
+                "chat_id": chat_id,
+                "message_id": message_id,
+                "text": f"❌ <b>To'lov rad etildi!</b> (ID: {user_id})",
+                "parse_mode": "HTML"
+            })
+            
+    return jsonify({'status': 'ok'})
 
 @app.route('/api/balance', methods=['GET'])
 def get_balance():
     user_id = request.args.get('user_id', 'default')
     balance = user_balances.get(user_id, 0)
     return jsonify({'balance': balance})
-
-@app.route('/api/check-pubg', methods=['POST'])
-def check_pubg():
-    data = request.json
-    player_id = str(data.get('player_id', '')).strip()
-    if not player_id:
-        return jsonify({'success': False, 'message': 'ID kiritilmadi'})
-    return jsonify({'success': True, 'nickname': f"ID: {player_id}"})
 
 @app.route('/api/buy', methods=['POST'])
 def buy():
@@ -68,8 +120,7 @@ def buy():
     
     user_balances[user_id] -= price
     
-    # Xarid qilinganda ham adminga xabar beradi
-    buy_msg = f"🛒 <b>Yangi xarid amalga oshirildi!</b>\n\n" \
+    buy_msg = f"🛒 <b>Yangi xarid!</b>\n\n" \
               f"👤 Foydalanuvchi: {username}\n" \
               f"🛍 Mahsulot: {item_name}\n" \
               f"💰 Narxi: {price:,} so'm\n" \
@@ -80,5 +131,6 @@ def buy():
 
 if __name__ == '__main__':
     app.run(debug=True)
+ 
  
 
