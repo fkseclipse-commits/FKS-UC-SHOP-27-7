@@ -334,10 +334,10 @@
             closeModal();
             
             if(method === 'Click') {
-                // Click orqali o'tkazma havolasi
-                window.open(`https://my.click.uz/services/pay?service_id=0&merchant_id=0&amount=${am}&account_number=6262570820391383`, '_blank');
+                // To'g'ridan-to'g'ri Click karta raqamiga o'tkazish havolasi
+                window.open(`https://my.click.uz/services/pay?card_print=6262570820391383&amount=${am}`, '_blank');
             } else {
-                // Payme orqali to'lov havolasi (kerakli merchant havolasini qo'yishingiz mumkin)
+                // Payme orqali to'lov havolasi
                 window.open(`https://checkout.paycom.uz/...`, '_blank');
             }
         }
@@ -366,6 +366,7 @@
     </script>
 </body>
 </html>
+ 
 
  
  
