@@ -106,7 +106,7 @@
             <div class="card-bg p-4 rounded-2xl">
                 <div class="flex justify-between items-center mb-1">
                     <label class="text-[10px] text-gray-400 font-bold uppercase">To'ldirish summasi (so'm)</label>
-                    <span class="text-[9px] bg-red-950 px-2 py-0.5 rounded text-red-300 border border-red-800">Tezkor</span>
+                    <span class="text-[9px] bg-red-950 px-2 py-0.5 rounded text-red-300 border border-red-800">Erkin summa</span>
                 </div>
                 <input type="number" id="amount" placeholder="Masalan: 12000" oninput="checkTopupSum()" class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-sm text-white focus:outline-none mb-3">
                 <div id="calc-result" class="text-xs text-green-400 font-bold mb-3">⚡ Hisobingizga tushadi: 0 SUM</div>
@@ -122,15 +122,15 @@
             
             <div class="bg-gradient-to-br from-amber-950 to-stone-900 border border-amber-600/50 p-4 rounded-2xl mb-3 shadow-lg">
                 <div class="flex justify-between items-center text-xs text-amber-400 mb-2">
-                    <span>Karta raqami (HUMO):</span>
-                    <span class="bg-amber-600/30 px-2 py-0.5 rounded text-[10px] font-bold">UZCARD/HUMO</span>
+                    <span>Karta raqami (HUMO/UZCARD):</span>
+                    <span class="bg-amber-600/30 px-2 py-0.5 rounded text-[10px] font-bold">KARTA</span>
                 </div>
                 <div class="text-base font-black tracking-widest text-white mb-2">6262 5708 2039 1383</div>
                 <div class="text-[11px] text-gray-300">Egasi: RAVSHANOVA XULKAR ISRAILOV</div>
             </div>
 
             <div class="card-bg p-4 rounded-2xl mb-3">
-                <div class="text-[10px] text-gray-400 mb-1">ANIQ SHU SUMMANI O'TKAZING:</div>
+                <div class="text-[10px] text-gray-400 mb-1">O'TKAZILADIGAN SUMMA:</div>
                 <div id="final-sum-display" class="text-xl font-black text-yellow-400 mb-3">0 so'm</div>
                 
                 <div class="bg-gray-900 p-2.5 rounded-xl flex justify-between items-center text-xs border border-red-900/40">
@@ -205,7 +205,6 @@
         let userName = "Foydalanuvchi";
         let selectedProduct = null;
         let isVerified = false;
-
         let finalTopupAmount = 0;
         let timerInterval;
 
@@ -248,9 +247,7 @@
             const activeNav = document.getElementById('nav-' + tab);
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
 
-            if(tab === 'topup') {
-                backToTopupMenu();
-            }
+            if(tab === 'topup') backToTopupMenu();
             if(tab === 'history') fetchHistory();
             if(tab === 'top') fetchTopBuyers();
         }
@@ -298,11 +295,9 @@
 
         function showCardDetails() {
             if(!finalTopupAmount || finalTopupAmount <= 0) return;
-            
             document.getElementById('topup-step2').classList.add('hidden');
             document.getElementById('topup-step3').classList.remove('hidden');
             document.getElementById('final-sum-display').innerText = finalTopupAmount.toLocaleString() + " so'm";
-            
             startTimer(300);
         }
 
@@ -312,11 +307,11 @@
                 headers: {'Content-Type': 'application/json'}, 
                 body: JSON.stringify({user_id: uid, amount: finalTopupAmount, username: userName}) 
             }).then(() => {
-                alert("To'lov so'rovi yuborildi! Pul o'tkazilgach balansga qo'shiladi.");
+                alert("To'lov so'rovi yuborildi!");
                 switchTab('home');
                 fetchBal();
             }).catch(()=>{
-                alert("So'rov yuborishda xatolik!");
+                alert("Xatolik yuz berdi!");
             });
         }
 
@@ -332,12 +327,9 @@
             timerInterval = setInterval(function () {
                 minutes = parseInt(timer / 60, 10);
                 seconds = parseInt(timer % 60, 10);
-
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
-
                 display.textContent = minutes + ":" + seconds;
-
                 if (--timer < 0) {
                     clearInterval(timerInterval);
                     alert("Vaqt tugadi!");
@@ -452,7 +444,7 @@
         }
 
         function checkout() {
-            const extra = document.getElementById('player-id-input').value.trim();
+            const extra = document.getElementById('player-id-input.value')?.trim() || document.getElementById('player-id-input').value.trim();
             if(!extra || !isVerified) { alert("ID ni kiriting va tekshirib oling!"); return; }
 
             fetch('/api/buy', {
@@ -464,7 +456,7 @@
             .then(d => {
                 if(d.success) {
                     fetchBal();
-                    alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi va Top reytingga qo'shildi!");
+                    alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi!");
                     switchTab('home');
                 } else {
                     alert(d.message || "Balansda mablag' yetarli emas!");
@@ -474,6 +466,7 @@
     </script>
 </body>
 </html>
+ 
  
  
  
