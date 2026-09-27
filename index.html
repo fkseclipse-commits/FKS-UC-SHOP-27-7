@@ -14,11 +14,12 @@
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
         
+        /* Slayder kichraytirildi */
         .slider-container {
             position: relative;
             width: 100%;
-            height: 190px;
-            border-radius: 1rem;
+            height: 130px;
+            border-radius: 0.75rem;
             overflow: hidden;
             margin-bottom: 12px;
             border: 1px solid rgba(239, 68, 68, 0.4);
@@ -59,15 +60,15 @@
             <button onclick="switchTab('topup')" class="gradient-btn text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
         </div>
 
-        <!-- ORQA FON SLAYDERI (Siz tashlagan 3 ta rasm) -->
+        <!-- ORQA FON SLAYDERI (Kichraytirilgan) -->
         <div class="mx-3 slider-container">
             <div class="slide active" style="background-image: url('19437.png')"></div>
             <div class="slide" style="background-image: url('19436.png')"></div>
             <div class="slide" style="background-image: url('19435.png')"></div>
-            <div class="absolute bottom-2 left-0 right-0 flex justify-center gap-1.5 z-10">
-                <span class="dot w-2 h-2 rounded-full bg-red-500"></span>
-                <span class="dot w-2 h-2 rounded-full bg-gray-500"></span>
-                <span class="dot w-2 h-2 rounded-full bg-gray-500"></span>
+            <div class="absolute bottom-1.5 left-0 right-0 flex justify-center gap-1.5 z-10">
+                <span class="dot w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                <span class="dot w-1.5 h-1.5 rounded-full bg-gray-500"></span>
+                <span class="dot w-1.5 h-1.5 rounded-full bg-gray-500"></span>
             </div>
         </div>
 
@@ -78,7 +79,7 @@
             </a>
         </div>
 
-        <!-- KATEGoriya TUGMALARI -->
+        <!-- KATEGORIYA TUGMALARI -->
         <div class="flex mx-3 mb-3 gap-2">
             <button onclick="switchCategory('pubg')" id="btn-pubg" class="flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red">PUBG UC</button>
             <button onclick="switchCategory('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
@@ -92,12 +93,21 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">300 UC</div><div class="text-[10px] text-gray-400">65,000 so'm</div></div><button onclick="goToCart('300 UC', 65000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">360 UC</div><div class="text-[10px] text-gray-400">78,000 so'm</div></div><button onclick="goToCart('360 UC', 78000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">660 UC</div><div class="text-[10px] text-gray-400">135,000 so'm</div></div><button onclick="goToCart('660 UC', 135000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">720 UC</div><div class="text-[10px] text-gray-400">148,000 so'm</div></div><button onclick="goToCart('720 UC', 148000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">985 UC</div><div class="text-[10px] text-gray-400">198,000 so'm</div></div><button onclick="goToCart('985 UC', 198000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1045 UC</div><div class="text-[10px] text-gray-400">211,000 so'm</div></div><button onclick="goToCart('1045 UC', 211000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1320 UC</div><div class="text-[10px] text-gray-400">270,000 so'm</div></div><button onclick="goToCart('1320 UC', 270000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1875 UC</div><div class="text-[10px] text-gray-400">380,000 so'm</div></div><button onclick="goToCart('1875 UC', 380000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">3850 UC</div><div class="text-[10px] text-gray-400">750,000 so'm</div></div><button onclick="goToCart('3850 UC', 750000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
 
         <!-- TELEGRAM PREMIUM MAHSULOTLARI -->
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">3 Oylik</div><div class="text-[10px] text-gray-400">125,000 so'm</div></div><button onclick="goToCart('Telegram Premium 3 Oy', 125000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">6 Oylik</div><div class="text-[10px] text-gray-400">240,000 so'm</div></div><button onclick="goToCart('Telegram Premium 6 Oy', 240000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Yillik</div><div class="text-[10px] text-gray-400">450,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Yil', 450000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
     </div>
 
@@ -182,7 +192,6 @@
     </div>
 
     <script>
-        // Slayder vaqt bo'yicha almashinuvi
         let currentSlide = 0;
         const slides = document.querySelectorAll('.slide');
         const dots = document.querySelectorAll('.dot');
@@ -197,7 +206,6 @@
         }
         setInterval(nextSlide, 3500);
 
-        // Vaqtni ko'rsatish
         function updateClock() {
             const now = new Date();
             const hours = String(now.getHours()).padStart(2, '0');
@@ -209,7 +217,6 @@
         setInterval(updateClock, 1000);
         updateClock();
 
-        let userBalance = 0;
         let selectedProduct = null;
         let isVerified = false;
 
@@ -317,6 +324,7 @@
     </script>
 </body>
 </html>
+ 
  
 
  
