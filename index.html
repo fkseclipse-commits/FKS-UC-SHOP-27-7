@@ -37,6 +37,7 @@
         </div>
     </div>
 
+    <!-- BOSH SAHIFA -->
     <div id="view-home">
         <div class="m-3 p-3.5 rounded-2xl card-bg flex justify-between items-center shadow-lg glow-red">
             <div>
@@ -56,6 +57,8 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">180 UC</div><div class="text-[10px] text-gray-400">39,000 so'm</div></div><button onclick="goToCart('180 UC', 39000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">240 UC</div><div class="text-[10px] text-gray-400">52,000 so'm</div></div><button onclick="goToCart('240 UC', 52000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">300 UC</div><div class="text-[10px] text-gray-400">65,000 so'm</div></div><button onclick="goToCart('300 UC', 65000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">360 UC</div><div class="text-[10px] text-gray-400">78,000 so'm</div></div><button onclick="goToCart('360 UC', 78000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
 
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
@@ -64,21 +67,18 @@
         </div>
     </div>
 
+    <!-- BALANS TO'LDIRISH -->
     <div id="view-topup" class="p-3 hidden">
-        
         <div id="topup-menu">
             <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
             
-            <a href="https://t.me/Jv_asilbek" target="_blank" class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition block text-decoration-none">
+            <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="alert('Qo‘llanma bo‘limi')">
                 <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500 flex items-center justify-center text-blue-400"><i class="fa-solid fa-headset"></i></div>
-                    <div>
-                        <div class="text-xs font-bold text-white">Yordam (Support)</div>
-                        <div class="text-[9px] text-gray-400">Admin bilan bog'lanish</div>
-                    </div>
+                    <div class="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500 flex items-center justify-center text-blue-400"><i class="fa-solid fa-file-lines"></i></div>
+                    <div class="text-xs font-bold text-white">Qo'llanma</div>
                 </div>
                 <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </a>
+            </div>
 
             <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAutoCardScreen()">
                 <div class="flex items-center gap-3">
@@ -146,9 +146,9 @@
 
             <button onclick="cancelOrder()" class="w-full bg-gray-900 border border-red-900/50 text-gray-300 py-3 rounded-xl font-bold text-xs">Bekor qilish / Boshqa summa</button>
         </div>
-
     </div>
 
+    <!-- TARIX -->
     <div id="view-history" class="p-3 hidden">
         <h2 class="text-sm font-black text-red-500 mb-3 uppercase flex items-center gap-2">
             <i class="fa-solid fa-clock-rotate-left"></i> Xaridlar tarixi
@@ -160,6 +160,7 @@
         </div>
     </div>
 
+    <!-- TOP 10 -->
     <div id="view-top" class="p-3 hidden">
         <h2 class="text-sm font-black text-red-500 mb-3 uppercase flex items-center gap-2">
             <i class="fa-solid fa-trophy"></i> Top 10 Xaridorlar (Avto)
@@ -171,6 +172,7 @@
         </div>
     </div>
 
+    <!-- SAVATCHA -->
     <div id="view-cart" class="px-3 hidden mb-6">
         <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
             <i class="fa-solid fa-arrow-left"></i> Orqaga
@@ -193,12 +195,13 @@
         <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash</button>
     </div>
 
+    <!-- PASTKI MENYU (NAVBAR - Yordam tugmasi shu yerda) -->
     <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-900/50 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
         <div onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
         <div onclick="switchTab('topup')" id="nav-topup" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>Balans</span></div>
         <div class="flex flex-col items-center -mt-4"><div onclick="switchTab('topup')" class="w-10 h-10 gradient-btn text-white rounded-full flex items-center justify-center shadow text-base cursor-pointer border-2 border-[#0b0e14]"><i class="fa-solid fa-plus"></i></div></div>
         <div onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-clock-rotate-left text-sm"></i><span>Tarix</span></div>
-        <a href="https://t.me/Jv_asilbek" target="_blank" id="nav-support" class="flex flex-col items-center cursor-pointer text-decoration-none text-gray-400 hover:text-red-500"><i class="fa-solid fa-headset text-sm"></i><span>Yordam</span></a>
+        <a href="https://t.me/Jv_asilbek" target="_blank" id="nav-support" class="flex flex-col items-center cursor-pointer text-gray-400 hover:text-red-500" style="text-decoration: none;"><i class="fa-solid fa-headset text-sm"></i><span>Yordam</span></a>
         <div onclick="switchTab('top')" id="nav-top" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-trophy text-sm"></i><span>Top</span></div>
     </div>
 
@@ -482,6 +485,7 @@
     </script>
 </body>
 </html>
+ 
  
  
  
