@@ -9,7 +9,7 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
-# Foydalanuvchilar balansini vaqtincha saqlash uchun
+# Foydalanuvchilar balansini saqlab turuvchi baza (lug'at)
 user_balances = {}
 
 @dp.message_handler(commands=['start'])
@@ -31,7 +31,6 @@ async def send_welcome(message: types.Message):
     )
     await message.answer(text, reply_markup=markup, parse_mode="HTML")
 
-# Tugmalar bosilganda ishlaydigan qismi (Tasdiqlash / Bekor qilish)
 @dp.callback_query_handler(lambda call: True)
 async def callback_handler(call: types.CallbackQuery):
     data = call.data
@@ -41,14 +40,15 @@ async def callback_handler(call: types.CallbackQuery):
         user_id = int(parts[1])
         amount = int(parts[2])
         
-        # Balansga qo'shish
+        # Balansga pulni qo'shish
         if user_id not in user_balances:
             user_balances[user_id] = 0
         user_balances[user_id] += amount
         
+        # Adminga xabar berish
         await bot.answer_callback_query(call.id, f"✅ Muvaffaqiyatli! Foydalanuvchiga {amount} so'm qo'shildi.")
         
-        # Adminga chiqqan xabarni o'zgartirish
+        # Xabarni yangilash
         await bot.edit_message_text(
             chat_id=call.message.chat.id,
             message_id=call.message.message_id,
@@ -58,7 +58,7 @@ async def callback_handler(call: types.CallbackQuery):
         
         # Foydalanuvchiga xabar yuborish
         try:
-            await bot.send_message(user_id, f"🎉 Tabriklaymiz! Hisobingiz {amount} so'mga to'ldirildi.")
+            await bot.send_message(user_id, f"🎉 Tabriklaymiz! Hisobingiz {amount} so'mga to'ldirildi. Hozirgi balans: {user_balances[user_id]} so'm.")
         except:
             pass
 
@@ -82,4 +82,5 @@ async def callback_handler(call: types.CallbackQuery):
 
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
+ 
  
