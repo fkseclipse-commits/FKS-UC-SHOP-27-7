@@ -72,14 +72,6 @@
         <div id="topup-menu">
             <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
             
-            <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="alert('Qo‘llanma bo‘limi')">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-blue-600/20 border border-blue-500 flex items-center justify-center text-blue-400"><i class="fa-solid fa-file-lines"></i></div>
-                    <div class="text-xs font-bold text-white">Qo'llanma</div>
-                </div>
-                <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
-            </div>
-
             <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAutoCardScreen()">
                 <div class="flex items-center gap-3">
                     <div class="w-9 h-9 rounded-lg bg-yellow-600/20 border border-yellow-500 flex items-center justify-center text-yellow-400 font-bold text-xs">HUMO</div>
@@ -195,13 +187,12 @@
         <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash</button>
     </div>
 
-    <!-- PASTKI MENYU (NAVBAR - Yordam tugmasi shu yerda) -->
+    <!-- PASTKI MENYU (ASL HOLIDA) -->
     <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-900/50 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
         <div onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
         <div onclick="switchTab('topup')" id="nav-topup" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>Balans</span></div>
         <div class="flex flex-col items-center -mt-4"><div onclick="switchTab('topup')" class="w-10 h-10 gradient-btn text-white rounded-full flex items-center justify-center shadow text-base cursor-pointer border-2 border-[#0b0e14]"><i class="fa-solid fa-plus"></i></div></div>
         <div onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-clock-rotate-left text-sm"></i><span>Tarix</span></div>
-        <a href="https://t.me/Jv_asilbek" target="_blank" id="nav-support" class="flex flex-col items-center cursor-pointer text-gray-400 hover:text-red-500" style="text-decoration: none;"><i class="fa-solid fa-headset text-sm"></i><span>Yordam</span></a>
         <div onclick="switchTab('top')" id="nav-top" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-trophy text-sm"></i><span>Top</span></div>
     </div>
 
@@ -485,6 +476,7 @@
     </script>
 </body>
 </html>
+
  
  
  
