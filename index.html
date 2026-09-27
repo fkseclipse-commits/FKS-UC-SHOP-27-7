@@ -3,302 +3,314 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FKS PUBG SHOP</title>
+    <title>UC 24/7 DONAT SHOP</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
-            background-color: #0c0c0c;
-            color: #fff;
-            font-family: sans-serif;
-            margin: 0;
-            padding: 0;
-            padding-bottom: 70px;
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+        body { 
+            font-family: 'Orbitron', sans-serif; 
+            background-color: #0b0e14; 
+            color: #fff; 
         }
-        .header {
-            padding: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: #141414;
-            border-bottom: 1px solid #222;
-        }
-        .container {
-            padding: 15px;
-            display: none;
-        }
-        .container.active {
-            display: block;
-        }
-        .balance-card {
-            background: linear-gradient(135deg, #1a0808, #141414);
-            border: 1px solid #ff2222;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .menu-btn {
-            background: #161616;
-            border: 1px solid #2a2a2a;
-            color: white;
-            width: 100%;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 12px;
-            text-align: left;
-            font-size: 15px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
-        .menu-btn:active {
-            border-color: #ff2222;
-        }
-        /* Modal dizayni */
-        .modal {
-            display: none;
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        .modal-content {
-            background: #141414;
-            border: 1px solid #ff2222;
-            width: 90%;
-            max-width: 400px;
-            padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 25px rgba(255, 34, 34, 0.2);
-        }
-        .input-box {
-            width: 100%;
-            background: #1f1f1f;
-            border: 1px solid #333;
-            color: white;
-            padding: 12px;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-top: 10px;
-            margin-bottom: 15px;
-            box-sizing: border-box;
-        }
-        .action-btn {
-            background: #ff2222;
-            color: white;
-            font-weight: bold;
-            border: none;
-            width: 100%;
-            padding: 13px;
-            border-radius: 8px;
-            font-size: 16px;
-            cursor: pointer;
-        }
-        /* Karta oynasi dizayni */
-        .card-view {
-            background: linear-gradient(135deg, #2b1111, #160e0e);
-            border: 1px solid #ff2222;
-            border-radius: 14px;
-            padding: 15px;
-            margin-top: 10px;
-        }
-        .card-number {
-            font-size: 19px;
-            font-weight: bold;
-            letter-spacing: 1.5px;
-            color: #ff5555;
-            margin: 12px 0;
-            cursor: pointer;
-        }
-        .timer {
-            text-align: center;
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff3333;
-            margin: 10px 0;
-        }
-        /* Pastki menyu */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0; left: 0; width: 100%;
-            background: #121212;
-            border-top: 1px solid #222;
-            display: flex;
-            justify-content: space-around;
-            padding: 8px 0;
-            z-index: 999;
-        }
-        .nav-item {
-            color: #777;
-            text-align: center;
-            font-size: 12px;
-            text-decoration: none;
-            cursor: pointer;
-        }
-        .nav-item.active {
-            color: #ff2222;
-            font-weight: bold;
-        }
+        .card-bg { background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
+        .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.3); }
     </style>
 </head>
-<body>
+<body class="pb-24">
 
-    <div class="header">
+    <!-- Loader -->
+    <div id="loader" class="fixed inset-0 bg-[#0b0e14] z-50 flex flex-col items-center justify-center transition-opacity duration-500">
+        <div class="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
+        <div class="text-sm font-bold text-red-500 tracking-wider">UC 24/7 DONAT SHOP</div>
+    </div>
+
+    <!-- Header -->
+    <div class="p-3 card-bg border-b border-red-950 sticky top-0 z-40 flex justify-between items-center">
         <div>
-            <b>FKS PUBG SHOP</b><br>
-            <small style="color: #888;">XUSH KELIBSIZ <span id="username-display">Foydalanuvchi</span></small>
+            <h1 class="font-black text-xs text-white tracking-wide">UC 24/7 DONAT SHOP <i class="fa-solid fa-gamepad text-red-500"></i></h1>
+            <p class="text-[10px] text-gray-400 mt-0.5">XUSH KELIBSIZ <span id="username" class="text-red-400 font-bold">Foydalanuvchi</span></p>
         </div>
-        <div style="background: #1a1a1a; padding: 6px 14px; border-radius: 20px; border: 1px solid #ff2222;">
-            <span id="user-balance" style="color: #ff5555; font-weight: bold;">0</span> so'm
+        <div class="flex items-center gap-2">
+            <span class="text-[9px] bg-red-950/60 px-2 py-1 rounded-lg text-red-300 border border-red-900/50" id="user-balance-header">0 so'm</span>
+            <div id="live-clock" class="text-[10px] bg-gray-900 border border-gray-800 px-2 py-1 rounded-lg text-gray-300 font-mono">00:00</div>
         </div>
     </div>
 
-    <!-- 1. BOSH SAHIFA -->
-    <div class="container" id="tab-bosh">
-        <h3>🏠 Bosh sahifa</h3>
-        <p style="color: #888;">Xush kelibsiz! Kerakli bo'limni tanlang.</p>
+    <!-- 1. BOSH SAHIFA VIEW -->
+    <div id="view-home">
+        <!-- Balance Card -->
+        <div class="m-3 p-4 rounded-2xl card-bg flex justify-between items-center shadow-lg">
+            <div>
+                <div class="text-[9px] text-gray-400 font-bold flex items-center gap-1">BALANS <i class="fa-solid fa-rotate-right text-[8px] text-red-500"></i></div>
+                <div class="text-xl font-black text-white mt-1" id="user-balance">0 so'm</div>
+            </div>
+            <button onclick="switchTab('topup')" class="gradient-btn text-white px-4 py-2.5 rounded-xl text-xs font-bold shadow flex items-center gap-1.5"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
+        </div>
+
+        <!-- Support Button -->
+        <div class="mx-3 mb-3">
+            <a href="https://t.me/username" target="_blank" class="card-bg p-3 rounded-2xl flex items-center justify-center gap-2 text-xs font-bold text-gray-300 hover:border-red-500 transition">
+                <i class="fa-solid fa-headset text-red-500"></i> Yordam
+            </a>
+        </div>
+
+        <!-- Banner -->
+        <div class="mx-3 mb-4 rounded-2xl overflow-hidden card-bg p-4 relative border-red-500/20">
+            <span class="text-[8px] bg-red-600 text-white px-2 py-0.5 rounded font-bold uppercase">Yangi</span>
+            <h2 class="text-sm font-black text-white mt-2">TELEGRAM STARS</h2>
+            <p class="text-[9px] text-gray-400 mt-0.5">Eng arzon narxda xarid qiling</p>
+            <div class="absolute right-4 top-1/2 -translate-y-1/2 text-yellow-400 text-3xl">
+                <i class="fa-solid fa-star"></i>
+            </div>
+        </div>
+
+        <!-- Category Tabs -->
+        <div class="flex items-center justify-between mx-3 mb-3">
+            <h3 class="text-xs font-black text-white uppercase">Ommabop o'yinlar</h3>
+            <span class="text-[10px] text-red-500 font-bold cursor-pointer">Barchasi</span>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="px-3 mb-6 grid grid-cols-2 gap-2.5">
+            <div onclick="goToCart('PUBG Mobile UC', 12000, 'pubg')" class="card-bg p-3 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-red-500 transition relative">
+                <span class="absolute top-2 right-2 bg-red-950 text-red-400 text-[9px] px-1.5 py-0.5 rounded border border-red-900">⚡ 5</span>
+                <div class="w-10 h-10 rounded-xl bg-red-950/50 border border-red-900/50 flex items-center justify-center text-red-500 mb-2">
+                    <i class="fa-solid fa-gamepad"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-xs text-white">PUBG Mobile UC</div>
+                    <div class="text-[9px] text-gray-400 mt-0.5">Tezkor yetkazish</div>
+                </div>
+            </div>
+
+            <div onclick="goToCart('Telegram Stars', 5000, 'prem')" class="card-bg p-3 rounded-2xl flex flex-col justify-between cursor-pointer hover:border-red-500 transition relative">
+                <span class="absolute top-2 right-2 bg-yellow-950 text-yellow-400 text-[9px] px-1.5 py-0.5 rounded border border-yellow-900">⭐ 5</span>
+                <div class="w-10 h-10 rounded-xl bg-yellow-950/50 border border-yellow-900/50 flex items-center justify-center text-yellow-500 mb-2">
+                    <i class="fa-solid fa-star"></i>
+                </div>
+                <div>
+                    <div class="font-bold text-xs text-white">Telegram Stars</div>
+                    <div class="text-[9px] text-gray-400 mt-0.5">Avtomatik</div>
+                </div>
+            </div>
+        </div>
     </div>
 
-    <!-- 2. TO'LDIRISH SAHIFASI (Videodagidek menyular) -->
-    <div class="container active" id="tab-toldirish">
-        <h3>BALANSNI TO'LDIRISH</h3>
+    <!-- 2. TO'LDIRISH VIEW (Kabi videodagi tartib) -->
+    <div id="view-topup" class="p-3 hidden">
+        <div class="flex items-center justify-between mb-3">
+            <button onclick="switchTab('home')" class="text-xs text-gray-400 flex items-center gap-1"><i class="fa-solid fa-chevron-left"></i> Balansni to'ldirish</button>
+        </div>
+
+        <!-- Qo'llanma -->
+        <div onclick="openGuide()" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
+                    <i class="fa-solid fa-file-lines text-sm"></i>
+                </div>
+                <div class="text-xs font-bold text-white">Qo'llanma</div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+        </div>
+
+        <!-- Avto Karta (Humo / Uzcard) -->
+        <div onclick="openAutoCard()" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-yellow-600/20 border border-yellow-500/40 flex items-center justify-center text-yellow-400 font-black text-xs">
+                    HUMO
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-white">AVTO KARTA</div>
+                    <div class="text-[9px] text-gray-400">so'm</div>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+        </div>
+
+        <!-- Bankamat -->
+        <div onclick="alert('Bankamat orqali to`lov')" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-600/20 border border-green-500/40 flex items-center justify-center text-green-400">
+                    <i class="fa-solid fa-building-columns text-sm"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-white">BANKAMAT</div>
+                    <div class="text-[9px] text-gray-400">so'm</div>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-500 text-xs"></i>
+        </div>
+    </div>
+
+    <!-- 2.1. AVTO KARTA SUMMA KIRITISH VIEW -->
+    <div id="view-autocard-input" class="p-3 hidden">
+        <div class="flex items-center justify-between mb-3">
+            <button onclick="switchTab('topup')" class="text-xs text-gray-400 flex items-center gap-1"><i class="fa-solid fa-chevron-left"></i> AVTO KARTA</button>
+            <span class="text-[9px] bg-red-950 text-red-300 px-2 py-1 rounded border border-red-900" id="header-mini-bal">0 so'm</span>
+        </div>
+
+        <div class="card-bg p-4 rounded-2xl">
+            <div class="flex justify-between items-center mb-1">
+                <label class="text-[10px] text-gray-400 font-bold uppercase">TO'LDIRISH SUMMASI (SO'M)</label>
+                <span class="text-[9px] text-gray-500">Tasdiqlash: soniyalar ichida</span>
+            </div>
+            <div class="relative mb-3">
+                <input type="number" id="topup-amount-input" placeholder="Masalan: 25000" oninput="calcRate(this.value)" class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-red-500">
+            </div>
+            <div id="rate-info" class="text-[10px] text-green-400 mb-3 flex items-center gap-1 hidden">
+                <i class="fa-solid fa-bolt"></i> <span id="rate-text">Hisobingizga tushadi: 0 SUM</span>
+            </div>
+            <button onclick="generateCardDetails()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow">Karta olish</button>
+        </div>
+    </div>
+
+    <!-- 2.2. AVTO KARTA REKVIZIT VIEW (Xuddi videodagidek karta va taymer) -->
+    <div id="view-autocard-result" class="p-3 hidden">
+        <div class="flex items-center justify-between mb-3">
+            <button onclick="switchTab('topup')" class="text-xs text-gray-400 flex items-center gap-1"><i class="fa-solid fa-chevron-left"></i> Orqaga</button>
+        </div>
+
+        <div class="card-bg p-4 rounded-2xl border border-yellow-500/40 relative overflow-hidden mb-3">
+            <div class="flex justify-between items-center mb-3">
+                <span class="text-[10px] text-gray-400 uppercase">Avto karta</span>
+                <span class="text-[10px] bg-yellow-600/20 text-yellow-400 font-bold px-2 py-0.5 rounded border border-yellow-500/30">HUMO</span>
+            </div>
+            <!-- Karta raqamini bosganda nusxalanadi -->
+            <div onclick="copyCardNumber()" class="bg-gray-900/80 p-3 rounded-xl border border-gray-800 cursor-pointer active:scale-95 transition mb-3">
+                <div class="text-base font-black text-white tracking-widest font-mono" id="display-card-num">9860 6004 1351 2192</div>
+                <div class="text-[10px] text-gray-400 mt-1 uppercase" id="display-card-holder">ABDULLAYEV ASGARBEK</div>
+            </div>
+
+            <div class="text-center my-3">
+                <div class="text-[10px] text-gray-400 uppercase">Aniqlik shu summani o'tkazing</div>
+                <div class="text-xl font-black text-yellow-400 mt-1" id="display-exact-amount">12 000 so'm</div>
+            </div>
+
+            <div class="flex justify-between items-center text-[10px] text-gray-400 border-t border-gray-800 pt-3">
+                <span>Qolgan vaqt</span>
+                <span class="text-red-500 font-mono font-bold text-xs" id="timer-countdown">05:00</span>
+            </div>
+        </div>
+
+        <div class="flex items-center justify-center gap-1 text-[10px] text-gray-400 mb-3">
+            <i class="fa-solid fa-spinner animate-spin text-red-500"></i> To'lovingiz kutilmoqda...
+        </div>
+
+        <button onclick="cancelTopup()" class="w-full bg-gray-900 border border-gray-800 text-gray-300 py-3 rounded-xl font-bold text-xs hover:border-red-500 transition">
+            <i class="fa-solid fa-rotate-left"></i> Bekor qilish / Boshqa summa
+        </button>
+    </div>
+
+    <!-- 3. CART VIEW -->
+    <div id="view-cart" class="px-3 hidden mb-6">
+        <button onclick="switchTab('home')" class="mb-3 text-xs text-gray-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-2 rounded-xl border border-gray-800 w-max">
+            <i class="fa-solid fa-arrow-left"></i> Orqaga
+        </button>
         
-        <button class="menu-btn" onclick="alert('Tez kunda qo\'llanma qo\'shiladi!')">
-            <span>📄 Qo'llanma</span>
-            <span style="color: #ff2222;">›</span>
-        </button>
+        <div class="card-bg p-4 rounded-2xl mb-3">
+            <h3 class="font-black text-xs text-white mb-3 uppercase flex items-center gap-2"><i class="fa-solid fa-cart-shopping text-red-500"></i> Buyurtma berish</h3>
+            
+            <div class="mb-3">
+                <label id="id-label" class="text-[10px] text-gray-400 font-bold block mb-1">PLAYER ID</label>
+                <input type="text" id="player-id-input" placeholder="ID kiriting..." class="w-full bg-gray-900 border border-gray-800 rounded-xl p-3 text-xs text-white focus:outline-none focus:border-red-500">
+            </div>
 
-        <button class="menu-btn" onclick="openModal()">
-            <span>💳 AVTO KARTA (Click / Payme)</span>
-            <span style="color: #ff2222;">›</span>
-        </button>
+            <div class="border-t border-gray-800 pt-3 flex justify-between items-center text-xs">
+                <div id="cart-item-desc" class="text-gray-300 font-bold">Mahsulot: -</div>
+                <div id="cart-item-price" class="text-red-400 font-black">0 so'm</div>
+            </div>
+        </div>
 
-        <button class="menu-btn" onclick="alert('Bankamat orqali to\'lov tez kunda!')">
-            <span>🏦 BANKAMAT</span>
-            <span style="color: #ff2222;">›</span>
-        </button>
+        <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow" id="checkout-btn">Balansdan to'lash</button>
     </div>
 
-    <!-- 3. BUYURTMALAR -->
-    <div class="container" id="tab-buyurtmalar">
-        <h3>📦 Buyurtmalar</h3>
-        <p style="color: #888;">Hozircha buyurtmalar yo'q.</p>
-    </div>
-
-    <!-- 4. PROFIL -->
-    <div class="container" id="tab-profil">
-        <h3>👤 Profil</h3>
-        <p style="color: #888;">Sizning ma'lumotlaringiz shu yerda ko'rsatiladi.</p>
-    </div>
-
-    <!-- Modal / Karta oynasi -->
-    <div class="modal" id="payModal">
-        <div class="modal-content" id="modalBody">
-            <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
-            <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
-            <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
-            <button class="action-btn" onclick="generateCard()">Karta olish</button>
-            <button onclick="closeModal()" style="background:transparent; border:none; color:#888; width:100%; margin-top:10px; cursor:pointer;">Bekor qilish</button>
+    <!-- Bottom Nav -->
+    <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-950 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
+        <div onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm mb-0.5"><span>Bosh</span></i></div>
+        <div onclick="alert('Oyinlar')" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-gamepad text-sm mb-0.5"><span>O'yinlar</span></i></div>
+        <div class="flex flex-col items-center -mt-5">
+            <div onclick="switchTab('topup')" class="w-12 h-12 gradient-btn text-white rounded-full flex items-center justify-center shadow-lg text-base cursor-pointer border-4 border-[#0b0e14]">
+                <i class="fa-solid fa-plus"></i>
+            </div>
         </div>
-    </div>
-
-    <!-- Pastki Navigatsiya Menyu -->
-    <div class="bottom-nav">
-        <div class="nav-item" onclick="switchTab('bosh', this)">
-            <div style="font-size: 18px;">🏠</div>
-            <div>Bosh</div>
-        </div>
-        <div class="nav-item active" onclick="switchTab('toldirish', this)">
-            <div style="font-size: 18px;">➕</div>
-            <div>To'ldirish</div>
-        </div>
-        <div class="nav-item" onclick="switchTab('buyurtmalar', this)">
-            <div style="font-size: 18px;">📦</div>
-            <div>Buyurtmalar</div>
-        </div>
-        <div class="nav-item" onclick="switchTab('profil', this)">
-            <div style="font-size: 18px;">👤</div>
-            <div>Profil</div>
-        </div>
+        <div onclick="switchTab('topup')" id="nav-topup" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm mb-0.5"><span>To'ldirish</span></i></div>
+        <div onclick="alert('Tarix')" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-clock-rotate-left text-sm mb-0.5"><span>Buyurtmalar</span></i></div>
     </div>
 
     <script>
-        let uid = Telegram.WebApp.initDataUnsafe?.user?.id || "12345678";
-        let userName = Telegram.WebApp.initDataUnsafe?.user?.first_name || "Foydalanuvchi";
-        document.getElementById('username-display').innerText = userName;
+        let uid = "default";
+        let userName = "Foydalanuvchi";
+        let selectedProduct = null;
+        let timerInterval = null;
 
-        function fetchBalance() {
-            fetch(`/api/balance?user_id=${uid}`)
-            .then(res => res.json())
-            .then(data => {
-                document.getElementById('user-balance').innerText = Number(data.balance).toLocaleString();
-            });
-        }
-        fetchBalance();
-        setInterval(fetchBalance, 5000);
+        window.addEventListener('DOMContentLoaded', () => {
+            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 300); }, 500);
+            const tg = window.Telegram.WebApp; tg.ready();
+            if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                uid = String(tg.initDataUnsafe.user.id);
+                userName = tg.initDataUnsafe.user.first_name || "Foydalanuvchi";
+                document.getElementById('username').innerText = userName;
+            }
+            fetchBal();
+        });
 
-        function switchTab(tabName, element) {
-            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-' + tabName).classList.add('active');
+        setInterval(() => {
+            const d = new Date();
+            document.getElementById('live-clock').innerText = String(d.getHours()).padStart(2,'0') + ":" + String(d.getMinutes()).padStart(2,'0');
+        }, 1000);
 
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            if(element) element.classList.add('active');
-        }
-
-        function openModal() {
-            document.getElementById('payModal').style.display = 'flex';
-            document.getElementById('modalBody').innerHTML = `
-                <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
-                <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
-                <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
-                <button class="action-btn" onclick="generateCard()">Karta olish</button>
-                <button onclick="closeModal()" style="background:transparent; border:none; color:#888; width:100%; margin-top:10px; cursor:pointer;">Bekor qilish</button>
-            `;
-        }
-
-        function closeModal() {
-            document.getElementById('payModal').style.display = 'none';
-        }
-
-        let timerInterval;
-        function generateCard() {
-            let am = document.getElementById('amount').value;
-            if(!am || am <= 1000) { alert("Iltimos, to'g'ri summa kiriting!"); return; }
-
-            // Serverga so'rov yuborish (Adminga xabar borishi uchun)
-            fetch('/api/topup', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: uid, amount: am, username: userName, payment_method: 'Avto Karta'})
-            });
-
-            let cardNum = "6262570820391383";
-            let cardHolder = "RAVSHANOVA XULKAR ISRAILOV";
+        function switchTab(tab) {
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-topup').classList.add('hidden');
+            document.getElementById('view-autocard-input').classList.add('hidden');
+            document.getElementById('view-autocard-result').classList.add('hidden');
+            document.getElementById('view-cart').classList.add('hidden');
             
-            document.getElementById('modalBody').innerHTML = `
-                <div style="font-size: 12px; color: #888;">Avto karta <span style="float:right; background:#ff2222; color:white; padding:2px 8px; border-radius:4px; font-weight:bold;">HUMO</span></div>
-                <div class="card-number" onclick="copyCard('${cardNum}')" title="Nusxalash uchun bosing">${cardNum.match(/.{1,4}/g).join(' ')} 📋</div>
-                <div style="font-size: 12px; color: #ccc;">${cardHolder}</div>
-                <hr style="border-color:#333; margin:12px 0;">
-                <div style="font-size: 12px; color: #888;">ANIQ SHU SUMMANI O'TKAZING</div>
-                <div style="font-size: 22px; font-weight: bold; color: #ff5555; margin: 5px 0;">${Number(am).toLocaleString()} so'm</div>
-                <div style="font-size: 12px; color: #888;">Qolgan vaqt</div>
-                <div class="timer" id="countdown">05:00</div>
-                <div style="text-align:center; font-size: 13px; color: #ff2222; margin: 10px 0;">⏳ To'lovingiz kutilmoqda...</div>
-                <button class="action-btn" style="background:#222; color:white; border:1px solid #444; margin-top:5px;" onclick="openModal()">Bekor qilish / Boshqa summa</button>
-            `;
-
-            startTimer(300);
+            if(tab === 'home') {
+                document.getElementById('view-home').classList.remove('hidden');
+            } else if(tab === 'topup') {
+                document.getElementById('view-topup').classList.remove('hidden');
+            }
         }
 
-        function copyCard(num) {
-            navigator.clipboard.writeText(num);
-            alert("Karta raqami nusxalandi!");
+        function openAutoCard() {
+            document.getElementById('view-topup').classList.add('hidden');
+            document.getElementById('view-autocard-input').classList.remove('hidden');
+            document.getElementById('topup-amount-input').value = '';
+            document.getElementById('rate-info').classList.add('hidden');
+            fetchBal();
+        }
+
+        function calcRate(val) {
+            const info = document.getElementById('rate-info');
+            if(val && val > 0) {
+                info.classList.remove('hidden');
+                document.getElementById('rate-text').innerText = `Hisobingizga tushadi: ${Number(val).toLocaleString()} SUM`;
+            } else {
+                info.classList.add('hidden');
+            }
+        }
+
+        function generateCardDetails() {
+            const val = document.getElementById('topup-amount-input').value;
+            if(!val || val <= 0) { alert("Iltimos, summani kiriting!"); return; }
+
+            document.getElementById('view-autocard-input').classList.add('hidden');
+            document.getElementById('view-autocard-result').classList.remove('hidden');
+            document.getElementById('display-exact-amount').innerText = Number(val).toLocaleString() + " so'm";
+
+            // Serverga so'rov yuborish
+            fetch('/api/topup', { 
+                method: 'POST', 
+                headers: {'Content-Type': 'application/json'}, 
+                body: JSON.stringify({user_id: uid, amount: val, username: userName, payment_method: 'Avto Karta (Humo)'}) 
+            }).catch(e => console.log(e));
+
+            // 5 minutlik taymer boshlash
+            startTimer(300);
         }
 
         function startTimer(duration) {
@@ -311,20 +323,82 @@
                 minutes = minutes < 10 ? "0" + minutes : minutes;
                 seconds = seconds < 10 ? "0" + seconds : seconds;
 
-                let timerElement = document.getElementById('countdown');
-                if(timerElement) {
-                    timerElement.textContent = minutes + ":" + seconds;
-                }
+                document.getElementById('timer-countdown').textContent = minutes + ":" + seconds;
 
                 if (--timer < 0) {
                     clearInterval(timerInterval);
-                    if(timerElement) timerElement.textContent = "Vaqt tugadi!";
                 }
             }, 1000);
+        }
+
+        function cancelTopup() {
+            clearInterval(timerInterval);
+            openAutoCard();
+        }
+
+        function copyCardNumber() {
+            navigator.clipboard.writeText("9860600413512192");
+            alert("Karta raqami nusxalandi: 9860 6004 1351 2192");
+        }
+
+        function openGuide() {
+            alert("Qo'llanma: Summani kiriting, chiqarilgan Humo karta raqamiga aniq summani o'tkazing. Hisobingiz avtomatik yoki tez orada to'ldiriladi!");
+        }
+
+        function fetchBal() {
+            fetch(`/api/balance?user_id=${uid}`).then(r => r.json()).then(d => {
+                const balText = d.balance.toLocaleString() + " so'm";
+                document.getElementById('user-balance').innerText = balText;
+                document.getElementById('user-balance-header').innerText = balText;
+                document.getElementById('header-mini-bal').innerText = balText;
+            }).catch(e => console.log(e));
+        }
+
+        function goToCart(name, price, cat) {
+            selectedProduct = { name, price, cat };
+            document.getElementById('view-home').classList.add('hidden');
+            document.getElementById('view-cart').classList.remove('hidden');
+            
+            document.getElementById('cart-item-desc').innerText = name;
+            document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
+            document.getElementById('checkout-btn').innerText = `Balansdan to'lash (${price.toLocaleString()} so'm)`;
+            
+            const label = document.getElementById('id-label');
+            const input = document.getElementById('player-id-input');
+            if(cat === 'pubg') {
+                label.innerText = "PLAYER ID";
+                input.placeholder = "PUBG ID kiriting...";
+            } else {
+                label.innerText = "TELEGRAM USERNAME";
+                input.placeholder = "@username kiriting...";
+            }
+            input.value = '';
+        }
+
+        function checkout() {
+            const extra = document.getElementById('player-id-input').value.trim();
+            if(!extra) { alert("Iltimos, ID yoki username kiriting!"); return; }
+
+            fetch('/api/buy', {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify({user_id: uid, item_name: selectedProduct.name, price: selectedProduct.price, username: userName, extra_info: extra})
+            })
+            .then(r => r.json())
+            .then(d => {
+                if(d.success) {
+                    fetchBal();
+                    alert(selectedProduct.name + " muvaffaqiyatli sotib olindi!");
+                    switchTab('home');
+                } else {
+                    alert(d.message || "Balansda yetarli mablag' yo'q!");
+                }
+            });
         }
     </script>
 </body>
 </html>
+ 
 
  
  
