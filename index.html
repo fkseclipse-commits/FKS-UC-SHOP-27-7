@@ -13,10 +13,6 @@
             font-family: 'Orbitron', sans-serif; 
             background-color: #0b0e14; 
             color: #fff; 
-            background-image: linear-gradient(to bottom, rgba(11, 14, 20, 0.82), rgba(11, 14, 20, 0.95)), url('19436.png');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
         }
         .card-bg { background: rgba(22, 27, 34, 0.9); border: 1px solid rgba(239, 68, 68, 0.35); }
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
@@ -25,140 +21,64 @@
 </head>
 <body class="pb-24">
 
-    <!-- Loader -->
-    <div id="loader" class="fixed inset-0 bg-[#0b0e14] z-50 flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <div class="text-sm font-bold text-red-500 tracking-wider">FKS PUBGM SHOP</div>
-        <div class="text-[10px] text-gray-400 mt-1">YUKLANMOQDA...</div>
-    </div>
-
     <!-- Header -->
     <div class="p-3 card-bg border-b border-red-900/50 sticky top-0 z-40 flex justify-between items-center">
         <div>
             <h1 class="font-black text-xs text-red-500">FKS PUBGM SHOP <i class="fa-solid fa-gamepad"></i></h1>
             <p class="text-[10px] text-gray-400">XUSH KELIBSIZ <span id="username" class="text-red-400 font-bold">Foydalanuvchi</span></p>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="text-[9px] bg-red-950 px-2 py-1 rounded text-red-300 border border-red-800">UZS</span>
-            <div id="live-clock" class="text-[10px] bg-gray-900 border border-red-900 px-2 py-1 rounded text-red-400 font-mono">00:00:00</div>
-        </div>
+        <div class="text-[10px] bg-red-950 px-2 py-1 rounded text-red-300 border border-red-800" id="user-balance-header">0 so'm</div>
     </div>
 
-    <!-- Balance Card -->
-    <div class="m-3 p-3.5 rounded-2xl card-bg flex justify-between items-center shadow-lg glow-red">
-        <div>
-            <div class="text-[10px] text-gray-400 font-bold">BALANS</div>
-            <div class="text-xl font-black text-white mt-0.5" id="user-balance">0 so'm</div>
-        </div>
-        <button onclick="openModal()" class="gradient-btn text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
-    </div>
+    <!-- Balansni To'ldirish Bo'limi (Rasmda ko'rsatilganidek) -->
+    <div class="p-3">
+        <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
 
-    <!-- Banner -->
-    <div class="mx-3 mb-4 rounded-2xl overflow-hidden card-bg p-3 flex items-center justify-between border-red-500/30">
-        <div>
-            <span class="text-[8px] bg-red-600 text-white px-1.5 py-0.5 rounded font-bold">24/7 SERVICE</span>
-            <h2 class="text-sm font-black text-red-500 mt-1">FKS PUBGM & PREMIUM</h2>
-            <p class="text-[9px] text-gray-300">Tezkor va avtomatik xizmat</p>
-        </div>
-        <div class="w-12 h-12 rounded-full border border-red-500 bg-red-950 flex items-center justify-center text-red-500 text-base shadow glow-red">
-            <i class="fa-solid fa-gamepad"></i>
-        </div>
-    </div>
-
-    <!-- Category Tabs -->
-    <div class="flex mx-3 mb-3 gap-2">
-        <button onclick="switchTab('pubg')" id="btn-pubg" class="flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red">PUBG UC</button>
-        <button onclick="switchTab('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
-    </div>
-
-    <!-- HOME VIEW / PRODUCTS LIST -->
-    <div id="view-home">
-        <!-- PUBG Products -->
-        <div id="sec-pubg" class="px-3 mb-4 grid grid-cols-2 gap-2.5">
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">60 UC</div><div class="text-[10px] text-gray-400">12,000 so'm</div></div>
-                <button onclick="goToCart('60 UC', 12000, 'pubg')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">325 UC</div><div class="text-[10px] text-gray-400">60,000 so'm</div></div>
-                <button onclick="goToCart('325 UC', 60000, 'pubg')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">660 UC</div><div class="text-[10px] text-gray-400">120,000 so'm</div></div>
-                <button onclick="goToCart('660 UC', 120000, 'pubg')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">1800 UC</div><div class="text-[10px] text-gray-400">320,000 so'm</div></div>
-                <button onclick="goToCart('1800 UC', 320000, 'pubg')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">3850 UC</div><div class="text-[10px] text-gray-400">640,000 so'm</div></div>
-                <button onclick="goToCart('3850 UC', 640000, 'pubg')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between glow-red">
-                <div><div class="font-bold text-xs text-red-500">8100 UC</div><div class="text-[10px] text-gray-400">1,250,000 so'm</div></div>
-                <button onclick="goToCart('8100 UC', 1250000, 'pubg')" class="mt-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] py-1.5 rounded font-bold shadow">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between col-span-2 glow-red border-red-500">
-                <div><div class="font-bold text-sm text-red-500">16200 UC (Mega)</div><div class="text-[10px] text-gray-400">2,450,000 so'm</div></div>
-                <button onclick="goToCart('16200 UC', 2450000, 'pubg')" class="mt-2.5 bg-red-600 hover:bg-red-700 text-white text-xs py-2 rounded font-bold shadow">Tanlash</button>
-            </div>
-        </div>
-
-        <!-- Telegram Premium Products -->
-        <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div>
-                <button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">3 Oylik</div><div class="text-[10px] text-gray-400">125,000 so'm</div></div>
-                <button onclick="goToCart('Telegram Premium 3 Oy', 125000, 'prem')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between">
-                <div><div class="font-bold text-xs text-red-500">6 Oylik</div><div class="text-[10px] text-gray-400">240,000 so'm</div></div>
-                <button onclick="goToCart('Telegram Premium 6 Oy', 240000, 'prem')" class="mt-2.5 bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button>
-            </div>
-            <div class="card-bg p-2.5 rounded-xl flex flex-col justify-between glow-red">
-                <div><div class="font-bold text-xs text-red-500">12 Oylik (1 yil)</div><div class="text-[10px] text-gray-400">450,000 so'm</div></div>
-                <button onclick="goToCart('Telegram Premium 12 Oy', 450000, 'prem')" class="mt-2.5 bg-red-600 hover:bg-red-700 text-white text-[10px] py-1.5 rounded font-bold shadow">Tanlash</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- CART / SAVATCHA VIEW -->
-    <div id="view-cart" class="px-3 hidden mb-6">
-        <button onclick="goBackHome()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
-            <i class="fa-solid fa-arrow-left"></i> Orqaga
-        </button>
-        
-        <div class="card-bg p-4 rounded-2xl mb-3">
-            <h3 class="font-black text-xs text-red-500 mb-3 uppercase flex items-center gap-2"><i class="fa-solid fa-cart-shopping"></i> Savatcha</h3>
-            
-            <div class="mb-3">
-                <label id="id-label" class="text-[10px] text-gray-400 font-bold block mb-1">PLAYER ID</label>
-                <div class="flex gap-2">
-                    <input type="text" id="player-id-input" placeholder="ID kiriting..." class="flex-1 bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white focus:outline-none">
-                    <button onclick="verifyId()" class="bg-red-950 border border-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold hover:bg-red-600 transition">Tekshirish</button>
+        <!-- Qo'llanma -->
+        <div onclick="openGuide()" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500 flex items-center justify-center text-blue-400">
+                    <i class="fa-solid fa-file-lines"></i>
                 </div>
-                <!-- ID tekshirilganda foydalanuvchi yozgan ID chiqadigan joy -->
-                <div id="verify-result" class="mt-2 text-xs font-bold hidden"></div>
+                <div class="text-xs font-bold text-white">Qo'llanma</div>
             </div>
-
-            <div class="border-t border-gray-800 pt-3 flex justify-between items-center text-xs">
-                <div id="cart-item-desc" class="text-gray-300 font-bold">Mahsulot: -</div>
-                <div id="cart-item-price" class="text-red-400 font-black">0 so'm</div>
-            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
         </div>
 
-        <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">To'lash (0 so'm)</button>
+        <!-- Avto Karta (Click & Payme uchun) -->
+        <div onclick="openPaymentModal('Avto Karta (Click / Payme)')" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-red-600/20 border border-red-500 flex items-center justify-center text-red-400 font-bold text-[10px]">
+                    UZS
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-white">AVTO KARTA</div>
+                    <div class="text-[9px] text-gray-400">Click va Payme orqali</div>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+        </div>
+
+        <!-- Bankamat / Terminal -->
+        <div onclick="openPaymentModal('Bankamat')" class="card-bg p-3.5 rounded-2xl mb-2.5 flex justify-between items-center cursor-pointer hover:border-red-500 transition">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-green-600/20 border border-green-500 flex items-center justify-center text-green-400">
+                    <i class="fa-solid fa-building-columns"></i>
+                </div>
+                <div>
+                    <div class="text-xs font-bold text-white">BANKAMAT</div>
+                    <div class="text-[9px] text-gray-400">Naqd pul / Terminal</div>
+                </div>
+            </div>
+            <i class="fa-solid fa-chevron-right text-gray-400 text-xs"></i>
+        </div>
     </div>
 
-    <!-- Modal for Topup -->
+    <!-- To'lov Modal Oynasi -->
     <div id="modal" class="fixed inset-0 bg-black/80 z-50 hidden flex items-end justify-center">
         <div class="card-bg w-full max-w-md rounded-t-3xl p-4 border-t border-red-900">
             <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-xs text-red-500 uppercase">Balansni to'ldirish</h3>
+                <h3 id="modal-title" class="font-bold text-xs text-red-500 uppercase">To'ldirish</h3>
                 <i class="fa-solid fa-xmark text-gray-400 cursor-pointer" onclick="closeModal()"></i>
             </div>
             <div class="bg-gray-900 p-3 rounded-xl border border-red-900/50 mb-3 text-xs">
@@ -166,16 +86,25 @@
                 <div class="font-black text-white mt-0.5">6262 5708 2039 1383</div>
                 <div class="text-[9px] text-red-400 mt-0.5">RAVSHANOVA XULKAR ISRAILOV</div>
             </div>
-            <input type="number" id="amount" placeholder="Summani kiriting..." class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white mb-3 focus:outline-none">
-            <button onclick="topup()" class="w-full gradient-btn text-white py-2.5 rounded-xl font-bold text-xs shadow">So'rov yuborish</button>
+            <input type="number" id="amount" placeholder="Summani kiriting (so'm)..." class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white mb-3 focus:outline-none">
+            
+            <!-- Click va Payme tugmalari -->
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="sendTopup('Click')" class="bg-blue-600/20 border border-blue-500 text-blue-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-bolt"></i> Click orqali
+                </button>
+                <button onclick="sendTopup('Payme')" class="bg-teal-600/20 border border-teal-500 text-teal-400 py-2.5 rounded-xl font-bold text-xs flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-wallet"></i> Payme orqali
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Bottom Nav -->
     <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-900/50 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
-        <div onclick="goBackHome()" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
-        <div onclick="openModal()" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>Balans</span></div>
-        <div class="flex flex-col items-center -mt-4"><div onclick="openModal()" class="w-10 h-10 gradient-btn text-white rounded-full flex items-center justify-center shadow text-base cursor-pointer border-2 border-[#0b0e14]"><i class="fa-solid fa-plus"></i></div></div>
+        <div onclick="location.href='index.html'" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
+        <div onclick="location.href='index.html'" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>To'ldirish</span></div>
+        <div class="flex flex-col items-center -mt-4"><div onclick="openPaymentModal('Balans')" class="w-10 h-10 gradient-btn text-white rounded-full flex items-center justify-center shadow text-base cursor-pointer border-2 border-[#0b0e14]"><i class="fa-solid fa-plus"></i></div></div>
         <div onclick="alert('Buyurtmalar yo`q')" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-clock-rotate-left text-sm"></i><span>Tarix</span></div>
         <div onclick="alert('Profil')" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-user text-sm"></i><span>Profil</span></div>
     </div>
@@ -183,11 +112,9 @@
     <script>
         let uid = "default";
         let userName = "Foydalanuvchi";
-        let selectedProduct = null;
-        let isVerified = false;
+        let selectedMethod = "Karta";
 
         window.addEventListener('DOMContentLoaded', () => {
-            setTimeout(() => { document.getElementById('loader').style.opacity = '0'; setTimeout(() => document.getElementById('loader').style.display = 'none', 300); }, 600);
             const tg = window.Telegram.WebApp; tg.ready();
             if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
                 uid = String(tg.initDataUnsafe.user.id);
@@ -197,125 +124,44 @@
             fetchBal();
         });
 
-        // Soatni yangilab turish
-        setInterval(() => {
-            const d = new Date();
-            document.getElementById('live-clock').innerText = String(d.getHours()).padStart(2,'0') + ":" + String(d.getMinutes()).padStart(2,'0') + ":" + String(d.getSeconds()).padStart(2,'0');
-        }, 1000);
-
-        function switchTab(t) {
-            if(t === 'pubg') {
-                document.getElementById('sec-pubg').classList.remove('hidden');
-                document.getElementById('sec-prem').classList.add('hidden');
-                document.getElementById('btn-pubg').className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
-                document.getElementById('btn-prem').className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
-            } else {
-                document.getElementById('sec-prem').classList.remove('hidden');
-                document.getElementById('sec-pubg').classList.add('hidden');
-                document.getElementById('btn-prem').className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
-                document.getElementById('btn-pubg').className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
-            }
-        }
-
         function fetchBal() {
             fetch(`/api/balance?user_id=${uid}`).then(r => r.json()).then(d => {
-                document.getElementById('user-balance').innerText = d.balance.toLocaleString() + " so'm";
+                document.getElementById('user-balance-header').innerText = d.balance.toLocaleString() + " so'm";
             });
         }
 
-        // Mahsulot tanlanganda savatchaga o'tish
-        function goToCart(name, price, cat) {
-            selectedProduct = { name, price, cat };
-            document.getElementById('view-home').classList.add('hidden');
-            document.getElementById('sec-pubg').classList.add('hidden');
-            document.getElementById('sec-prem').classList.add('hidden');
-            document.getElementById('view-cart').classList.remove('hidden');
-            
-            document.getElementById('cart-item-desc').innerText = name;
-            document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
-            document.getElementById('checkout-btn').innerText = `To'lash (${price.toLocaleString()} so'm)`;
-            
-            const label = document.getElementById('id-label');
-            const input = document.getElementById('player-id-input');
-            if(cat === 'pubg') {
-                label.innerText = "PLAYER ID";
-                input.placeholder = "PUBG ID kiriting...";
-            } else {
-                label.innerText = "TELEGRAM USERNAME";
-                input.placeholder = "@username kiriting...";
-            }
-            input.value = '';
-            isVerified = false;
-            document.getElementById('verify-result').classList.add('hidden');
+        function openPaymentModal(method) {
+            selectedMethod = method;
+            document.getElementById('modal-title').innerText = method + " orqali to'ldirish";
+            document.getElementById('modal').classList.remove('hidden');
         }
 
-        function goBackHome() {
-            document.getElementById('view-cart').classList.add('hidden');
-            document.getElementById('view-home').classList.remove('hidden');
-            switchTab('pubg');
-        }
-
-        // ID ni tekshirish va kiritilgan ID ni chiqarish
-        function verifyId() {
-            const val = document.getElementById('player-id-input').value.trim();
-            const resDiv = document.getElementById('verify-result');
-            if(!val) { alert("Iltimos, ID raqamni kiriting!"); return; }
-            
-            resDiv.classList.remove('hidden');
-            resDiv.innerHTML = '<span class="text-yellow-500"><i class="fa-solid fa-spinner animate-spin"></i> Tekshirilmoqda...</span>';
-            
-            setTimeout(() => {
-                isVerified = true;
-                // Endi FKSjEclipsei o'rniga foydalanuvchi o'zi kiritgan ID chiqadi
-                let displayName = selectedProduct.cat === 'pubg' ? "ID: " + val : "@" + val.replace('@','');
-                resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> TOPILDI: ${displayName}</span>`;
-            }, 800);
-        }
-
-        function openModal() { document.getElementById('modal').classList.remove('hidden'); }
         function closeModal() { document.getElementById('modal').classList.add('hidden'); }
 
-        function topup() {
+        function openGuide() {
+            alert("Qo'llanma: Summani kiriting, ko'rsatilgan karta raqamiga pul o'tkazing va Click yoki Payme tugmasini bosing. Admin tezda tasdiqlaydi!");
+        }
+
+        function sendTopup(method) {
             let am = document.getElementById('amount').value;
             if(!am || am <= 0) { alert("Summani kiriting!"); return; }
+            
             fetch('/api/topup', { 
                 method: 'POST', 
                 headers: {'Content-Type': 'application/json'}, 
-                body: JSON.stringify({user_id: uid, amount: am, username: userName}) 
+                body: JSON.stringify({user_id: uid, amount: am, username: userName, payment_method: `${selectedMethod} (${method})`}) 
             })
             .then(r => r.json()).then(d => {
                 if(d.success) { 
-                    document.getElementById('user-balance').innerText = d.new_balance.toLocaleString() + " so'm"; 
                     closeModal(); 
-                    alert("Balans to'ldirish so'rovi yuborildi!"); 
-                }
-            });
-        }
-
-        function checkout() {
-            const extra = document.getElementById('player-id-input').value.trim();
-            if(!extra) { alert("Iltimos, ID yoki username kiriting!"); return; }
-            if(!isVerified) { alert("Avval 'Tekshirish' tugmasini bosing!"); return; }
-
-            fetch('/api/buy', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: uid, item_name: selectedProduct.name, price: selectedProduct.price, username: userName, extra_info: extra})
-            })
-            .then(r => r.json())
-            .then(d => {
-                if(d.success) {
-                    document.getElementById('user-balance').innerText = d.new_balance.toLocaleString() + " so'm";
-                    alert(selectedProduct.name + " muvaffaqiyatli sotib olindi va botga yuborildi!");
-                    goBackHome();
-                } else {
-                    alert(d.message || "Balansda yetarli mablag' yo'q!");
+                    alert(`${method} orqali ${Number(am).toLocaleString()} so'm so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.`); 
                 }
             });
         }
     </script>
 </body>
 </html>
+ 
  
 
  
