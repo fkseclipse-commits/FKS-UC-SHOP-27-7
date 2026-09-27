@@ -387,27 +387,40 @@
             document.getElementById('verify-result').classList.add('hidden');
         }
 
+        // Yangilangan ID tekshirish funksiyasi
         function verifyId() {
             const val = document.getElementById('player-id-input').value.trim();
             const resDiv = document.getElementById('verify-result');
-            if(!val) { alert("ID yoki username kiriting!"); return; }
-            
             resDiv.classList.remove('hidden');
+
+            if(!val) {
+                isVerified = false;
+                resDiv.innerHTML = '<span class="text-red-500"><i class="fa-solid fa-triangle-exclamation"></i> Iltimos, ID kiriting!</span>';
+                return;
+            }
+
+            // Agar PUBG ID 8 tadan qisqa yozilsa - Topilmadi deb chiqaradi
+            if(selectedProduct.cat === 'pubg' && val.length < 8) {
+                isVerified = false;
+                resDiv.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-xmark"></i> ID topilmadi: ${val}</span>`;
+                return;
+            }
+
             resDiv.innerHTML = '<span class="text-yellow-500">Tekshirilmoqda...</span>';
             
             setTimeout(() => {
                 isVerified = true;
                 if(selectedProduct.cat === 'pubg') {
-                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Topildi: <b class="text-white">ASILBEK_PRO</b> (ID: ${val})</span>`;
+                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Topildi! ID: <b class="text-white">${val}</b></span>`;
                 } else {
                     resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Tasdiqlandi: ${val}</span>`;
                 }
-            }, 500);
+            }, 400);
         }
 
         function checkout() {
             const extra = document.getElementById('player-id-input').value.trim();
-            if(!extra || !isVerified) { alert("ID ni kiriting va tekshirib oling!"); return; }
+            if(!extra || !isVerified) { alert("ID ni to'g'ri kiriting va tekshirib oling!"); return; }
 
             if(userBalance < selectedProduct.price) {
                 alert("Balansda mablag' yetarli emas! Avval balansni to'ldiring.");
@@ -434,6 +447,7 @@
     </script>
 </body>
 </html>
+ 
  
  
  
