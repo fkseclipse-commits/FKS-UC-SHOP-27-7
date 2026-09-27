@@ -9,10 +9,13 @@ logging.basicConfig(level=logging.INFO)
 bot = Bot(token=API_TOKEN)
 dp = Dispatcher(bot)
 
+# Foydalanuvchilar balansini vaqtincha saqlash uchun
+user_balances = {}
+
 @dp.message_handler(commands=['start'])
 async def send_welcome(message: types.Message):
-    web_app = WebAppInfo(url="https://sizning-webapp-saytingiz.uz")
-    
+    web_app = WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+
     markup = InlineKeyboardMarkup(row_width=1)
     markup.add(
         InlineKeyboardButton(text="🛍 Do'kon", web_app=web_app),
@@ -20,7 +23,7 @@ async def send_welcome(message: types.Message):
         InlineKeyboardButton(text="📦 Buyurtmalarim", callback_data="orders"),
         InlineKeyboardButton(text="ℹ️ Yordam", callback_data="help")
     )
-    
+
     text = (
         "<b>Xush kelibsiz, 🎉!</b>\n\n"
         "💎 <b>UC2407 DONAT SHOP —</b>\n"
@@ -28,5 +31,55 @@ async def send_welcome(message: types.Message):
     )
     await message.answer(text, reply_markup=markup, parse_mode="HTML")
 
+# Tugmalar bosilganda ishlaydigan qismi (Tasdiqlash / Bekor qilish)
+@dp.callback_query_handler(lambda call: True)
+async def callback_handler(call: types.CallbackQuery):
+    data = call.data
+    
+    if data.startswith("approve_"):
+        parts = data.split("_")
+        user_id = int(parts[1])
+        amount = int(parts[2])
+        
+        # Balansga qo'shish
+        if user_id not in user_balances:
+            user_balances[user_id] = 0
+        user_balances[user_id] += amount
+        
+        await bot.answer_callback_query(call.id, f"✅ Muvaffaqiyatli! Foydalanuvchiga {amount} so'm qo'shildi.")
+        
+        # Adminga chiqqan xabarni o'zgartirish
+        await bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text=call.message.text + f"\n\n✅ <b>HOLAT:</b> Tasdiqlandi ({amount} so'm qo'shildi)",
+            parse_mode="HTML"
+        )
+        
+        # Foydalanuvchiga xabar yuborish
+        try:
+            await bot.send_message(user_id, f"🎉 Tabriklaymiz! Hisobingiz {amount} so'mga to'ldirildi.")
+        except:
+            pass
+
+    elif data.startswith("reject_"):
+        parts = data.split("_")
+        user_id = int(parts[1])
+        
+        await bot.answer_callback_query(call.id, "❌ To'lov rad etildi!")
+        
+        await bot.edit_message_text(
+            chat_id=call.message.chat.id,
+            message_id=call.message.message_id,
+            text=call.message.text + "\n\n❌ <b>HOLAT:</b> Bekor qilindi",
+            parse_mode="HTML"
+        )
+        
+        try:
+            await bot.send_message(user_id, "❌ Afsuski, to'lov so'rovingiz rad etildi.")
+        except:
+            pass
+
 if __name__ == '__main__':
     executor.start_polling(dp, skip_updates=True)
+ 
