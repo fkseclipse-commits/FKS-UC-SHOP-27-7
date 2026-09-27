@@ -274,12 +274,21 @@
             startTimer(300);
         }
 
-        // TELEGRAMGA XABAR YUBORISH FUNKSIYALARI (QO'SHILDI)
+        // TELEGRAMGA TASDIQLASH VA BEKOR QILISH TUGMALARI BILAN XABAR YUBORISH
         function submitOrder() {
             const amountText = document.getElementById('final-sum-display').innerText;
             const message = `🔔 Yangi to'lov so'rovi (Avto Karta)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💰 Summa: ${amountText}`;
             
-            sendTelegramMessage(message);
+            const markup = {
+                inline_keyboard: [
+                    [
+                        { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_${finalTopupAmount}` },
+                        { text: "❌ Bekor qilish", callback_data: `reject_${uid}` }
+                    ]
+                ]
+            };
+
+            sendTelegramMessage(message, markup);
 
             alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
             switchTab('home');
@@ -288,26 +297,41 @@
         function submitOrderAtm() {
             const message = `🔔 Yangi to'lov so'rovi (Bankamat Naqd)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💵 Usul: Bankamat orqali chek yuborildi`;
             
-            sendTelegramMessage(message);
+            const markup = {
+                inline_keyboard: [
+                    [
+                        { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_0` },
+                        { text: "❌ Bekor qilish", callback_data: `reject_${uid}` }
+                    ]
+                ]
+            };
+
+            sendTelegramMessage(message, markup);
 
             alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
             switchTab('home');
         }
 
-        function sendTelegramMessage(text) {
+        function sendTelegramMessage(text, replyMarkup = null) {
             const token = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
             const chatId = "8269688160";
+            
+            const bodyData = {
+                chat_id: chatId,
+                text: text,
+                parse_mode: "Markdown"
+            };
+
+            if (replyMarkup) {
+                bodyData.reply_markup = replyMarkup;
+            }
             
             fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
                 },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: text,
-                    parse_mode: "Markdown"
-                })
+                body: JSON.stringify(bodyData)
             }).catch(err => console.log("Telegram xatolik:", err));
         }
 
@@ -472,25 +496,7 @@
     </script>
 </body>
 </html>
- 
 
- 
- 
-
- 
- 
- 
- 
-
- 
- 
- 
- 
-
- 
- 
- 
- 
  
 
  
