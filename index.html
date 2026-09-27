@@ -8,13 +8,13 @@
         body {
             background-color: #0c0c0c;
             color: #fff;
-            font-family: sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             margin: 0;
             padding: 0;
-            padding-bottom: 80px;
+            padding-bottom: 85px;
         }
         .header {
-            padding: 12px 15px;
+            padding: 12px 16px;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -23,7 +23,7 @@
             font-size: 13px;
         }
         .container {
-            padding: 15px;
+            padding: 16px;
             display: none;
         }
         .container.active {
@@ -33,7 +33,7 @@
             background: #161616;
             border: 1px solid #2a2a2a;
             border-radius: 16px;
-            padding: 15px;
+            padding: 16px;
             margin-bottom: 12px;
             display: flex;
             justify-content: space-between;
@@ -64,7 +64,7 @@
             background: #161616;
             border: 1px solid #2a2a2a;
             border-radius: 14px;
-            padding: 14px 16px;
+            padding: 16px;
             margin-bottom: 20px;
             cursor: pointer;
             position: relative;
@@ -84,8 +84,10 @@
             justify-content: space-between;
             align-items: center;
             margin-bottom: 12px;
-            font-size: 14px;
+            font-size: 13px;
             font-weight: bold;
+            color: #aaa;
+            letter-spacing: 0.5px;
         }
         .games-grid {
             display: grid;
@@ -96,14 +98,14 @@
             background: #161616;
             border: 1px solid #2a2a2a;
             border-radius: 14px;
-            padding: 15px;
+            padding: 16px;
             position: relative;
             cursor: pointer;
         }
         .game-card-icon {
             background: #222;
-            width: 36px;
-            height: 36px;
+            width: 38px;
+            height: 38px;
             border-radius: 10px;
             display: flex;
             align-items: center;
@@ -113,8 +115,8 @@
         }
         .game-tag {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 14px;
+            right: 14px;
             background: #222;
             padding: 2px 6px;
             border-radius: 6px;
@@ -177,7 +179,8 @@
             color: #ff3333;
             margin: 10px 0;
         }
-        /* Pastki menyu tuzatildi */
+        
+        /* Chiroyli va toza pastki menyu */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; width: 100%;
@@ -186,7 +189,7 @@
             display: flex;
             justify-content: space-around;
             align-items: center;
-            height: 60px;
+            height: 65px;
             z-index: 999;
         }
         .nav-item {
@@ -200,14 +203,16 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            gap: 4px;
+            transition: 0.2s;
         }
         .nav-item.active {
             color: #ff2222;
-            font-weight: bold;
+            font-weight: 600;
         }
         .nav-icon {
-            font-size: 18px;
-            margin-bottom: 2px;
+            font-size: 20px;
+            line-height: 1;
         }
     </style>
 </head>
@@ -245,12 +250,12 @@
             <div class="badge-yangilik">YANGI</div>
             <div style="font-size: 16px; font-weight: bold; margin-bottom: 4px;">TELEGRAM STARS</div>
             <div style="font-size: 12px; color: #888;">Eng arzon narxda xarid qiling</div>
-            <div style="position: absolute; right: 15px; top: 50%; transform: translateY(-50%); font-size: 28px;">⭐</div>
+            <div style="position: absolute; right: 16px; top: 50%; transform: translateY(-50%); font-size: 28px;">⭐</div>
         </div>
 
         <div class="section-header">
             <span>OMMABOP O'YINLAR</span>
-            <span style="color: #ff2222; cursor: pointer;">Barchasi</span>
+            <span style="color: #ff2222; cursor: pointer;" onclick="switchTab('oyinlar', document.getElementById('nav-oyinlar'))">Barchasi</span>
         </div>
 
         <div class="games-grid">
@@ -271,7 +276,7 @@
 
     <!-- 2. O'YINLAR SAHIFASI -->
     <div class="container" id="tab-oyinlar">
-        <h3 style="color: #ff2222; margin-top: 0;">🎮 Barcha O'yinlar va Xizmatlar</h3>
+        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">🎮 Barcha O'yinlar va Xizmatlar</h3>
         <div class="games-grid">
             <div class="game-card" onclick="alert('PUBG Mobile UC')">
                 <div class="game-card-icon">🎮</div>
@@ -288,7 +293,7 @@
 
     <!-- 3. TO'LDIRISH SAHIFASI -->
     <div class="container" id="tab-toldirish">
-        <h3 style="color: #ff2222; margin-top: 0;">BALANSNI TO'LDIRISH</h3>
+        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">BALANSNI TO'LDIRISH</h3>
         
         <div class="action-card" onclick="openModal()">
             <div>
@@ -301,7 +306,7 @@
 
     <!-- 4. BUYURTMALAR SAHIFASI -->
     <div class="container" id="tab-buyurtmalar">
-        <h3 style="color: #ff2222; margin-top: 0;">📦 Buyurtmalar tarixi</h3>
+        <h3 style="color: #ff2222; margin-top: 0; font-size: 18px;">📦 Buyurtmalar tarixi</h3>
         <p style="color: #888;">Hozircha buyurtmalar mavjud emas.</p>
     </div>
 
@@ -316,23 +321,23 @@
         </div>
     </div>
 
-    <!-- Pastki Navigatsiya Menyu (Tuzatilgan) -->
+    <!-- Pastki Navigatsiya Menyu -->
     <div class="bottom-nav">
         <div class="nav-item active" id="nav-bosh" onclick="switchTab('bosh', this)">
-            <div class="nav-icon">🏠</div>
-            <div>Bosh</div>
+            <span class="nav-icon">🏠</span>
+            <span>Bosh</span>
         </div>
         <div class="nav-item" id="nav-oyinlar" onclick="switchTab('oyinlar', this)">
-            <div class="nav-icon">🎮</div>
-            <div>O'yinlar</div>
+            <span class="nav-icon">🎮</span>
+            <span>O'yinlar</span>
         </div>
         <div class="nav-item" id="nav-toldirish" onclick="switchTab('toldirish', this)">
-            <div class="nav-icon">➕</div>
-            <div>To'ldirish</div>
+            <span class="nav-icon">➕</span>
+            <span>To'ldirish</span>
         </div>
         <div class="nav-item" id="nav-buyurtmalar" onclick="switchTab('buyurtmalar', this)">
-            <div class="nav-icon">📦</div>
-            <div>Buyurtmalar</div>
+            <span class="nav-icon">📦</span>
+            <span>Buyurtmalar</span>
         </div>
     </div>
 
@@ -341,7 +346,6 @@
         let userName = Telegram.WebApp.initDataUnsafe?.user?.first_name || "Foydalanuvchi";
         document.getElementById('username-display').innerText = userName;
 
-        // Vaqtni chiqarish
         function updateTime() {
             let now = new Date();
             let hours = String(now.getHours()).padStart(2, '0');
@@ -445,6 +449,7 @@
     </script>
 </body>
 </html>
+ 
 
 
  
