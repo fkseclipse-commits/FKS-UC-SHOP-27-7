@@ -9,18 +9,13 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { font-family: 'Orbitron', sans-serif; background-color: #0b0e14; color: #fff; }
+        body { font-family: 'Orbitron', sans-serif; background-color: #0b0e14; color: #fff; overscroll-behavior-y: none; }
         .card-bg { background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); }
         .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
         .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
     </style>
 </head>
 <body class="pb-24">
-
-    <div id="loader" class="fixed inset-0 bg-[#0b0e14] z-50 flex flex-col items-center justify-center transition-opacity duration-500">
-        <div class="w-16 h-16 border-4 border-red-600 border-t-transparent rounded-full animate-spin mb-4"></div>
-        <div class="text-sm font-bold text-red-500 tracking-wider">FKS PUBGM SHOP</div>
-    </div>
 
     <div class="p-3 card-bg border-b border-red-900/50 sticky top-0 z-40 flex justify-between items-center">
         <div>
@@ -33,6 +28,7 @@
         </div>
     </div>
 
+    <!-- BOSH SAHIFA -->
     <div id="view-home">
         <div class="m-3 p-3.5 rounded-2xl card-bg flex justify-between items-center shadow-lg glow-red">
             <div>
@@ -53,6 +49,7 @@
             <button onclick="switchCategory('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
         </div>
 
+        <!-- PUBG UC -->
         <div id="sec-pubg" class="px-3 mb-4 grid grid-cols-2 gap-2.5">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">60 UC</div><div class="text-[10px] text-gray-400">13,000 so'm</div></div><button onclick="goToCart('60 UC', 13000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -66,6 +63,7 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between col-span-2"><i class="fa-solid fa-crown text-yellow-400 text-xl mb-1"></i><div><div class="font-bold text-sm text-yellow-400">10,000 UC</div><div class="text-[11px] text-gray-300">1,800,000 so'm</div></div><button onclick="goToCart('10,000 UC', 1800000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded font-bold">Tanlash</button></div>
         </div>
 
+        <!-- TELEGRAM PREMIUM -->
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -82,6 +80,7 @@
         </div>
     </div>
 
+    <!-- BALANS TO'LDIRISH -->
     <div id="view-topup" class="p-3 hidden">
         <div id="topup-menu">
             <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
@@ -136,16 +135,19 @@
         </div>
     </div>
 
+    <!-- TARIX -->
     <div id="view-history" class="p-3 hidden">
         <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-clock-rotate-left"></i> Xaridlar tarixi</h2>
         <div class="card-bg p-3 rounded-2xl"><div id="history-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Tarix bo'sh</div></div></div>
     </div>
 
+    <!-- TOP 10 -->
     <div id="view-top" class="p-3 hidden">
         <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-trophy"></i> Top Xaridorlar</h2>
         <div class="card-bg p-3 rounded-2xl"><div id="top-buyers-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Yuklanmoqda...</div></div></div>
     </div>
 
+    <!-- SAVATCHA -->
     <div id="view-cart" class="px-3 hidden mb-6">
         <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
         <div class="card-bg p-4 rounded-2xl mb-3">
@@ -166,6 +168,7 @@
         <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash</button>
     </div>
 
+    <!-- PASTKI MENYU -->
     <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-900/50 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
         <div onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
         <div onclick="switchTab('topup')" id="nav-topup" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>Balans</span></div>
@@ -184,15 +187,6 @@
         let timerInterval;
 
         window.addEventListener('DOMContentLoaded', () => {
-            // Loader faqat bir marta sahifa ochilganda 0.5 sekund ishlaydi va o'chadi
-            setTimeout(() => { 
-                const loader = document.getElementById('loader');
-                if(loader) {
-                    loader.style.opacity = '0'; 
-                    setTimeout(() => loader.style.display = 'none', 300); 
-                }
-            }, 500);
-
             try {
                 const tg = window.Telegram.WebApp; tg.ready();
                 if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -219,11 +213,15 @@
 
         function switchTab(tab) {
             ['home', 'topup', 'history', 'top', 'cart'].forEach(t => {
-                document.getElementById('view-' + t).classList.add('hidden');
-                document.getElementById('nav-' + t).className = "flex flex-col items-center text-gray-400 cursor-pointer";
+                const el = document.getElementById('view-' + t);
+                const nav = document.getElementById('nav-' + t);
+                if(el) el.classList.add('hidden');
+                if(nav) nav.className = "flex flex-col items-center text-gray-400 cursor-pointer";
             });
-            document.getElementById('view-' + tab).classList.remove('hidden');
-            document.getElementById('nav-' + tab).className = "flex flex-col items-center text-red-500 cursor-pointer";
+            const activeView = document.getElementById('view-' + tab);
+            const activeNav = document.getElementById('nav-' + tab);
+            if(activeView) activeView.classList.remove('hidden');
+            if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
         }
 
@@ -292,7 +290,7 @@
             let display = document.querySelector('#timer');
             timerInterval = setInterval(() => {
                 m = parseInt(timer / 60, 10); s = parseInt(timer % 60, 10);
-                display.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
+                if(display) display.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
                 if (--timer < 0) { clearInterval(timerInterval); backToStep2(); }
             }, 1000);
         }
@@ -436,6 +434,7 @@
     </script>
 </body>
 </html>
+ 
  
  
 
