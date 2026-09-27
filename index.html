@@ -6,7 +6,7 @@
     <title>FKS PUBG SHOP</title>
     <style>
         body {
-            background-color: #0d0d0d;
+            background-color: #0c0c0c;
             color: #fff;
             font-family: sans-serif;
             margin: 0;
@@ -18,49 +18,68 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            background: #161616;
+            background: #141414;
             border-bottom: 1px solid #222;
         }
         .container {
             padding: 15px;
+            display: none;
         }
-        .menu-btn {
-            background: #1c1c1c;
-            border: 1px solid #333;
-            color: white;
-            width: 100%;
-            padding: 15px;
+        .container.active {
+            display: block;
+        }
+        .balance-card {
+            background: linear-gradient(135deg, #1a0808, #141414);
+            border: 1px solid #ff2222;
             border-radius: 12px;
-            margin-bottom: 10px;
-            text-align: left;
-            font-size: 16px;
-            cursor: pointer;
+            padding: 15px;
+            margin-bottom: 15px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        .menu-btn {
+            background: #161616;
+            border: 1px solid #2a2a2a;
+            color: white;
+            width: 100%;
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 12px;
+            text-align: left;
+            font-size: 15px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: 0.2s;
+        }
+        .menu-btn:active {
+            border-color: #ff2222;
+        }
+        /* Modal dizayni */
         .modal {
             display: none;
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             justify-content: center;
             align-items: center;
             z-index: 1000;
         }
         .modal-content {
-            background: #161616;
-            border: 1px solid #333;
+            background: #141414;
+            border: 1px solid #ff2222;
             width: 90%;
             max-width: 400px;
             padding: 20px;
             border-radius: 16px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            box-shadow: 0 4px 25px rgba(255, 34, 34, 0.2);
         }
         .input-box {
             width: 100%;
-            background: #222;
-            border: 1px solid #444;
+            background: #1f1f1f;
+            border: 1px solid #333;
             color: white;
             padding: 12px;
             border-radius: 8px;
@@ -70,31 +89,40 @@
             box-sizing: border-box;
         }
         .action-btn {
-            background: #ffaa00;
-            color: black;
+            background: #ff2222;
+            color: white;
             font-weight: bold;
             border: none;
             width: 100%;
-            padding: 12px;
+            padding: 13px;
             border-radius: 8px;
             font-size: 16px;
             cursor: pointer;
         }
+        /* Karta oynasi dizayni */
+        .card-view {
+            background: linear-gradient(135deg, #2b1111, #160e0e);
+            border: 1px solid #ff2222;
+            border-radius: 14px;
+            padding: 15px;
+            margin-top: 10px;
+        }
         .card-number {
-            font-size: 18px;
+            font-size: 19px;
             font-weight: bold;
-            letter-spacing: 1px;
-            color: #ffcc00;
-            margin: 10px 0;
+            letter-spacing: 1.5px;
+            color: #ff5555;
+            margin: 12px 0;
             cursor: pointer;
         }
         .timer {
             text-align: center;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
-            color: #ff4444;
+            color: #ff3333;
             margin: 10px 0;
         }
+        /* Pastki menyu */
         .bottom-nav {
             position: fixed;
             bottom: 0; left: 0; width: 100%;
@@ -102,16 +130,19 @@
             border-top: 1px solid #222;
             display: flex;
             justify-content: space-around;
-            padding: 10px 0;
+            padding: 8px 0;
+            z-index: 999;
         }
         .nav-item {
-            color: #888;
+            color: #777;
             text-align: center;
             font-size: 12px;
             text-decoration: none;
+            cursor: pointer;
         }
         .nav-item.active {
-            color: #ffaa00;
+            color: #ff2222;
+            font-weight: bold;
         }
     </style>
 </head>
@@ -122,23 +153,53 @@
             <b>FKS PUBG SHOP</b><br>
             <small style="color: #888;">XUSH KELIBSIZ <span id="username-display">Foydalanuvchi</span></small>
         </div>
-        <div style="background: #222; padding: 5px 12px; border-radius: 20px; border: 1px solid #444;">
-            <span id="user-balance">0</span> so'm
+        <div style="background: #1a1a1a; padding: 6px 14px; border-radius: 20px; border: 1px solid #ff2222;">
+            <span id="user-balance" style="color: #ff5555; font-weight: bold;">0</span> so'm
         </div>
     </div>
 
-    <div class="container" id="tab-toldirish">
+    <!-- 1. BOSH SAHIFA -->
+    <div class="container" id="tab-bosh">
+        <h3>🏠 Bosh sahifa</h3>
+        <p style="color: #888;">Xush kelibsiz! Kerakli bo'limni tanlang.</p>
+    </div>
+
+    <!-- 2. TO'LDIRISH SAHIFASI (Videodagidek menyular) -->
+    <div class="container active" id="tab-toldirish">
         <h3>BALANSNI TO'LDIRISH</h3>
+        
+        <button class="menu-btn" onclick="alert('Tez kunda qo\'llanma qo\'shiladi!')">
+            <span>📄 Qo'llanma</span>
+            <span style="color: #ff2222;">›</span>
+        </button>
+
         <button class="menu-btn" onclick="openModal()">
             <span>💳 AVTO KARTA (Click / Payme)</span>
-            <span>›</span>
+            <span style="color: #ff2222;">›</span>
         </button>
+
+        <button class="menu-btn" onclick="alert('Bankamat orqali to\'lov tez kunda!')">
+            <span>🏦 BANKAMAT</span>
+            <span style="color: #ff2222;">›</span>
+        </button>
+    </div>
+
+    <!-- 3. BUYURTMALAR -->
+    <div class="container" id="tab-buyurtmalar">
+        <h3>📦 Buyurtmalar</h3>
+        <p style="color: #888;">Hozircha buyurtmalar yo'q.</p>
+    </div>
+
+    <!-- 4. PROFIL -->
+    <div class="container" id="tab-profil">
+        <h3>👤 Profil</h3>
+        <p style="color: #888;">Sizning ma'lumotlaringiz shu yerda ko'rsatiladi.</p>
     </div>
 
     <!-- Modal / Karta oynasi -->
     <div class="modal" id="payModal">
         <div class="modal-content" id="modalBody">
-            <h3 style="margin-top:0;">TO'LDIRISH SUMMASI (SO'M)</h3>
+            <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
             <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
             <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
             <button class="action-btn" onclick="generateCard()">Karta olish</button>
@@ -146,11 +207,24 @@
         </div>
     </div>
 
+    <!-- Pastki Navigatsiya Menyu -->
     <div class="bottom-nav">
-        <a href="#" class="nav-item active" onclick="switchTab('toldirish')">
-            <div>➕</div>
+        <div class="nav-item" onclick="switchTab('bosh', this)">
+            <div style="font-size: 18px;">🏠</div>
+            <div>Bosh</div>
+        </div>
+        <div class="nav-item active" onclick="switchTab('toldirish', this)">
+            <div style="font-size: 18px;">➕</div>
             <div>To'ldirish</div>
-        </a>
+        </div>
+        <div class="nav-item" onclick="switchTab('buyurtmalar', this)">
+            <div style="font-size: 18px;">📦</div>
+            <div>Buyurtmalar</div>
+        </div>
+        <div class="nav-item" onclick="switchTab('profil', this)">
+            <div style="font-size: 18px;">👤</div>
+            <div>Profil</div>
+        </div>
     </div>
 
     <script>
@@ -168,10 +242,18 @@
         fetchBalance();
         setInterval(fetchBalance, 5000);
 
+        function switchTab(tabName, element) {
+            document.querySelectorAll('.container').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-' + tabName).classList.add('active');
+
+            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+            if(element) element.classList.add('active');
+        }
+
         function openModal() {
             document.getElementById('payModal').style.display = 'flex';
             document.getElementById('modalBody').innerHTML = `
-                <h3 style="margin-top:0;">TO'LDIRISH SUMMASI (SO'M)</h3>
+                <h3 style="margin-top:0; color: #ff2222;">TO'LDIRISH SUMMASI (SO'M)</h3>
                 <p style="font-size: 12px; color: #888;">Tasdiqlash: soniyalar ichida</p>
                 <input type="number" id="amount" class="input-box" placeholder="Masalan: 12000">
                 <button class="action-btn" onclick="generateCard()">Karta olish</button>
@@ -188,7 +270,7 @@
             let am = document.getElementById('amount').value;
             if(!am || am <= 1000) { alert("Iltimos, to'g'ri summa kiriting!"); return; }
 
-            // Serverga so'rov yuborish (Adminga xabar va tugma borishi uchun)
+            // Serverga so'rov yuborish (Adminga xabar borishi uchun)
             fetch('/api/topup', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
@@ -199,15 +281,15 @@
             let cardHolder = "RAVSHANOVA XULKAR ISRAILOV";
             
             document.getElementById('modalBody').innerHTML = `
-                <div style="font-size: 12px; color: #888;">Avto karta <span style="float:right; background:#d4af37; color:black; padding:2px 6px; border-radius:4px; font-weight:bold;">HUMO / UZCARD</span></div>
+                <div style="font-size: 12px; color: #888;">Avto karta <span style="float:right; background:#ff2222; color:white; padding:2px 8px; border-radius:4px; font-weight:bold;">HUMO</span></div>
                 <div class="card-number" onclick="copyCard('${cardNum}')" title="Nusxalash uchun bosing">${cardNum.match(/.{1,4}/g).join(' ')} 📋</div>
                 <div style="font-size: 12px; color: #ccc;">${cardHolder}</div>
                 <hr style="border-color:#333; margin:12px 0;">
                 <div style="font-size: 12px; color: #888;">ANIQ SHU SUMMANI O'TKAZING</div>
-                <div style="font-size: 22px; font-weight: bold; color: #ffcc00; margin: 5px 0;">${Number(am).toLocaleString()} so'm</div>
+                <div style="font-size: 22px; font-weight: bold; color: #ff5555; margin: 5px 0;">${Number(am).toLocaleString()} so'm</div>
                 <div style="font-size: 12px; color: #888;">Qolgan vaqt</div>
                 <div class="timer" id="countdown">05:00</div>
-                <div style="text-align:center; font-size: 13px; color: #ffaa00; margin: 10px 0;">⏳ To'lovingiz kutilmoqda...</div>
+                <div style="text-align:center; font-size: 13px; color: #ff2222; margin: 10px 0;">⏳ To'lovingiz kutilmoqda...</div>
                 <button class="action-btn" style="background:#222; color:white; border:1px solid #444; margin-top:5px;" onclick="openModal()">Bekor qilish / Boshqa summa</button>
             `;
 
@@ -243,6 +325,7 @@
     </script>
 </body>
 </html>
+
  
  
 
