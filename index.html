@@ -56,7 +56,7 @@
             <button onclick="switchCategory('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
         </div>
 
-        <!-- PUBG Products (To'liq ro'yxat) -->
+        <!-- PUBG Products -->
         <div id="sec-pubg" class="px-3 mb-4 grid grid-cols-2 gap-2.5">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">60 UC</div><div class="text-[10px] text-gray-400">13,000 so'm</div></div><button onclick="goToCart('60 UC', 13000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -103,7 +103,7 @@
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between border-red-500"><i class="fa-solid fa-fire text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">8100 UC</div><div class="text-[10px] text-gray-400">1,755,000 so'm</div></div><button onclick="goToCart('8100 UC', 1755000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
         </div>
 
-        <!-- Telegram Premium Products (1 dan 12 oygacha to'liq) -->
+        <!-- Telegram Premium Products -->
         <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
             <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
@@ -159,13 +159,14 @@
         </div>
     </div>
 
-    <!-- 5. CART VIEW -->
+    <!-- 5. CART VIEW (Chegirma qo'shilgan qism) -->
     <div id="view-cart" class="px-3 hidden mb-6">
         <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max">
             <i class="fa-solid fa-arrow-left"></i> Orqaga
         </button>
         <div class="card-bg p-4 rounded-2xl mb-3">
             <h3 class="font-black text-xs text-red-500 mb-3 uppercase flex items-center gap-2"><i class="fa-solid fa-cart-shopping"></i> Savatcha</h3>
+            
             <div class="mb-3">
                 <label id="id-label" class="text-[10px] text-gray-400 font-bold block mb-1">PLAYER ID</label>
                 <div class="flex gap-2">
@@ -174,9 +175,30 @@
                 </div>
                 <div id="verify-result" class="mt-2 text-xs font-bold hidden"></div>
             </div>
-            <div class="border-t border-gray-800 pt-3 flex justify-between items-center text-xs">
-                <div id="cart-item-desc" class="text-gray-300 font-bold">Mahsulot: -</div>
-                <div id="cart-item-price" class="text-red-400 font-black">0 so'm</div>
+
+            <!-- Promokod qismi -->
+            <div class="mb-3">
+                <label class="text-[10px] text-gray-400 font-bold block mb-1">PROMOKOD (Agar bo'lsa)</label>
+                <div class="flex gap-2">
+                    <input type="text" id="promo-input" placeholder="Masalan: DRAGON" class="flex-1 bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white uppercase focus:outline-none">
+                    <button onclick="applyPromo()" class="bg-red-950 border border-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold">Qo'llash</button>
+                </div>
+                <div id="promo-result" class="mt-1.5 text-[11px] font-bold hidden"></div>
+            </div>
+
+            <div class="border-t border-gray-800 pt-3 space-y-1.5 text-xs">
+                <div class="flex justify-between text-gray-400">
+                    <span>Mahsulot narxi:</span>
+                    <span id="cart-item-original-price">0 so'm</span>
+                </div>
+                <div id="discount-row" class="flex justify-between text-green-400 hidden">
+                    <span>Chegirma:</span>
+                    <span id="cart-item-discount">0 so'm</span>
+                </div>
+                <div class="flex justify-between items-center pt-1 border-t border-gray-800">
+                    <div id="cart-item-desc" class="text-gray-300 font-bold">Mahsulot: -</div>
+                    <div id="cart-item-price" class="text-red-400 font-black text-sm">0 so'm</div>
+                </div>
             </div>
         </div>
         <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash</button>
@@ -211,6 +233,7 @@
         let uid = "default";
         let userName = "Foydalanuvchi";
         let selectedProduct = null;
+        let finalPrice = 0;
         let isVerified = false;
 
         window.addEventListener('DOMContentLoaded', () => {
@@ -337,11 +360,19 @@
 
         function goToCart(name, price, cat) {
             selectedProduct = { name, price, cat };
+            finalPrice = price;
             switchTab('cart');
+            
             document.getElementById('cart-item-desc').innerText = name;
+            document.getElementById('cart-item-original-price').innerText = price.toLocaleString() + " so'm";
             document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
             document.getElementById('checkout-btn').innerText = `Balansdan to'lash (${price.toLocaleString()} so'm)`;
             
+            // Reset promo
+            document.getElementById('promo-input').value = '';
+            document.getElementById('discount-row').classList.add('hidden');
+            document.getElementById('promo-result').classList.add('hidden');
+
             const label = document.getElementById('id-label');
             const input = document.getElementById('player-id-input');
             if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; }
@@ -349,6 +380,52 @@
             input.value = '';
             isVerified = false;
             document.getElementById('verify-result').classList.add('hidden');
+        }
+
+        function applyPromo() {
+            const code = document.getElementById('promo-input').value.trim().toUpperCase();
+            const resDiv = document.getElementById('promo-result');
+            const discountRow = document.getElementById('discount-row');
+            
+            resDiv.classList.remove('hidden');
+
+            if(!code) {
+                resDiv.innerHTML = '<span class="text-red-500">Promokod kiritilmadi!</span>';
+                return;
+            }
+
+            let discountAmount = 0;
+
+            // Namuna promokodlar
+            if(code === 'DRAGON') {
+                // 10% chegirma
+                discountAmount = Math.round(selectedProduct.price * 0.10);
+            } else if(code === 'FKS2026') {
+                // 5,000 so'm chegirma
+                discountAmount = 5000;
+            } else {
+                resDiv.innerHTML = '<span class="text-red-500">Noto\'g\'ri yoki eskirgan promokod!</span>';
+                discountRow.classList.add('hidden');
+                finalPrice = selectedProduct.price;
+                updatePrices(0);
+                return;
+            }
+
+            if(discountAmount >= selectedProduct.price) {
+                discountAmount = selectedProduct.price - 1000; // Minimal narx qoldirish uchun
+            }
+
+            finalPrice = selectedProduct.price - discountAmount;
+            
+            resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Promokod muvaffaqiyatli qo'shildi!</span>`;
+            discountRow.classList.remove('hidden');
+            document.getElementById('cart-item-discount').innerText = "-" + discountAmount.toLocaleString() + " so'm";
+            updatePrices(finalPrice);
+        }
+
+        function updatePrices(price) {
+            document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
+            document.getElementById('checkout-btn').innerText = `Balansdan to'lash (${price.toLocaleString()} so'm)`;
         }
 
         function verifyId() {
@@ -381,7 +458,13 @@
             fetch('/api/buy', {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({user_id: uid, item_name: selectedProduct.name, price: selectedProduct.price, username: userName, extra_info: extra})
+                body: JSON.stringify({
+                    user_id: uid, 
+                    item_name: selectedProduct.name, 
+                    price: finalPrice, // Chegirma bilan hisoblangan yakuniy narx ketadi
+                    username: userName, 
+                    extra_info: extra
+                })
             })
             .then(r => r.json())
             .then(d => {
@@ -397,6 +480,7 @@
     </script>
 </body>
 </html>
+ 
  
  
 
