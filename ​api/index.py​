@@ -3,22 +3,41 @@ import requests
 
 app = Flask(__name__)
 
+# Foydalanuvchi balanslarini saqlash uchun lug'at
 user_balances = {}
+
+# Siz bergan bot token va admin ID raqami
+TELEGRAM_BOT_TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
+ADMIN_CHAT_ID = "8269688160"
+
+def send_telegram_admin_notification(text):
+    try:
+        url = f"https://api.telegram.org/bot{TELEGRAM_BOT_TOKEN}/sendMessage"
+        requests.post(url, json={"chat_id": ADMIN_CHAT_ID, "text": text, "parse_mode": "HTML"}, timeout=5)
+    except Exception as e:
+        print(f"Xabar yuborishda xatolik: {e}")
 
 @app.route('/api/topup', methods=['POST'])
 def topup():
     data = request.json
     user_id = data.get('user_id')
     amount = data.get('amount')
+    username = data.get('username', 'Foydalanuvchi')
+    payment_method = data.get('payment_method', 'Karta')
     
     if not user_id or not amount:
         return jsonify({'success': False, 'message': 'Maʼlumotlar yetishmaydi!'})
     
-    if user_id not in user_balances:
-        user_balances[user_id] = 0
-    user_balances[user_id] += int(amount)
+    # Click yoki Payme orqali to'lov so'rovi kelganda sizga Telegramga xabar yuboradi
+    msg = f"💳 <b>Yangi to'lov so'rovi! (@Jv_asilbek)</b>\n\n" \
+          f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n" \
+          f"💵 Summa: <b>{int(amount):,} so'm</b>\n" \
+          f"📲 To'lov usuli: <b>{payment_method}</b>\n\n" \
+          f"<i>Pulni kartangizda tekshirib, foydalanuvchi balansini qo'shib qo'yishingiz mumkin.</i>"
     
-    return jsonify({'success': True, 'new_balance': user_balances[user_id]})
+    send_telegram_admin_notification(msg)
+    
+    return jsonify({'success': True, 'message': 'So\'rov yuborildi'})
 
 @app.route('/api/balance', methods=['GET'])
 def get_balance():
@@ -26,46 +45,40 @@ def get_balance():
     balance = user_balances.get(user_id, 0)
     return jsonify({'balance': balance})
 
-# Haqiqiy PUBG ID bo'yicha o'yinchi nikini qidirib topuvchi API
 @app.route('/api/check-pubg', methods=['POST'])
 def check_pubg():
     data = request.json
     player_id = str(data.get('player_id', '')).strip()
-    
     if not player_id:
         return jsonify({'success': False, 'message': 'ID kiritilmadi'})
+    return jsonify({'success': True, 'nickname': f"ID: {player_id}"})
+
+@app.route('/api/buy', methods=['POST'])
+def buy():
+    data = request.json
+    user_id = data.get('user_id', 'default')
+    price = int(data.get('price', 0))
+    item_name = data.get('item_name')
+    username = data.get('username')
+    extra_info = data.get('extra_info')
     
-    try:
-        # PUBG va Midasbuy tizimlari ishlatadigan ochiq so'rov orqali qidiramiz
-        url = f"https://api.pubgmobile.com/room/get_player_info?uid={player_id}"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)",
-            "Referer": "https://www.midasbuy.com/"
-        }
-        
-        response = requests.get(url, headers=headers, timeout=5)
-        res_data = response.json()
-        
-        # Agar o'yinchi topilsa
-        if "name" in res_data and res_data["name"]:
-            return jsonify({'success': True, 'nickname': res_data["name"]})
-        
-        # Agar yuqoridagi API bo'sh qaytarsa, zaxira ochiq qidiruv tizimidan foydalanamiz
-        alt_url = f"https://m.pubgmobile.com/mu/web_api/get_player_info?user_id={player_id}"
-        alt_res = requests.get(alt_url, headers=headers, timeout=5).json()
-        
-        if "name" in alt_res:
-            return jsonify({'success': True, 'nickname': alt_res["name"]})
-        
-        # Agar umuman topilmasa, xavfsizlik uchun kiritilgan ID raqamining o'zini va bazadagi holatini ko'rsatamiz
-        return jsonify({'success': True, 'nickname': f"Player_{player_id}"})
-        
-    except Exception as e:
-        # Agar internetda uzilish bo'lsa yoki API javob bermasa, xato bermasligi uchun
-        return jsonify({'success': True, 'nickname': f"Player_{player_id}"})
+    current_balance = user_balances.get(user_id, 0)
+    if current_balance < price:
+        return jsonify({'success': False, 'message': "Balansda yetarli mablag' yo'q!"})
+    
+    user_balances[user_id] -= price
+    
+    # Xarid qilinganda ham adminga xabar beradi
+    buy_msg = f"🛒 <b>Yangi xarid amalga oshirildi!</b>\n\n" \
+              f"👤 Foydalanuvchi: {username}\n" \
+              f"🛍 Mahsulot: {item_name}\n" \
+              f"💰 Narxi: {price:,} so'm\n" \
+              f"🎯 ID / Username: {extra_info}"
+    send_telegram_admin_notification(buy_msg)
+    
+    return jsonify({'success': True, 'new_balance': user_balances[user_id]})
 
 if __name__ == '__main__':
     app.run(debug=True)
  
-
 
