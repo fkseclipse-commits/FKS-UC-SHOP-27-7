@@ -2,6 +2,7 @@ import telebot
 from telebot import types
 import json
 import os
+import asyncio
 from aiohttp import web
 
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
@@ -27,7 +28,11 @@ async def api_balance(request):
     user_id = request.query.get('user_id', 'default')
     balances = load_balances()
     balance = balances.get(str(user_id), 0)
-    return web.json_response({"balance": balance})
+    return web.json_response({"balance": balance}, headers={"Access-Control-Allow-Origin": "*"})
+
+# Asosiy HTML sahifani ochish
+async def index(request):
+    return web.FileResponse('./index.html')
 
 @bot.message_handler(commands=['start'])
 def send_welcome(message):
@@ -38,13 +43,23 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app")
+    # Railway'dan olingan aniq domen
+    web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app[span_0](start_span)"[span_0](end_span)
+    web_app = types.WebAppInfo(url=web_app_url)
 
-    # Pastki doimiy menyu tugmasi (Reply keyboard) - faqat "Do'kon" bo'ladi
+    # Eski klaviaturani tozalash
+    hide_markup = types.ReplyKeyboardRemove()
+    msg = bot.send_message(message.chat.id, "Menyu yangilanmoqda...", reply_markup=hide_markup)
+    try:
+        bot.delete_message(message.chat.id, msg.message_id)
+    except:
+        pass
+
+    # Pastki doimiy menyu tugmasi
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
-    # Xabar ostidagi inline tugmalar (Profil, Buyurtmalarim, Yordam shu yerda qoladi)
+    # Xabar ostidagi inline tugmalar
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -122,22 +137,34 @@ def callback_inline(call):
 
 async def start_web_server():
     app = web.Application()
+    app.router.add_get('/', index)
+    app.router.add_get('/index.html', index)
     app.router.add_get('/api/balance', api_balance)
+    app.router.add_static('/static/', path='./', name='static')
+
     runner = web.AppRunner(app)
     await runner.setup()
     port = int(os.environ.get("PORT", 8080))
     site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
+    print(f"Aiohttp web server {port}-portda ishga tushdi.")
+
+async def main():
+    # Web serverni fonda ishga tushiramiz
+    asyncio.create_task(start_web_server())
+    print("Bot polling boshlanmoqda...")
+    
+    # Telebot polling'ini asyncio muhitida to'g'ri aylantiramiz
+    while True:
+        try:
+            bot.infinity_polling(skip_pending=True)
+        except Exception as e:
+            print(f"Xatolik yuz berdi: {e}")
+            await asyncio.sleep(5)
 
 if __name__ == "__main__":
-    import asyncio
-    
-    # API serverni fonda ishga tushirish
-    loop = asyncio.get_event_loop()
-    loop.create_task(start_web_server())
-    
-    print("Bot va API server ishga tushdi...")
-    bot.infinity_polling()
+    asyncio.run(main())
+ 
 
  
 
