@@ -40,18 +40,11 @@ def send_welcome(message):
 
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app")
 
-    # Pastki doimiy menyu tugmalari (Reply keyboard) - to'rtta tugma rasmdagidek tartibda
+    # Pastki doimiy menyu tugmasi (Reply keyboard) - faqat "Do'kon" bo'ladi
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    btn_shop = types.KeyboardButton("🛍 Do'kon", web_app=web_app)
-    btn_profile = types.KeyboardButton("👤 Profil")
-    btn_orders = types.KeyboardButton("📜 Buyurtmalarim")
-    btn_help = types.KeyboardButton("ℹ️ Yordam")
-    
-    reply_markup.add(btn_shop)
-    reply_markup.add(btn_profile)
-    reply_markup.row(btn_orders, btn_help)
+    reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
-    # Xabar ostidagi inline tugmalar
+    # Xabar ostidagi inline tugmalar (Profil, Buyurtmalarim, Yordam shu yerda qoladi)
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -66,23 +59,8 @@ def send_welcome(message):
         "PUBG Mobile UC va boshqa o'yin valyutalarini tezkor va qulay xarid qilish xizmati. ⚡️💳"
     )
     
-    bot.send_message(message.chat.id, "Qo'shimcha funksiyalar uchun pastdagi menyudan foydalaning:", reply_markup=reply_markup)
+    bot.send_message(message.chat.id, "Pastdagi menyudan foydalanishingiz mumkin:", reply_markup=reply_markup)
     bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
-
-# Pastdagi matnli tugmalar bosilganda ishlaydigan qism
-@bot.message_handler(func=lambda message: True)
-def handle_text_buttons(message):
-    text = message.text
-    user_id = str(message.from_user.id)
-    balances = load_balances()
-    
-    if text == "👤 Profil":
-        bal = balances.get(user_id, 0)
-        bot.send_message(message.chat.id, f"👤 <b>Sizning profilingiz:</b>\n\n🆔 ID: <code>{user_id}</code>\n💰 Balans: {bal:,} so'm".replace(',', ' '), parse_mode="HTML")
-    elif text == "📜 Buyurtmalarim":
-        bot.send_message(message.chat.id, "📜 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
-    elif text == "ℹ️ Yordam":
-        bot.send_message(message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -160,6 +138,7 @@ if __name__ == "__main__":
     
     print("Bot va API server ishga tushdi...")
     bot.infinity_polling()
+
  
 
  
