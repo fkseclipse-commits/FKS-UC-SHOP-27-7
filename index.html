@@ -138,7 +138,7 @@
 
     <div id="view-top" class="p-3 hidden">
         <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-trophy"></i> Top Xaridorlar</h2>
-        <div class="card-bg p-3 rounded-2xl"><div id="top-buyers-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Yuklanmoqda...</div></div></div>
+        <div class="card-bg p-3 rounded-2xl"><div id="top-buyers-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Tarix bo'sh</div></div></div>
     </div>
 
     <div id="view-cart" class="px-3 hidden mb-6">
@@ -188,14 +188,22 @@
                 }
             } catch(e) {}
             
-            // Brauzer xotirasidan balansni o'qib olish
-            const savedBal = localStorage.getItem('balance_' + uid);
-            userBalance = savedBal ? parseInt(savedBal) : 0;
-            updateUIBalance();
-            
+            // Serverdan balansni olish
+            fetchBalance();
             fetchHistory();
             fetchTopBuyers();
         });
+
+        // Serverdan balansni tortib kelish funksiyasi
+        function fetchBalance() {
+            fetch(`/api/balance?user_id=${uid}`)
+                .then(res => res.json())
+                .then(data => {
+                    userBalance = data.balance || 0;
+                    updateUIBalance();
+                })
+                .catch(err => console.log("Balansni olishda xatolik:", err));
+        }
 
         setInterval(() => {
             const d = new Date();
@@ -206,7 +214,6 @@
             const bStr = userBalance.toLocaleString() + " so'm";
             document.getElementById('user-balance').innerText = bStr;
             document.getElementById('user-balance-header').innerText = bStr;
-            localStorage.setItem('balance_' + uid, userBalance);
         }
 
         function switchTab(tab) {
@@ -221,6 +228,7 @@
             if(activeView) activeView.classList.remove('hidden');
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
+            if(tab === 'home') fetchBalance(); // Bosh sahifaga o'tganda balansni yangilash
         }
 
         function openAutoCardScreen() {
@@ -272,64 +280,47 @@
             startTimer(300);
         }
 
+        // Server orqali to'lov so'rovini yuborish
         function submitOrder() {
-            const amountText = document.getElementById('final-sum-display').innerText;
-            const message = `🔔 Yangi to'lov so'rovi (Avto Karta)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💰 Summa: ${amountText}`;
-            
-            const markup = {
-                inline_keyboard: [
-                    [
-                        { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_${finalTopupAmount}` },
-                        { text: "❌ Bekor qilish", callback_data: `reject_${uid}` }
-                    ]
-                ]
-            };
-
-            sendTelegramMessage(message, markup);
-
-            alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
-            switchTab('home');
+            fetch('/api/pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: uid,
+                    amount: finalTopupAmount,
+                    username: userName,
+                    payment_method: 'Avto Karta'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
+                switchTab('home');
+            })
+            .catch(err => {
+                alert("Xatolik yuz berdi!");
+            });
         }
 
         function submitOrderAtm() {
-            const message = `🔔 Yangi to'lov so'rovi (Bankamat Naqd)!\n\n👤 Foydalanuvchi: ${userName}\n🆔 Telegram ID: ${uid}\n💵 Usul: Bankamat orqali chek yuborildi`;
-            
-            const markup = {
-                inline_keyboard: [
-                    [
-                        { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_0` },
-                        { text: "❌ Bekor qilish", callback_data: `reject_${uid}` }
-                    ]
-                ]
-            };
-
-            sendTelegramMessage(message, markup);
-
-            alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
-            switchTab('home');
-        }
-
-        function sendTelegramMessage(text, replyMarkup = null) {
-            const token = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
-            const chatId = "8269688160";
-            
-            const bodyData = {
-                chat_id: chatId,
-                text: text,
-                parse_mode: "Markdown"
-            };
-
-            if (replyMarkup) {
-                bodyData.reply_markup = replyMarkup;
-            }
-            
-            fetch(`https://api.telegram.org/bot${token}/sendMessage`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(bodyData)
-            }).catch(err => console.log("Telegram xatolik:", err));
+            fetch('/api/pay', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: uid,
+                    amount: 0,
+                    username: userName,
+                    payment_method: 'Bankamat (Naqd)'
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
+                switchTab('home');
+            })
+            .catch(err => {
+                alert("Xatolik yuz berdi!");
+            });
         }
 
         function startTimer(duration) {
@@ -461,6 +452,7 @@
     </script>
 </body>
 </html>
+
  
 
  
