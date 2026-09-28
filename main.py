@@ -39,21 +39,26 @@ async def api_pay(request):
         data = await request.json()
         user_id = data.get('user_id')
         amount = data.get('amount')
+        username = data.get('username', 'Foydalanuvchi')
+        payment_method = data.get('payment_method', 'Karta')
         
         if not user_id or not amount:
             return web.json_response({"status": "error", "message": "Ma'lumot yetarli emas"}, headers={"Access-Control-Allow-Origin": "*"})
         
+        amount_int = int(amount)
+        
         # Admin uchun tasdiqlash va rad etish tugmalari
         markup = types.InlineKeyboardMarkup(row_width=2)
         markup.add(
-            types.InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{amount}"),
+            types.InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{amount_int}"),
             types.InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}")
         )
         
         text = (
             f"💳 <b>Yangi to'lov so'rovi!</b>\n\n"
-            f"👤 Foydalanuvchi ID: <code>{user_id}</code>\n"
-            f"💰 Summa: <b>{amount:,} so'm</b>".replace(',', ' ')
+            f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n"
+            f"💰 Summa: <b>{amount_int:,} so'm</b>\n"
+            f"📲 Usul: <b>{payment_method}</b>".replace(',', ' ')
         )
         
         # Adminga xabar yuborish
@@ -191,6 +196,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
  
  
