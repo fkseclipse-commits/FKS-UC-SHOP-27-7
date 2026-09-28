@@ -8,6 +8,9 @@ from aiohttp import web
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
 
+# DIQQAT: Bu yerga o'zingizning Telegram ID raqamingizni yozing (To'lov xabarlari shu ID ga keladi)
+ADMIN_CHAT_ID = 826968180  # O'z Telegram ID ingizni yozing
+
 BALANCE_FILE = "balances.json"
 
 def load_balances():
@@ -29,6 +32,35 @@ async def api_balance(request):
     balances = load_balances()
     balance = balances.get(str(user_id), 0)
     return web.json_response({"balance": balance}, headers={"Access-Control-Allow-Origin": "*"})
+
+# Saytdan to'lov so'rovi kelganda adminga xabar yuborish
+async def api_pay(request):
+    try:
+        data = await request.json()
+        user_id = data.get('user_id')
+        amount = data.get('amount')
+        
+        if not user_id or not amount:
+            return web.json_response({"status": "error", "message": "Ma'lumot yetarli emas"}, headers={"Access-Control-Allow-Origin": "*"})
+        
+        # Admin uchun tasdiqlash va rad etish tugmalari
+        markup = types.InlineKeyboardMarkup(row_width=2)
+        markup.add(
+            types.InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{amount}"),
+            types.InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}")
+        )
+        
+        text = (
+            f"💳 <b>Yangi to'lov so'rovi!</b>\n\n"
+            f"👤 Foydalanuvchi ID: <code>{user_id}</code>\n"
+            f"💰 Summa: <b>{amount:,} so'm</b>".replace(',', ' ')
+        )
+        
+        # Adminga xabar yuborish
+        bot.send_message(ADMIN_CHAT_ID, text, reply_markup=markup, parse_mode="HTML")
+        return web.json_response({"status": "success"}, headers={"Access-Control-Allow-Origin": "*"})
+    except Exception as e:
+        return web.json_response({"status": "error", "message": str(e)}, headers={"Access-Control-Allow-Origin": "*"})
 
 # Asosiy HTML sahifani ochish
 async def index(request):
@@ -136,6 +168,7 @@ async def start_web_server():
     app.router.add_get('/', index)
     app.router.add_get('/index.html', index)
     app.router.add_get('/api/balance', api_balance)
+    app.router.add_post('/api/pay', api_pay)  # <-- Saytdan to'lov so'rovini qabul qiluvchi yo'l
     app.router.add_static('/static/', path='./', name='static')
 
     runner = web.AppRunner(app)
@@ -158,6 +191,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
  
  
 
