@@ -40,6 +40,11 @@ def send_welcome(message):
 
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app")
 
+    # Pastki doimiy menyu tugmasi (Reply keyboard)
+    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
+
+    # Xabar ostidagi inline tugmalar
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -53,7 +58,10 @@ def send_welcome(message):
         "💎 <b>UC2407 DONAT SHOP —</b>\n"
         "PUBG Mobile UC va boshqa o'yin valyutalarini tezkor va qulay xarid qilish xizmati. ⚡️💳"
     )
-    bot.reply_to(message, text, reply_markup=markup, parse_mode="HTML")
+    
+    # Pastdagi menyuni va asosiy xabarni yuborish
+    bot.send_message(message.chat.id, "Pastdagi menyudan foydalanishingiz mumkin:", reply_markup=reply_markup)
+    bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -124,7 +132,6 @@ async def start_web_server():
 
 if __name__ == "__main__":
     import asyncio
-    import threading
     
     # API serverni fonda ishga tushirish
     loop = asyncio.get_event_loop()
@@ -132,5 +139,6 @@ if __name__ == "__main__":
     
     print("Bot va API server ishga tushdi...")
     bot.infinity_polling()
+
  
  
