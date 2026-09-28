@@ -43,8 +43,8 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Railway'dan olingan aniq domen
-    web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app[span_0](start_span)"[span_0](end_span)
+    # Railway'dan olingan aniq domen (to'g'irlandi)
+    web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app"
     web_app = types.WebAppInfo(url=web_app_url)
 
     # Eski klaviaturani tozalash
@@ -150,11 +150,9 @@ async def start_web_server():
     print(f"Aiohttp web server {port}-portda ishga tushdi.")
 
 async def main():
-    # Web serverni fonda ishga tushiramiz
     asyncio.create_task(start_web_server())
     print("Bot polling boshlanmoqda...")
     
-    # Telebot polling'ini asyncio muhitida to'g'ri aylantiramiz
     while True:
         try:
             bot.infinity_polling(skip_pending=True)
@@ -166,7 +164,3 @@ if __name__ == "__main__":
     asyncio.run(main())
  
 
- 
-
- 
- 
