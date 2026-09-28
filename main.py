@@ -43,11 +43,9 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Railway'dan olingan aniq domen (to'g'irlandi)
     web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app"
     web_app = types.WebAppInfo(url=web_app_url)
 
-    # Eski klaviaturani tozalash
     hide_markup = types.ReplyKeyboardRemove()
     msg = bot.send_message(message.chat.id, "Menyu yangilanmoqda...", reply_markup=hide_markup)
     try:
@@ -55,11 +53,9 @@ def send_welcome(message):
     except:
         pass
 
-    # Pastki doimiy menyu tugmasi
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
-    # Xabar ostidagi inline tugmalar
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -162,5 +158,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
  
 
