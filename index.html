@@ -186,27 +186,28 @@
                     userName = tg.initDataUnsafe.user.first_name || "Foydalanuvchi";
                     document.getElementById('username').innerText = userName;
                 }
-                
-                // Telegram CloudStorage (bulutli xotira) orqali balansni o'qish
-                if (window.Telegram.WebApp.CloudStorage) {
-                    window.Telegram.WebApp.CloudStorage.getItem('balance_' + uid, (err, val) => {
-                        if (!err && val) {
-                            userBalance = Number(val);
-                        } else {
-                            userBalance = Number(localStorage.getItem('balance_' + uid) || 0);
-                        }
-                        updateUIBalance();
-                    });
-                } else {
-                    loadLocalBalance();
-                }
-            } catch(e) {
-                loadLocalBalance();
-            }
+            } catch(e) {}
             
+            // Serverdan haqiqiy balansni tortib kelish
+            fetchBalanceFromServer();
             fetchHistory();
             fetchTopBuyers();
         });
+
+        function fetchBalanceFromServer() {
+            fetch(`/api/balance?user_id=${uid}`)
+                .then(res => res.json())
+                .then(data => {
+                    if (data && typeof data.balance !== 'undefined') {
+                        userBalance = Number(data.balance);
+                        updateUIBalance();
+                    }
+                })
+                .catch(err => {
+                    console.error("Balansni olishda xatolik:", err);
+                    loadLocalBalance();
+                });
+        }
 
         function loadLocalBalance() {
             userBalance = Number(localStorage.getItem('balance_' + uid) || 0);
@@ -215,9 +216,6 @@
 
         function saveLocalBalance() {
             localStorage.setItem('balance_' + uid, userBalance);
-            if (window.Telegram.WebApp && window.Telegram.WebApp.CloudStorage) {
-                window.Telegram.WebApp.CloudStorage.setItem('balance_' + uid, String(userBalance));
-            }
             updateUIBalance();
         }
 
@@ -245,13 +243,7 @@
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
             if(tab === 'home') {
-                try {
-                    if (window.Telegram.WebApp && window.Telegram.WebApp.CloudStorage) {
-                        window.Telegram.WebApp.CloudStorage.getItem('balance_' + uid, (err, val) => {
-                            if (!err && val) { userBalance = Number(val); updateUIBalance(); }
-                        });
-                    }
-                } catch(e){}
+                fetchBalanceFromServer(); // Bosh sahifaga o'tganda balansni yangilash
             }
         }
 
@@ -310,41 +302,23 @@
                 return;
             }
 
-            const botToken = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
-            const chatId = "8269688160";
-
-            const message = `🔔 <b>Yangi to'lov so'rovi (Avto Karta)!</b>\n\n` +
-                            `👤 Ismi: <b>${userName}</b>\n` +
-                            `🆔 ID: <code>${uid}</code>\n` +
-                            `💰 Summa: <b>${finalTopupAmount.toLocaleString()} so'm</b>\n\n` +
-                            `<i>Kartaga pul tushganini tekshirib, tasdiqlang!</i>`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-            fetch(url, {
+            fetch('/api/pay', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML',
-                    reply_markup: {
-                        inline_keyboard: [
-                            [
-                                { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_${finalTopupAmount}` },
-                                { text: "❌ Rad etish", callback_data: `reject_${uid}` }
-                            ]
-                        ]
-                    }
+                    user_id: uid,
+                    amount: finalTopupAmount,
+                    username: userName,
+                    payment_method: 'AVTO KARTA'
                 })
             })
             .then(res => res.json())
             .then(data => {
-                if (data.ok) {
+                if (data.status === 'success') {
                     alert("To'lov so'rovi adminga yuborildi! Tasdiqlashini kuting.");
                     switchTab('home');
                 } else {
-                    alert("Xatolik yuz berdi. Qaytadan urinib ko'ring.");
+                    alert("Xatolik yuz berdi: " + (data.message || "Noma'lum xato"));
                 }
             })
             .catch(err => {
@@ -354,36 +328,19 @@
         }
 
         function submitOrderAtm() {
-            const botToken = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
-            const chatId = "8269688160";
-
-            const message = `🔔 <b>Yangi chek (Bankamat / Naqd)!</b>\n\n` +
-                            `👤 Ismi: <b>${userName}</b>\n` +
-                            `🆔 ID: <code>${uid}</code>\n\n` +
-                            `<i>Bankamat orqali naqd pul o'tkazildi, tekshirib tasdiqlang!</i>`;
-
-            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
-
-            fetch(url, {
+            fetch('/api/pay', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    chat_id: chatId,
-                    text: message,
-                    parse_mode: 'HTML',
-                    reply_markup: {
-                        inline_keyboard: [
-                            [
-                                { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_custom` },
-                                { text: "❌ Rad etish", callback_data: `reject_${uid}` }
-                            ]
-                        ]
-                    }
+                    user_id: uid,
+                    amount: 0,
+                    username: userName,
+                    payment_method: 'BANKAMAT (Naqd)'
                 })
             })
             .then(res => res.json())
             .then(data => {
-                if (data.ok) {
+                if (data.status === 'success') {
                     alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
                     switchTab('home');
                 } else {
@@ -460,7 +417,7 @@
             
             const label = document.getElementById('id-label');
             const input = document.getElementById('player-id-input');
-            if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; }
+            if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; letz = ''; }
             else { label.innerText = "TELEGRAM USERNAME"; input.placeholder = "@username kiriting..."; }
             input.value = '';
             isVerified = false;
@@ -525,6 +482,7 @@
     </script>
 </body>
 </html>
+
 
 
 
