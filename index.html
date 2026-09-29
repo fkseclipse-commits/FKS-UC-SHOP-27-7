@@ -186,9 +186,24 @@
                     userName = tg.initDataUnsafe.user.first_name || "Foydalanuvchi";
                     document.getElementById('username').innerText = userName;
                 }
-            } catch(e) {}
+                
+                // Telegram CloudStorage (bulutli xotira) orqali balansni o'qish
+                if (window.Telegram.WebApp.CloudStorage) {
+                    window.Telegram.WebApp.CloudStorage.getItem('balance_' + uid, (err, val) => {
+                        if (!err && val) {
+                            userBalance = Number(val);
+                        } else {
+                            userBalance = Number(localStorage.getItem('balance_' + uid) || 0);
+                        }
+                        updateUIBalance();
+                    });
+                } else {
+                    loadLocalBalance();
+                }
+            } catch(e) {
+                loadLocalBalance();
+            }
             
-            loadLocalBalance();
             fetchHistory();
             fetchTopBuyers();
         });
@@ -200,6 +215,9 @@
 
         function saveLocalBalance() {
             localStorage.setItem('balance_' + uid, userBalance);
+            if (window.Telegram.WebApp && window.Telegram.WebApp.CloudStorage) {
+                window.Telegram.WebApp.CloudStorage.setItem('balance_' + uid, String(userBalance));
+            }
             updateUIBalance();
         }
 
@@ -226,7 +244,15 @@
             if(activeView) activeView.classList.remove('hidden');
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
-            if(tab === 'home') loadLocalBalance();
+            if(tab === 'home') {
+                try {
+                    if (window.Telegram.WebApp && window.Telegram.WebApp.CloudStorage) {
+                        window.Telegram.WebApp.CloudStorage.getItem('balance_' + uid, (err, val) => {
+                            if (!err && val) { userBalance = Number(val); updateUIBalance(); }
+                        });
+                    }
+                } catch(e){}
+            }
         }
 
         function openAutoCardScreen() {
@@ -278,7 +304,6 @@
             startTimer(300);
         }
 
-        // Telegram botga to'lov so'rovini yuborish (To'g'ridan-to'g'ri ishlaydi)
         function submitOrder() {
             if (!finalTopupAmount || finalTopupAmount <= 0) {
                 alert("Summa noto'g'ri kiritilgan!");
@@ -349,7 +374,7 @@
                     reply_markup: {
                         inline_keyboard: [
                             [
-                                { text: "✅ Tasdiqlash (Summani yozish)", callback_data: `approve_${uid}_custom` },
+                                { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_custom` },
                                 { text: "❌ Rad etish", callback_data: `reject_${uid}` }
                             ]
                         ]
@@ -500,7 +525,7 @@
     </script>
 </body>
 </html>
- 
+
 
 
  
