@@ -4,6 +4,7 @@ import json
 import os
 import asyncio
 from aiohttp import web
+import html  # Ismlardagi xatoliklarni oldini olish uchun
 
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
@@ -45,6 +46,7 @@ async def api_pay(request):
             return web.json_response({"status": "error", "message": "Ma'lumot yetarli emas"}, headers={"Access-Control-Allow-Origin": "*"})
         
         amount_int = int(amount) if amount else 0
+        safe_username = html.escape(str(username))  # Xatolik chiqmasligi uchun ismni tozalash
         
         markup = types.InlineKeyboardMarkup(row_width=2)
         
@@ -56,7 +58,7 @@ async def api_pay(request):
             )
             text = (
                 f"💳 <b>Yangi to'lov so'rovi!</b>\n\n"
-                f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n"
+                f"👤 Foydalanuvchi: {safe_username} (ID: <code>{user_id}</code>)\n"
                 f"💰 Summa: <b>{amount_int:,} so'm</b>\n"
                 f"📲 Usul: <b>{payment_method}</b>".replace(',', ' ')
             )
@@ -68,7 +70,7 @@ async def api_pay(request):
             )
             text = (
                 f"🏛 <b>Bankamat (Naqd) orqali so'rov!</b>\n\n"
-                f"👤 Foydalanuvchi: {username} (ID: <code>{user_id}</code>)\n"
+                f"👤 Foydalanuvchi: {safe_username} (ID: <code>{user_id}</code>)\n"
                 f"📲 Usul: <b>{payment_method}</b>\n"
                 f"⚠️ <i>Foydalanuvchi chek yubordi, summani aniqlab tasdiqlang.</i>"
             )
@@ -76,6 +78,7 @@ async def api_pay(request):
         bot.send_message(ADMIN_CHAT_ID, text, reply_markup=markup, parse_mode="HTML")
         return web.json_response({"status": "success"}, headers={"Access-Control-Allow-Origin": "*"})
     except Exception as e:
+        print(f"API_PAY XATOLIGI: {e}")
         return web.json_response({"status": "error", "message": str(e)}, headers={"Access-Control-Allow-Origin": "*"})
 
 async def index(request):
@@ -141,7 +144,6 @@ def callback_inline(call):
         )
         
     elif data.startswith("approve_atm_"):
-        # Bankamat orqali kelgan so'rov uchun admin summa kiritishi talab etiladi yoki oddiy xabar
         parts = data.split("_")
         user_id = str(parts[2])
         bot.answer_callback_query(call.id, "Iltimos, foydalanuvchiga qo'lda summa qo'shing yoki to'g'rilang.")
@@ -202,6 +204,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
  
 
