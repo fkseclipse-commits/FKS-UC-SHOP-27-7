@@ -99,6 +99,7 @@ def send_welcome(message):
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
+    # Xabar ichidagi ko'k tugma ham WebApp qilib to'g'rilandi:
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -204,10 +205,3 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
- 
-
- 
-
- 
- 
-
