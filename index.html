@@ -280,8 +280,13 @@
             startTimer(300);
         }
 
-        // Server orqali to'lov so'rovini yuborish
+        // Server orqali to'lov so'rovini yuborish (Xatolikni tekshiradigan qilib yangilandi)
         function submitOrder() {
+            if (!finalTopupAmount || finalTopupAmount <= 0) {
+                alert("Summa noto'g'ri kiritilgan!");
+                return;
+            }
+
             fetch('/api/pay', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -292,13 +297,19 @@
                     payment_method: 'Avto Karta'
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Server xatolik qaytardi");
+                }
+                return res.json();
+            })
             .then(data => {
                 alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
                 switchTab('home');
             })
             .catch(err => {
-                alert("Xatolik yuz berdi!");
+                console.error(err);
+                alert("Xatolik yuz berdi: Serverga ulanib bo'lmadi!");
             });
         }
 
@@ -313,13 +324,19 @@
                     payment_method: 'Bankamat (Naqd)'
                 })
             })
-            .then(res => res.json())
+            .then(res => {
+                if (!res.ok) {
+                    throw new Error("Server xatolik qaytardi");
+                }
+                return res.json();
+            })
             .then(data => {
                 alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
                 switchTab('home');
             })
             .catch(err => {
-                alert("Xatolik yuz berdi!");
+                console.error(err);
+                alert("Xatolik yuz berdi: Serverga ulanib bo'lmadi!");
             });
         }
 
@@ -452,6 +469,7 @@
     </script>
 </body>
 </html>
+
 
  
 
