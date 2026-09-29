@@ -92,15 +92,15 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app" # O'zingizning Railway havolangiz
+    web_app_url = "https://fks-uc-shop-27-7.vercel.app" # Vercel sayt havolasi
     web_app = types.WebAppInfo(url=web_app_url)
 
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    reply_markup.add(types.KeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app))
+    reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app),
+        types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
         types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
         types.InlineKeyboardButton("📜 Buyurtmalarim", callback_data="orders"),
         types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
@@ -197,4 +197,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
