@@ -170,6 +170,9 @@
     </div>
 
     <script>
+        // RAILWAY SERVERINGIZNING ANIQ URL MANZILI:
+        const SERVER_URL = "https://fks-uc-shop-27-7-production.up.railway.app";
+
         let uid = "default";
         let userName = "Foydalanuvchi";
         let userBalance = 0;
@@ -194,7 +197,7 @@
         });
 
         function fetchBalanceFromServer() {
-            fetch(`/api/balance?user_id=${uid}`)
+            fetch(`${SERVER_URL}/api/balance?user_id=${uid}`)
                 .then(res => res.json())
                 .then(data => {
                     if (data && typeof data.balance !== 'undefined') {
@@ -290,7 +293,7 @@
                 return;
             }
 
-            fetch('/api/pay', {
+            fetch(`${SERVER_URL}/api/pay`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -311,12 +314,12 @@
             })
             .catch(err => {
                 console.error(err);
-                alert("Serverga ulanib bo'lmadi!");
+                alert("Serverga ulanib bo'lmadi! Railway yoki tarmoqni tekshiring.");
             });
         }
 
         function submitOrderAtm() {
-            fetch('/api/pay', {
+            fetch(`${SERVER_URL}/api/pay`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
@@ -446,11 +449,10 @@
             if(!extra || !isVerified) { alert("ID ni to'g'ri kiriting va tekshirib oling!"); return; }
 
             if(userBalance < selectedProduct.price) {
-                alert("Balansda mablag' yetarli emas! Avval balansni to'ldiring.");
+                alert("Balansda mablag' yetarli emas! Avval balansni to'ldirish bo'limidan to'ldiring.");
                 return;
             }
 
-            // Serverdan oxirgi balansni tekshirib, xarid qilish logikasini shu yerda amalga oshiramiz
             userBalance -= selectedProduct.price;
             updateUIBalance();
 
@@ -471,6 +473,7 @@
     </script>
 </body>
 </html>
+
 
 
 
