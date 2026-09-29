@@ -4,12 +4,12 @@ import json
 import os
 import asyncio
 from aiohttp import web
-import html  # Ismlardagi xatoliklarni oldini olish uchun
+import html
 
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
 
-ADMIN_CHAT_ID = 8269688160  # Sizning to'g'ri Telegram ID ingiz
+ADMIN_CHAT_ID = 8269688160
 
 BALANCE_FILE = "balances.json"
 
@@ -46,11 +46,10 @@ async def api_pay(request):
             return web.json_response({"status": "error", "message": "Ma'lumot yetarli emas"}, headers={"Access-Control-Allow-Origin": "*"})
         
         amount_int = int(amount) if amount else 0
-        safe_username = html.escape(str(username))  # Xatolik chiqmasligi uchun ismni tozalash
+        safe_username = html.escape(str(username))
         
         markup = types.InlineKeyboardMarkup(row_width=2)
         
-        # Agar summa 0 dan katta bo'lsa (Karta orqali to'lov)
         if amount_int > 0:
             markup.add(
                 types.InlineKeyboardButton("✅ Tasdiqlash", callback_data=f"approve_{user_id}_{amount_int}"),
@@ -63,7 +62,6 @@ async def api_pay(request):
                 f"📲 Usul: <b>{payment_method}</b>".replace(',', ' ')
             )
         else:
-            # Bankamat orqali naqd pul cheki
             markup.add(
                 types.InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}")
             )
@@ -92,15 +90,15 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    web_app_url = "https://fks-uc-shop-27-7.vercel.app" # Vercel sayt havolasi
+    web_app_url = "https://fks-uc-shop-27-7-production.up.railway.app"
     web_app = types.WebAppInfo(url=web_app_url)
 
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
+    reply_markup.add(types.KeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app))
 
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
+        types.InlineKeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app),
         types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
         types.InlineKeyboardButton("📜 Buyurtmalarim", callback_data="orders"),
         types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
@@ -197,5 +195,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
  
 
