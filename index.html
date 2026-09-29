@@ -188,7 +188,6 @@
                 }
             } catch(e) {}
             
-            // Serverdan haqiqiy balansni tortib kelish
             fetchBalanceFromServer();
             fetchHistory();
             fetchTopBuyers();
@@ -205,18 +204,7 @@
                 })
                 .catch(err => {
                     console.error("Balansni olishda xatolik:", err);
-                    loadLocalBalance();
                 });
-        }
-
-        function loadLocalBalance() {
-            userBalance = Number(localStorage.getItem('balance_' + uid) || 0);
-            updateUIBalance();
-        }
-
-        function saveLocalBalance() {
-            localStorage.setItem('balance_' + uid, userBalance);
-            updateUIBalance();
         }
 
         setInterval(() => {
@@ -243,7 +231,7 @@
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
             if(tab === 'home') {
-                fetchBalanceFromServer(); // Bosh sahifaga o'tganda balansni yangilash
+                fetchBalanceFromServer();
             }
         }
 
@@ -417,7 +405,7 @@
             
             const label = document.getElementById('id-label');
             const input = document.getElementById('player-id-input');
-            if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; letz = ''; }
+            if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; }
             else { label.innerText = "TELEGRAM USERNAME"; input.placeholder = "@username kiriting..."; }
             input.value = '';
             isVerified = false;
@@ -462,8 +450,9 @@
                 return;
             }
 
+            // Serverdan oxirgi balansni tekshirib, xarid qilish logikasini shu yerda amalga oshiramiz
             userBalance -= selectedProduct.price;
-            saveLocalBalance();
+            updateUIBalance();
 
             const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
             const dateStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
@@ -482,6 +471,7 @@
     </script>
 </body>
 </html>
+
 
 
 
