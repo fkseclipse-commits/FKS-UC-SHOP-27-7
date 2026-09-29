@@ -94,11 +94,11 @@ def send_welcome(message):
     web_app = types.WebAppInfo(url=web_app_url)
 
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    reply_markup.add(types.KeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app))
+    reply_markup.add(types.KeyboardButton("🛍 Do'kon", "fks-uc-shop-27-7.vercel.app"))
 
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", fks-uc-shop-27-7.vercel.app),
+        types.InlineKeyboardButton("🛍 Do'kon", "fks-uc-shop-27-7.vercel.app"),
         types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
         types.InlineKeyboardButton("📜 Buyurtmalarim", callback_data="orders"),
         types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
