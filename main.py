@@ -65,14 +65,13 @@ async def api_pay(request):
         else:
             # Bankamat orqali naqd pul cheki
             markup.add(
-                types.InlineKeyboardButton("✅ Tasdiqlash (Summa kiritish)", callback_data=f"approve_atm_{user_id}"),
                 types.InlineKeyboardButton("❌ Rad etish", callback_data=f"reject_{user_id}")
             )
             text = (
                 f"🏛 <b>Bankamat (Naqd) orqali so'rov!</b>\n\n"
                 f"👤 Foydalanuvchi: {safe_username} (ID: <code>{user_id}</code>)\n"
                 f"📲 Usul: <b>{payment_method}</b>\n"
-                f"⚠️ <i>Foydalanuvchi chek yubordi, summani aniqlab tasdiqlang.</i>"
+                f"⚠️ <i>Foydalanuvchi chek yubordi. Iltimos, pul tushganini kartadan tekshiring.</i>"
             )
         
         bot.send_message(ADMIN_CHAT_ID, text, reply_markup=markup, parse_mode="HTML")
@@ -99,7 +98,6 @@ def send_welcome(message):
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     reply_markup.add(types.KeyboardButton("🛍 Do'kon", web_app=web_app))
 
-    # Xabar ichidagi ko'k tugma ham WebApp qilib to'g'rilandi:
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
@@ -121,7 +119,7 @@ def send_welcome(message):
 def callback_inline(call):
     data = call.data
     
-    if data.startswith("approve_") and not data.startswith("approve_atm_"):
+    if data.startswith("approve_"):
         parts = data.split("_")
         user_id = str(parts[1])
         amount = int(parts[2])
@@ -143,12 +141,6 @@ def callback_inline(call):
             message_id=call.message.message_id, 
             text=call.message.text + f"\n\n✅ HOLAT: Tasdiqlandi ({amount:,} so'm qo'shildi)".replace(',', ' ')
         )
-        
-    elif data.startswith("approve_atm_"):
-        parts = data.split("_")
-        user_id = str(parts[2])
-        bot.answer_callback_query(call.id, "Iltimos, foydalanuvchiga qo'lda summa qo'shing yoki to'g'rilang.")
-        bot.send_message(call.message.chat.id, f"⚠️ Bu bankamat orqali kelgan so'rov. Foydalanuvchi ID: {user_id}. Balansni qo'lda tekshirib qo'shishingiz kerak.")
 
     elif data.startswith("reject_"):
         parts = data.split("_")
@@ -205,4 +197,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
- 
+
