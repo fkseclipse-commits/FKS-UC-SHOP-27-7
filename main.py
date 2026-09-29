@@ -9,7 +9,7 @@ import html  # Ismlardagi xatoliklarni oldini olish uchun
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
 
-ADMIN_CHAT_ID = 826968180  # Sizning Telegram ID ingiz
+ADMIN_CHAT_ID = 8269688160  # Sizning to'g'ri Telegram ID ingiz
 
 BALANCE_FILE = "balances.json"
 
@@ -205,3 +205,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
