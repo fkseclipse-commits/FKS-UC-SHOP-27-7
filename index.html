@@ -188,21 +188,19 @@
                 }
             } catch(e) {}
             
-            // Serverdan balansni olish
-            fetchBalance();
+            loadLocalBalance();
             fetchHistory();
             fetchTopBuyers();
         });
 
-        // Serverdan balansni tortib kelish funksiyasi
-        function fetchBalance() {
-            fetch(`/api/balance?user_id=${uid}`)
-                .then(res => res.json())
-                .then(data => {
-                    userBalance = data.balance || 0;
-                    updateUIBalance();
-                })
-                .catch(err => console.log("Balansni olishda xatolik:", err));
+        function loadLocalBalance() {
+            userBalance = Number(localStorage.getItem('balance_' + uid) || 0);
+            updateUIBalance();
+        }
+
+        function saveLocalBalance() {
+            localStorage.setItem('balance_' + uid, userBalance);
+            updateUIBalance();
         }
 
         setInterval(() => {
@@ -228,7 +226,7 @@
             if(activeView) activeView.classList.remove('hidden');
             if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
             if(tab === 'topup') backToTopupMenu();
-            if(tab === 'home') fetchBalance(); // Bosh sahifaga o'tganda balansni yangilash
+            if(tab === 'home') loadLocalBalance();
         }
 
         function openAutoCardScreen() {
@@ -280,63 +278,96 @@
             startTimer(300);
         }
 
-        // Server orqali to'lov so'rovini yuborish (Xatolikni tekshiradigan qilib yangilandi)
+        // Telegram botga to'lov so'rovini yuborish (To'g'ridan-to'g'ri ishlaydi)
         function submitOrder() {
             if (!finalTopupAmount || finalTopupAmount <= 0) {
                 alert("Summa noto'g'ri kiritilgan!");
                 return;
             }
 
-            fetch('/api/pay', {
+            const botToken = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
+            const chatId = "8269688160";
+
+            const message = `🔔 <b>Yangi to'lov so'rovi (Avto Karta)!</b>\n\n` +
+                            `👤 Ismi: <b>${userName}</b>\n` +
+                            `🆔 ID: <code>${uid}</code>\n` +
+                            `💰 Summa: <b>${finalTopupAmount.toLocaleString()} so'm</b>\n\n` +
+                            `<i>Kartaga pul tushganini tekshirib, tasdiqlang!</i>`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    user_id: uid,
-                    amount: finalTopupAmount,
-                    username: userName,
-                    payment_method: 'Avto Karta'
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "✅ Tasdiqlash", callback_data: `approve_${uid}_${finalTopupAmount}` },
+                                { text: "❌ Rad etish", callback_data: `reject_${uid}` }
+                            ]
+                        ]
+                    }
                 })
             })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Server xatolik qaytardi");
-                }
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                alert("To'lov so'rovi yuborildi! Admin tasdiqlagach balansingizga qo'shiladi.");
-                switchTab('home');
+                if (data.ok) {
+                    alert("To'lov so'rovi adminga yuborildi! Tasdiqlashini kuting.");
+                    switchTab('home');
+                } else {
+                    alert("Xatolik yuz berdi. Qaytadan urinib ko'ring.");
+                }
             })
             .catch(err => {
                 console.error(err);
-                alert("Xatolik yuz berdi: Serverga ulanib bo'lmadi!");
+                alert("Serverga ulanib bo'lmadi!");
             });
         }
 
         function submitOrderAtm() {
-            fetch('/api/pay', {
+            const botToken = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78";
+            const chatId = "8269688160";
+
+            const message = `🔔 <b>Yangi chek (Bankamat / Naqd)!</b>\n\n` +
+                            `👤 Ismi: <b>${userName}</b>\n` +
+                            `🆔 ID: <code>${uid}</code>\n\n` +
+                            `<i>Bankamat orqali naqd pul o'tkazildi, tekshirib tasdiqlang!</i>`;
+
+            const url = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
+            fetch(url, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    user_id: uid,
-                    amount: 0,
-                    username: userName,
-                    payment_method: 'Bankamat (Naqd)'
+                    chat_id: chatId,
+                    text: message,
+                    parse_mode: 'HTML',
+                    reply_markup: {
+                        inline_keyboard: [
+                            [
+                                { text: "✅ Tasdiqlash (Summani yozish)", callback_data: `approve_${uid}_custom` },
+                                { text: "❌ Rad etish", callback_data: `reject_${uid}` }
+                            ]
+                        ]
+                    }
                 })
             })
-            .then(res => {
-                if (!res.ok) {
-                    throw new Error("Server xatolik qaytardi");
-                }
-                return res.json();
-            })
+            .then(res => res.json())
             .then(data => {
-                alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
-                switchTab('home');
+                if (data.ok) {
+                    alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
+                    switchTab('home');
+                } else {
+                    alert("Xatolik yuz berdi.");
+                }
             })
             .catch(err => {
                 console.error(err);
-                alert("Xatolik yuz berdi: Serverga ulanib bo'lmadi!");
+                alert("Serverga ulanib bo'lmadi!");
             });
         }
 
@@ -450,7 +481,7 @@
             }
 
             userBalance -= selectedProduct.price;
-            updateUIBalance();
+            saveLocalBalance();
 
             const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
             const dateStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
@@ -469,6 +500,7 @@
     </script>
 </body>
 </html>
+ 
 
 
  
