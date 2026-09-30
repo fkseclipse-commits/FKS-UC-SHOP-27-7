@@ -172,7 +172,7 @@
     <script>
         const SERVER_URL = "https://fks-uc-shop-27-7-production.up.railway.app";
 
-        let uid = "8269688160"; // Sizning ID raqamingiz to'g'ridan-to'g'ri o'rnatildi
+        let uid = "8269688160"; // Sizning ID raqamingiz doimiy o'rnatildi
         let userName = "Asilbek";
         let userBalance = 0;
         let selectedProduct = null;
@@ -185,9 +185,10 @@
                 const tg = window.Telegram.WebApp; 
                 tg.ready();
                 if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                    uid = String(tg.initDataUnsafe.user.id);
-                    userName = tg.initDataUnsafe.user.first_name || "Asilbek";
-                    document.getElementById('username').innerText = userName;
+                    if(tg.initDataUnsafe.user.first_name) {
+                        userName = tg.initDataUnsafe.user.first_name;
+                        document.getElementById('username').innerText = userName;
+                    }
                 }
             } catch(e) {}
             
@@ -473,6 +474,7 @@
     </script>
 </body>
 </html>
+
 
 
 
