@@ -102,7 +102,6 @@ def send_welcome(message):
     # 2-qator: Buyurtmalarim va Yordam
     reply_markup.row(btn_orders, btn_help)
 
-) 
 
     markup = types.InlineKeyboardMarkup(row_width=1)
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
