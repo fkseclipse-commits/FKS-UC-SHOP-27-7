@@ -91,8 +91,7 @@ def send_welcome(message):
         save_balances(balances)
 
     # Pastdagi Reply menyu (4 ta tugma rasmga moslab joylashtirildi)
-    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
-    btn_shop = types.KeyboardButton("🛍 Do'kon")
+    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2
     btn_profile = types.KeyboardButton("👤 Profil")
     btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
     btn_help = types.KeyboardButton("ℹ️ Yordam")
@@ -106,9 +105,7 @@ def send_welcome(message):
     
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
-        types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
-        types.InlineKeyboardButton("📦 Buyurtmalarim", callback_data="orders"),
-        types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
+       
     )
 
     text = (
