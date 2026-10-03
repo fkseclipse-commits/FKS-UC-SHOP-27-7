@@ -109,7 +109,7 @@ def send_welcome(message):
     
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
-    )
+    
 
 
     text = (
