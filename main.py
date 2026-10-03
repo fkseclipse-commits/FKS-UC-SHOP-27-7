@@ -170,7 +170,7 @@ def callback_inline(call):
 
     elif data == "help":
         bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
+        bot.send_message(call.message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @FKS_PUBGM")
 
 async def start_web_server():
     app = web.Application()
