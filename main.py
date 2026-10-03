@@ -5,6 +5,7 @@ import os
 import asyncio
 from aiohttp import web
 import html
+from datetime import datetime
 
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
@@ -90,27 +91,18 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Pastdagi Reply menyu (skrinshotdagi kabi tartibda)
+    # Pastdagi Reply menyu
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    
     btn_profile = types.KeyboardButton("👤 Profil")
     btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
     btn_help = types.KeyboardButton("ℹ️ Yordam")
     
-    # 1-qator: Profil
     reply_markup.row(btn_profile)
-    # 2-qator: Buyurtmalarim va Yordam
     reply_markup.row(btn_orders, btn_help)
-    
-
 
     markup = types.InlineKeyboardMarkup(row_width=1)
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
-    
-    markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
-    ) 
-
+    markup.add(types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app))
 
     text = (
         "<b>Xush kelibsiz! 🎉</b>\n\n"
@@ -125,6 +117,9 @@ def send_welcome(message):
 @bot.message_handler(func=lambda message: True)
 def handle_text_messages(message):
     user_id = str(message.from_user.id)
+    name = html.escape(message.from_user.first_name)
+    username = f"@{message.from_user.username}" if message.from_user.username else "Mavjud emas"
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     if message.text == "🛍 Do'kon":
         markup = types.InlineKeyboardMarkup()
@@ -135,14 +130,47 @@ def handle_text_messages(message):
     elif message.text == "👤 Profil":
         balances = load_balances()
         bal = balances.get(user_id, 0)
-        bot.send_message(message.chat.id, f"👤 <b>Sizning profilingiz:</b>\n\n🆔 ID: <code>{user_id}</code>\n💰 Balans: {bal:,} so'm".replace(',', ' '), parse_mode="HTML")
+        
+        text = (
+            f"👤 <b>Foydalanuvchi Profili</b>\n\n"
+            f"🆔 ID: <code>{user_id}</code>\n"
+            f"👤 Ism: {name}\n"
+            f"📧 Username: {username}\n"
+            f"💰 Balans: <b>{bal:,} UZS</b>".replace(',', ' ') + "\n"
+            f"📅 Ro'yxatdan o'tilgan:\n{current_time}"
+        )
+        bot.send_message(message.chat.id, text, parse_mode="HTML")
         
     elif message.text == "📦 Buyurtmalarim":
-        bot.send_message(message.chat.id, "📦 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
+        text = (
+            f"🛒 <b>Oxirgi buyurtmangiz:</b>\n\n"
+            f"💎 <b>60 UC</b>\n"
+            f"Holati: ✅ <b>Bajarildi</b>\n"
+            f"Summa: 12,000 UZS\n"
+            f"Sana: {current_time}"
+        )
+        bot.send_message(message.chat.id, text, parse_mode="HTML")
         
     elif message.text == "ℹ️ Yordam":
-        bot.send_message(message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @FKS_PUBGM")
-
+        help_text = (
+            "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
+            "<b>1️⃣ Do'konga kirish:</b> Pastdagi 'Do'kon' tugmasini bosing.\n\n"
+            "<b>2️⃣ Balans to'ldirish:</b> Saytdagi 'Balans to'ldirish' bo'limidan rekvizitlarga pul o'tkazib chek yuboring.\n\n"
+            "<b>3️⃣ Xarid qilish:</b> PUBG UC yoki boshqa xizmatni tanlang, Player ID kiriting va xarid qiling.\n\n"
+            "❓ <b>Savollar bo'yicha admin:</b> @FKS_PUBGM"
+        )
+        
+        markup = types.InlineKeyboardMarkup()
+        markup.add(
+            types.InlineKeyboardButton("💬 Murojaat qilish", url="https://t.me/FKS_PUBGM")
+        )
+        
+        photo_path = "20028.png"  # Rasm fayl nomi
+        if os.path.exists(photo_path):
+            with open(photo_path, 'rb') as photo:
+                bot.send_photo(message.chat.id, photo, caption=help_text, reply_markup=markup, parse_mode="HTML")
+        else:
+            bot.send_message(message.chat.id, help_text, reply_markup=markup, parse_mode="HTML")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -187,20 +215,6 @@ def callback_inline(call):
             message_id=call.message.message_id, 
             text=call.message.text + "\n\n❌ HOLAT: Rad etildi."
         )
-        
-    elif data == "profile":
-        balances = load_balances()
-        bal = balances.get(user_id, 0)
-        bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, f"👤 <b>Sizning profilingiz:</b>\n\n🆔 ID: <code>{user_id}</code>\n💰 Balans: {bal:,} so'm".replace(',', ' '), parse_mode="HTML")
-
-    elif data == "orders":
-        bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "📦 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
-
-    elif data == "help":
-        bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
 
 async def start_web_server():
     app = web.Application()
@@ -226,5 +240,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
  
