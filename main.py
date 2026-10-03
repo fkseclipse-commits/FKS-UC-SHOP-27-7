@@ -126,10 +126,12 @@ def send_welcome(message):
 def handle_text_messages(message):
     user_id = str(message.from_user.id)
     
+    if message.text == "🛍 Do'kon":
         markup = types.InlineKeyboardMarkup()
         web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
-        bot.send_message(message.chat.id, "Pastdagi tugma orqali do'konga o'ting:", reply_markup=markup) 
+        bot.send_message(message.chat.id, "Pastdagi tugma orqali do'konga o'ting:", reply_markup=markup)
+        
     elif message.text == "👤 Profil":
         balances = load_balances()
         bal = balances.get(user_id, 0)
@@ -139,7 +141,8 @@ def handle_text_messages(message):
         bot.send_message(message.chat.id, "📦 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
         
     elif message.text == "ℹ️ Yordam":
-        bot.send_message(message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
+        bot.send_message(message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @FKS_PUBGM")
+
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
