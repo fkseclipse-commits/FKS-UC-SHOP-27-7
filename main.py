@@ -91,7 +91,7 @@ def send_welcome(message):
         save_balances(balances)
 
     # Pastdagi Reply menyu (4 ta tugma rasmga moslab joylashtirildi)
-    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, 
+    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True,)
     row_width=2
     btn_profile = types.KeyboardButton("👤 Profil")
     btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
