@@ -90,25 +90,27 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Pastdagi Reply menyu (4 ta tugma rasmga moslab joylashtirildi)
-    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True,)
-    row_width=2
-    btn_shop = types.KeyboardButton
+    # Pastdagi Reply menyu (skrinshotdagi kabi tartibda)
+    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
+    
     btn_profile = types.KeyboardButton("👤 Profil")
     btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
     btn_help = types.KeyboardButton("ℹ️ Yordam")
     
-    reply_markup.add(btn_shop, btn_profile)
-    reply_markup.add(btn_orders, btn_help)
+    # 1-qator: Profil
+    reply_markup.row(btn_profile)
+    # 2-qator: Buyurtmalarim va Yordam
+    reply_markup.row(btn_orders, btn_help)
 
-    # Xabar ostidagi inline tugmalar
+) 
+
     markup = types.InlineKeyboardMarkup(row_width=1)
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
     
     markup.add(
         types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
-       
     )
+
 
     text = (
         "<b>Xush kelibsiz! 🎉</b>\n\n"
@@ -124,12 +126,10 @@ def send_welcome(message):
 def handle_text_messages(message):
     user_id = str(message.from_user.id)
     
-    if message.text == "🛍 Do'kon":
         markup = types.InlineKeyboardMarkup()
         web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
-        bot.send_message(message.chat.id, "Pastdagi tugma orqali do'konga o'ting:", reply_markup=markup)
-        
+        bot.send_message(message.chat.id, "Pastdagi tugma orqali do'konga o'ting:", reply_markup=markup) 
     elif message.text == "👤 Profil":
         balances = load_balances()
         bal = balances.get(user_id, 0)
