@@ -90,11 +90,17 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Pastdagi Reply menyu tugmasi
-    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
-    reply_markup.add(types.KeyboardButton("🛍 Do'kon"))
+    # Pastdagi Reply menyu (4 ta tugma rasmga moslab joylashtirildi)
+    reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True, row_width=2)
+    btn_shop = types.KeyboardButton("🛍 Do'kon")
+    btn_profile = types.KeyboardButton("👤 Profil")
+    btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
+    btn_help = types.KeyboardButton("ℹ️ Yordam")
+    
+    reply_markup.add(btn_shop, btn_profile)
+    reply_markup.add(btn_orders, btn_help)
 
-    # Mini App va inline tugmalar
+    # Xabar ostidagi inline tugmalar
     markup = types.InlineKeyboardMarkup(row_width=1)
     web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
     
@@ -111,26 +117,49 @@ def send_welcome(message):
         "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡️💳"
     )
     
-    bot.send_message(message.chat.id, "Pastdagi menyudan foydalanishingiz mumkin:", reply_markup=reply_markup)
+    bot.send_message(message.chat.id, "Qo'shimcha funksiyalar uchun pastdagi menyudan foydalaning:", reply_markup=reply_markup)
     bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
+
+# Pastdagi menyu tugmalari bosilganda ishlaydigan qism
+@bot.message_handler(func=lambda message: True)
+def handle_text_messages(message):
+    user_id = str(message.from_user.id)
+    
+    if message.text == "🛍 Do'kon":
+        markup = types.InlineKeyboardMarkup()
+        web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+        markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
+        bot.send_message(message.chat.id, "Pastdagi tugma orqali do'konga o'ting:", reply_markup=markup)
+        
+    elif message.text == "👤 Profil":
+        balances = load_balances()
+        bal = balances.get(user_id, 0)
+        bot.send_message(message.chat.id, f"👤 <b>Sizning profilingiz:</b>\n\n🆔 ID: <code>{user_id}</code>\n💰 Balans: {bal:,} so'm".replace(',', ' '), parse_mode="HTML")
+        
+    elif message.text == "📦 Buyurtmalarim":
+        bot.send_message(message.chat.id, "📦 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
+        
+    elif message.text == "ℹ️ Yordam":
+        bot.send_message(message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     data = call.data
+    user_id = str(call.from_user.id)
     
     if data.startswith("approve_"):
         parts = data.split("_")
-        user_id = str(parts[1])
+        target_user_id = str(parts[1])
         amount = int(parts[2])
         
         balances = load_balances()
-        current_bal = balances.get(user_id, 0)
+        current_bal = balances.get(target_user_id, 0)
         new_bal = current_bal + amount
-        balances[user_id] = new_bal
+        balances[target_user_id] = new_bal
         save_balances(balances)
         
         try:
-            bot.send_message(user_id, f"✅ Tabriklaymiz! To'lovingiz tasdiqlandi va balansingizga {amount:,} so'm qo'shildi! 🎉\n💰 Yangi balans: {new_bal:,} so'm".replace(',', ' '))
+            bot.send_message(target_user_id, f"✅ Tabriklaymiz! To'lovingiz tasdiqlandi va balansingizga {amount:,} so'm qo'shildi! 🎉\n💰 Yangi balans: {new_bal:,} so'm".replace(',', ' '))
         except Exception as e:
             print("Xatolik:", e)
             
@@ -143,10 +172,10 @@ def callback_inline(call):
 
     elif data.startswith("reject_"):
         parts = data.split("_")
-        user_id = str(parts[1])
+        target_user_id = str(parts[1])
         
         try:
-            bot.send_message(user_id, "❌ Afsuski, to'lovingiz rad etildi.")
+            bot.send_message(target_user_id, "❌ Afsuski, to'lovingiz rad etildi.")
         except Exception as e:
             print("Xatolik:", e)
             
@@ -158,7 +187,6 @@ def callback_inline(call):
         )
         
     elif data == "profile":
-        user_id = str(call.from_user.id)
         balances = load_balances()
         bal = balances.get(user_id, 0)
         bot.answer_callback_query(call.id)
@@ -170,7 +198,7 @@ def callback_inline(call):
 
     elif data == "help":
         bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @FKS_PUBGM")
+        bot.send_message(call.message.chat.id, "ℹ️ Yordam uchun admin bilan bog'laning: @Jv_asilbek")
 
 async def start_web_server():
     app = web.Application()
@@ -196,4 +224,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
  
