@@ -97,7 +97,7 @@ def send_welcome(message):
     # Inline tugmalarga Vercel havolasi ulandi
     markup = types.InlineKeyboardMarkup(row_width=1)
     markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", url="https://fks-uc-shop-27-7.vercel.app"),
+        types.InlineKeyboardButton("🛍 Do'kon", url="fks-uc-shop-27-7.vercel.app"),
         types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
         types.InlineKeyboardButton("📜 Buyurtmalarim", callback_data="orders"),
         types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
