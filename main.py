@@ -101,6 +101,7 @@ def send_welcome(message):
     reply_markup.row(btn_profile)
     # 2-qator: Buyurtmalarim va Yordam
     reply_markup.row(btn_orders, btn_help)
+    
 
 
     markup = types.InlineKeyboardMarkup(row_width=1)
