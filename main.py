@@ -90,22 +90,24 @@ def send_welcome(message):
         balances[user_id] = 0
         save_balances(balances)
 
-    # Pastdagi menyu uchun oddiy matnli tugma (yoki xohlasangiz olib tashlashingiz ham mumkin)
+    # Pastdagi Reply menyu tugmasi
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     reply_markup.add(types.KeyboardButton("🛍 Do'kon"))
 
-    # Inline tugmalarga Vercel havolasi ulandi
+    # Mini App va inline tugmalar
     markup = types.InlineKeyboardMarkup(row_width=1)
+    web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+    
     markup.add(
-        types.InlineKeyboardButton("🛍 Do'kon", url="fks-uc-shop-27-7.vercel.app"),
+        types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app),
         types.InlineKeyboardButton("👤 Profil", callback_data="profile"),
-        types.InlineKeyboardButton("📜 Buyurtmalarim", callback_data="orders"),
+        types.InlineKeyboardButton("📦 Buyurtmalarim", callback_data="orders"),
         types.InlineKeyboardButton("ℹ️ Yordam", callback_data="help")
     )
 
     text = (
         "<b>Xush kelibsiz! 🎉</b>\n\n"
-        "💎 <b>FKS PUBGM SHOP —</b>\n"
+        "💎 <b>FKS UC 27/7 SHOP —</b>\n"
         "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡️💳"
     )
     
@@ -164,7 +166,7 @@ def callback_inline(call):
 
     elif data == "orders":
         bot.answer_callback_query(call.id)
-        bot.send_message(call.message.chat.id, "📜 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
+        bot.send_message(call.message.chat.id, "📦 Xaridlar tarixingizni ko'rish uchun saytdagi 'Tarix' bo'limiga o'ting.")
 
     elif data == "help":
         bot.answer_callback_query(call.id)
@@ -195,4 +197,3 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
  
-
