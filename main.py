@@ -13,6 +13,7 @@ bot = telebot.TeleBot(TOKEN)
 ADMIN_CHAT_ID = 8269688160
 
 BALANCE_FILE = "balances.json"
+ORDERS_FILE = "orders.json"
 
 def load_balances():
     if os.path.exists(BALANCE_FILE):
@@ -27,6 +28,19 @@ def save_balances(data):
     with open(BALANCE_FILE, "w") as f:
         json.dump(data, f)
 
+def load_orders():
+    if os.path.exists(ORDERS_FILE):
+        with open(ORDERS_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
+
+def save_orders(data):
+    with open(ORDERS_FILE, "w") as f:
+        json.dump(data, f)
+
 # Veb-sayt balansni olishi uchun API
 async def api_balance(request):
     user_id = request.query.get('user_id', 'default')
@@ -34,7 +48,7 @@ async def api_balance(request):
     balance = balances.get(str(user_id), 0)
     return web.json_response({"balance": balance}, headers={"Access-Control-Allow-Origin": "*"})
 
-# Saytdan to'lov so'rovi kelganda botga xabar yuborish
+# Saytdan to'lov so'rovi kelganda botga xabar yuborish va buyurtmani saqlash
 async def api_pay(request):
     try:
         data = await request.json()
@@ -48,6 +62,19 @@ async def api_pay(request):
         
         amount_int = int(amount) if amount else 0
         safe_username = html.escape(str(username))
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        # Buyurtmani avtomatik saqlash
+        orders = load_orders()
+        user_orders = orders.get(str(user_id), [])
+        user_orders.append({
+            "amount": amount_int,
+            "method": payment_method,
+            "status": "Kutilmoqda ⏳",
+            "date": current_time
+        })
+        orders[str(user_id)] = user_orders
+        save_orders(orders)
         
         markup = types.InlineKeyboardMarkup(row_width=2)
         
@@ -142,16 +169,31 @@ def handle_text_messages(message):
         bot.send_message(message.chat.id, text, parse_mode="HTML")
         
     elif message.text == "📦 Buyurtmalarim":
-        text = (
-            f"🛒 <b>Oxirgi buyurtmangiz:</b>\n\n"
-            f"💎 <b>60 UC</b>\n"
-            f"Holati: ✅ <b>Bajarildi</b>\n"
-            f"Summa: 12,000 UZS\n"
-            f"Sana: {current_time}"
-        )
-        bot.send_message(message.chat.id, text, parse_mode="HTML")
+        orders = load_orders()
+        user_orders = orders.get(user_id, [])
         
-    elif message.text == "ℹ️ Yordam":
+        if not user_orders:
+            text = (
+                "🛒 <b>Buyurtmalarim</b>\n\n"
+                "❌ Sizda hozircha buyurtmalar mavjud emas.\n\n"
+                "🛍 Xarid qilish uchun do'kondan foydalaning!"
+            )
+        else:
+            text = "🛒 <b>Sizning oxirgi buyurtmalaringiz:</b>\n\n"
+            for order in user_orders[-5:]: # Oxirgi 5 ta buyurtmani ko'rsatish
+                text += (
+                    f"📦 Summa: <b>{order['amount']:,} so'm</b>\n"
+                    f"📲 Usul: {order['method']}\n"
+                    f"📌 Holati: {order['status']}\n"
+                    f"📅 Sana: {order['date']}\n------------------\n"
+                ).replace(',', ' ')
+                
+        markup = types.InlineKeyboardMarkup()
+        web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+        markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
+        bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
+        
+    elif message.text == "ℹ️️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
@@ -191,6 +233,12 @@ def callback_inline(call):
         balances[target_user_id] = new_bal
         save_balances(balances)
         
+        # Buyurtma holatini yangilash
+        orders = load_orders()
+        if target_user_id in orders and orders[target_user_id]:
+            orders[target_user_id][-1]["status"] = "✅ Tasdiqlandi (Bajarildi)"
+            save_orders(orders)
+        
         try:
             bot.send_message(target_user_id, f"✅ Tabriklaymiz! To'lovingiz tasdiqlandi va balansingizga {amount:,} so'm qo'shildi! 🎉\n💰 Yangi balans: {new_bal:,} so'm".replace(',', ' '))
         except Exception as e:
@@ -206,6 +254,12 @@ def callback_inline(call):
     elif data.startswith("reject_"):
         parts = data.split("_")
         target_user_id = str(parts[1])
+        
+        # Buyurtma holatini rad etilgan qilish
+        orders = load_orders()
+        if target_user_id in orders and orders[target_user_id]:
+            orders[target_user_id][-1]["status"] = "❌ Rad etildi"
+            save_orders(orders)
         
         try:
             bot.send_message(target_user_id, "❌ Afsuski, to'lovingiz rad etildi.")
@@ -243,5 +297,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
  
  
