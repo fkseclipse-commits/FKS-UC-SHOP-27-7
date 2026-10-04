@@ -6,6 +6,7 @@ import asyncio
 from aiohttp import web
 import html
 from datetime import datetime, timedelta
+import threading
 
 TOKEN = "8965938163:AAEvThGnmZHEZc3-qwBECWSvFb_57Fv6wYM"
 bot = telebot.TeleBot(TOKEN)
@@ -342,8 +343,7 @@ async def start_web_server():
     site = web.TCPSite(runner, '0.0.0.0', port)
     await site.start()
 
-async def main():
-    asyncio.create_task(start_web_server())
+def run_bot():
     try:
         bot.remove_webhook()
     except Exception as e:
@@ -354,10 +354,22 @@ async def main():
             bot.infinity_polling(skip_pending=True)
         except Exception as e:
             print(f"Polling xatosi: {e}")
-            await asyncio.sleep(5)
+            import time
+            time.sleep(5)
+
+async def main():
+    # Botni alohida oqimda ishga tushiramiz
+    bot_thread = threading.Thread(target=run_bot, daemon=True)
+    bot_thread.start()
+    
+    # Veb-serverni ishga tushiramiz
+    await start_web_server()
+    
+    while True:
+        await asyncio.sleep(3600)
 
 if __name__ == "__main__":
     asyncio.run(main())
- 
+
 
  
