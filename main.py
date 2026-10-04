@@ -45,7 +45,13 @@ def save_orders(data):
 async def api_balance(request):
     user_id = request.query.get('user_id', 'default')
     balances = load_balances()
-    balance = balances.get(str(user_id), 0)
+    user_data = balances.get(str(user_id), {"balance": 0})
+    
+    if isinstance(user_data, (int, float)):
+        balance = user_data
+    else:
+        balance = user_data.get("balance", 0)
+        
     return web.json_response({"balance": balance}, headers={"Access-Control-Allow-Origin": "*"})
 
 # Saytdan to'lov so'rovi kelganda botga xabar yuborish va buyurtmani saqlash
@@ -113,12 +119,26 @@ async def index(request):
 def send_welcome(message):
     user_id = str(message.from_user.id)
     balances = load_balances()
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
     
+    # Agar foydalanuvchi bazada bo'lmasa, balansni 0 va vaqtni shu onda saqlaymiz
     if user_id not in balances:
-        balances[user_id] = 0
+        balances[user_id] = {
+            "balance": 0,
+            "joined_date": current_time
+        }
+        save_balances(balances)
+    elif isinstance(balances[user_id], (int, float)):
+        old_bal = balances[user_id]
+        balances[user_id] = {
+            "balance": old_bal,
+            "joined_date": current_time
+        }
+        save_balances(balances)
+    elif "joined_date" not in balances[user_id]:
+        balances[user_id]["joined_date"] = current_time
         save_balances(balances)
 
-    # Pastdagi Reply menyu
     reply_markup = types.ReplyKeyboardMarkup(resize_keyboard=True)
     btn_profile = types.KeyboardButton("👤 Profil")
     btn_orders = types.KeyboardButton("📦 Buyurtmalarim")
@@ -140,13 +160,11 @@ def send_welcome(message):
     bot.send_message(message.chat.id, "Qo'shimcha funksiyalar uchun pastdagi menyudan foydalaning:", reply_markup=reply_markup)
     bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
 
-# Pastdagi menyu tugmalari bosilganda ishlaydigan qism
 @bot.message_handler(func=lambda message: True)
 def handle_text_messages(message):
     user_id = str(message.from_user.id)
     name = html.escape(message.from_user.first_name)
     username = f"@{message.from_user.username}" if message.from_user.username else "Mavjud emas"
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     if message.text == "🛍 Do'kon":
         markup = types.InlineKeyboardMarkup()
@@ -156,7 +174,26 @@ def handle_text_messages(message):
         
     elif message.text == "👤 Profil":
         balances = load_balances()
-        bal = balances.get(user_id, 0)
+        current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+        
+        # Agar foydalanuvchi bazada umuman bo'lmasa, uni shu yerda ham avtomat ro'yxatga qo'shamiz
+        if user_id not in balances:
+            balances[user_id] = {
+                "balance": 0,
+                "joined_date": current_time
+            }
+            save_balances(balances)
+            
+        user_data = balances.get(user_id)
+        
+        if isinstance(user_data, (int, float)):
+            bal = user_data
+            joined = current_time
+            balances[user_id] = {"balance": bal, "joined_date": joined}
+            save_balances(balances)
+        else:
+            bal = user_data.get("balance", 0)
+            joined = user_data.get("joined_date", current_time)
         
         text = (
             f"👤 <b>Foydalanuvchi Profili</b>\n\n"
@@ -164,7 +201,7 @@ def handle_text_messages(message):
             f"👤 Ism: {name}\n"
             f"📧 Username: {username}\n"
             f"💰 Balans: <b>{bal:,} UZS</b>".replace(',', ' ') + "\n"
-            f"📅 Ro'yxatdan o'tilgan:\n{current_time}"
+            f"📅 Ro'yxatdan o'tilgan:\n{joined}"
         )
         bot.send_message(message.chat.id, text, parse_mode="HTML")
         
@@ -180,7 +217,7 @@ def handle_text_messages(message):
             )
         else:
             text = "🛒 <b>Sizning oxirgi buyurtmalaringiz:</b>\n\n"
-            for order in user_orders[-5:]: # Oxirgi 5 ta buyurtmani ko'rsatish
+            for order in user_orders[-5:]:
                 text += (
                     f"📦 Summa: <b>{order['amount']:,} so'm</b>\n"
                     f"📲 Usul: {order['method']}\n"
@@ -193,7 +230,7 @@ def handle_text_messages(message):
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
         bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
         
-    elif message.text == "ℹ️️ Yordam":
+    elif message.text == "ℹ️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
@@ -215,12 +252,12 @@ def handle_text_messages(message):
             with open(photo_path, 'rb') as photo:
                 bot.send_photo(message.chat.id, photo, caption=help_text, reply_markup=markup, parse_mode="HTML")
         else:
-            bot.send_message(message.chat.id, help_text + "\n\n⚠️ <i>(Diqqat: FKS_PUBGM rasmi topilmadi!)</i>", reply_markup=markup, parse_mode="HTML")
+            bot.send_message(message.chat.id, help_text, reply_markup=markup, parse_mode="HTML")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     data = call.data
-    user_id = str(call.from_user.id)
+    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
     
     if data.startswith("approve_"):
         parts = data.split("_")
@@ -228,12 +265,23 @@ def callback_inline(call):
         amount = int(parts[2])
         
         balances = load_balances()
-        current_bal = balances.get(target_user_id, 0)
+        user_data = balances.get(target_user_id, {"balance": 0, "joined_date": current_time})
+        
+        if isinstance(user_data, (int, float)):
+            current_bal = user_data
+            joined = current_time
+        else:
+            current_bal = user_data.get("balance", 0)
+            joined = user_data.get("joined_date", current_time)
+            
         new_bal = current_bal + amount
-        balances[target_user_id] = new_bal
+        
+        balances[target_user_id] = {
+            "balance": new_bal,
+            "joined_date": joined
+        }
         save_balances(balances)
         
-        # Buyurtma holatini yangilash
         orders = load_orders()
         if target_user_id in orders and orders[target_user_id]:
             orders[target_user_id][-1]["status"] = "✅ Tasdiqlandi (Bajarildi)"
@@ -255,7 +303,6 @@ def callback_inline(call):
         parts = data.split("_")
         target_user_id = str(parts[1])
         
-        # Buyurtma holatini rad etilgan qilish
         orders = load_orders()
         if target_user_id in orders and orders[target_user_id]:
             orders[target_user_id][-1]["status"] = "❌ Rad etildi"
@@ -270,7 +317,7 @@ def callback_inline(call):
         bot.edit_message_text(
             chat_id=call.message.chat.id, 
             message_id=call.message.message_id, 
-            text=call.message.text + "\n\n❌ HOLAT: Rad etildi."
+            text=call.message.text + f"\n\n❌ HOLAT: Rad etildi."
         )
 
 async def start_web_server():
@@ -297,6 +344,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
- 
+
  
  
