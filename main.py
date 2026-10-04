@@ -344,13 +344,20 @@ async def start_web_server():
 
 async def main():
     asyncio.create_task(start_web_server())
+    try:
+        bot.remove_webhook()
+    except Exception as e:
+        print("Webhookni o'chirishda xatolik:", e)
+        
     while True:
         try:
             bot.infinity_polling(skip_pending=True)
         except Exception as e:
+            print(f"Polling xatosi: {e}")
             await asyncio.sleep(5)
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
  
