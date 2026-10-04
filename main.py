@@ -233,7 +233,7 @@ def handle_text_messages(message):
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
         bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
         
-         elif "Yordam" in message.text:
+    elif "Yordam" in message.text:
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
@@ -368,6 +368,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
  
 
