@@ -16,13 +16,12 @@ ADMIN_CHAT_ID = 8269688160
 BALANCE_FILE = "balances.json"
 ORDERS_FILE = "orders.json"
 
-# O'zbekiston vaqtini olish uchun yordamchi funksiya (UTC +5)
 def get_uzbekistan_time():
     return datetime.utcnow() + timedelta(hours=5)
 
 def load_balances():
     if os.path.exists(BALANCE_FILE):
-        with open(BALANCE_FILE, "r") as f:
+        with open(BALANCE_FILE, "r", encoding="utf-8") as f:
             try:
                 return json.load(f)
             except:
@@ -30,12 +29,12 @@ def load_balances():
     return {}
 
 def save_balances(data):
-    with open(BALANCE_FILE, "w") as f:
-        json.dump(data, f)
+    with open(BALANCE_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
 def load_orders():
     if os.path.exists(ORDERS_FILE):
-        with open(ORDERS_FILE, "r") as f:
+        with open(ORDERS_FILE, "r", encoding="utf-8") as f:
             try:
                 return json.load(f)
             except:
@@ -43,10 +42,9 @@ def load_orders():
     return {}
 
 def save_orders(data):
-    with open(ORDERS_FILE, "w") as f:
-        json.dump(data, f)
+    with open(ORDERS_FILE, "w", encoding="utf-8") as f:
+        json.dump(data, f, ensure_ascii=False, indent=4)
 
-# Veb-sayt balansni olishi uchun API
 async def api_balance(request):
     user_id = request.query.get('user_id', 'default')
     balances = load_balances()
@@ -59,7 +57,6 @@ async def api_balance(request):
         
     return web.json_response({"balance": balance}, headers={"Access-Control-Allow-Origin": "*"})
 
-# Saytdan to'lov so'rovi kelganda botga xabar yuborish va buyurtmani saqlash
 async def api_pay(request):
     try:
         data = await request.json()
@@ -75,7 +72,6 @@ async def api_pay(request):
         safe_username = html.escape(str(username))
         current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
         
-        # Buyurtmani avtomatik saqlash
         orders = load_orders()
         user_orders = orders.get(str(user_id), [])
         user_orders.append({
@@ -366,7 +362,9 @@ async def main():
     while True:
         await asyncio.sleep(3600)
 
-if __name__ == "__main__": 
+if __name__ == "__main__":
+    asyncio.run(main())
+ 
  
 
  
