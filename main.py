@@ -290,7 +290,10 @@ def callback_inline(call):
             save_orders(orders)
         
         try:
-            bot.send_message(target_user_id, f"✅ Tabriklaymiz! To'lovingiz tasdiqlandi va balansingizga {amount:,} so'm qo'shildi! 🎉\n💰 Yangi balans: {new_bal:,} so'm".replace(',', ' '))
+            bot.send_message(
+                target_user_id, 
+                f"✅ Tabriklaymiz! To'lovingiz tasdiqlandi va balansingizga {amount:,} so'm qo'shildi! 🎉\n💰 Yangi balans: {new_bal:,} so'm".replace(',', ' ')
+            )
         except Exception as e:
             print("Xatolik:", e)
             
@@ -301,7 +304,7 @@ def callback_inline(call):
             text=call.message.text + f"\n\n✅ HOLAT: Tasdiqlandi ({amount:,} so'm qo'shildi)".replace(',', ' ')
         )
 
-    elif data.startswith(("reject_",)):
+    elif data.startswith("reject_"):
         parts = data.split("_")
         target_user_id = str(parts[1])
         
@@ -311,7 +314,10 @@ def callback_inline(call):
             save_orders(orders)
         
         try:
-            bot.send_message(target_user_id, "❌ Afsuski, to'lovingiz rad etildi.")
+            bot.send_message(
+                target_user_id, 
+                "❌ Afsuski, sizning to'lovingiz bekor qilindi (rad etildi)."
+            )
         except Exception as e:
             print("Xatolik:", e)
             
@@ -319,7 +325,7 @@ def callback_inline(call):
         bot.edit_message_text(
             chat_id=call.message.chat.id, 
             message_id=call.message.message_id, 
-            text=call.message.text + f"\n\n❌ HOLAT: Rad etildi."
+            text=call.message.text + f"\n\n❌ HOLAT: Rad etildi / Bekor qilindi."
         )
 
 async def start_web_server():
@@ -347,6 +353,4 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 
-
- 
  
