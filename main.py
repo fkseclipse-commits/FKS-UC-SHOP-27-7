@@ -107,7 +107,7 @@ def send_welcome(message):
     text = (
         "<b>Xush kelibsiz! 🎉</b>\n\n"
         "💎 <b>FKS UC 27/7 SHOP —</b>\n"
-        "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡️️💳"
+        "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡💳"
     )
     
     bot.send_message(message.chat.id, "Qo'shimcha funksiyalar uchun pastdagi menyudan foydalaning:", reply_markup=reply_markup)
@@ -150,7 +150,8 @@ def handle_text_messages(message):
             f"Sana: {current_time}"
         )
         bot.send_message(message.chat.id, text, parse_mode="HTML")
-            elif message.text == "ℹ️ Yordam":
+        
+    elif message.text == "ℹ️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish va balansni to'ldirish bo'yicha savollar uchun admin bilan bog'laning:\n\n"
@@ -238,3 +239,4 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
