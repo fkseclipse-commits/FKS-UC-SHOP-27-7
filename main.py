@@ -154,13 +154,17 @@ def handle_text_messages(message):
     elif message.text == "ℹ️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
-            "Do'kondan foydalanish va balansni to'ldirish bo'yicha savollar uchun admin bilan bog'laning:\n\n"
-            "💬 <b>Admin:</b> @FKS_PUBGM"
+            "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
+            "🔹 <b>UC Server kanal:</b> https://t.me/FKS_UC\n"
+            "🔹 <b>Asosiy kanal:</b> https://t.me/FKS_UZ\n\n"
+            "💬 <b>Admin bilan bog'lanish:</b> @FKS_PUBGM"
         )
         
-        markup = types.InlineKeyboardMarkup()
+        markup = types.InlineKeyboardMarkup(row_width=1)
         markup.add(
-            types.InlineKeyboardButton("💬 Murojaat qilish", url="https://t.me/FKS_PUBGM")
+            types.InlineKeyboardButton("🌐 UC Server Kanal", url="https://t.me/FKS_UC"),
+            types.InlineKeyboardButton("📢 Asosiy Kanal", url="https://t.me/FKS_UZ"),
+            types.InlineKeyboardButton("💬 Admin bilan bog'lanish", url="https://t.me/FKS_PUBGM")
         )
         
         photo_path = "FKS_PUBGM.jpg" if os.path.exists("FKS_PUBGM.jpg") else "FKS_PUBGM.png"
@@ -239,4 +243,5 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
  
