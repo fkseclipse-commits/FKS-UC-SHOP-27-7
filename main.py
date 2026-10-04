@@ -8,7 +8,7 @@ import html
 from datetime import datetime, timedelta
 import threading
 
-TOKEN = "8965938163:AAEvThGnmZHEZc3-qwBECWSvFb_57Fv6wYM"
+TOKEN = "8965938163:AAF0IxBs87CK25VS-_iQJkWX-dXEHA6hBHA"
 bot = telebot.TeleBot(TOKEN)
 
 ADMIN_CHAT_ID = 8269688160
@@ -233,7 +233,7 @@ def handle_text_messages(message):
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
         bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
         
-    elif message.text == "ℹ️ Yordam":
+    elif message.text == "ℹ️️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
@@ -345,7 +345,7 @@ async def start_web_server():
 
 def run_bot():
     try:
-        bot.remove_webhook()
+        bot.delete_webhook(drop_pending_updates=True)
     except Exception as e:
         print("Webhookni o'chirishda xatolik:", e)
         
@@ -358,11 +358,9 @@ def run_bot():
             time.sleep(5)
 
 async def main():
-    # Botni alohida oqimda ishga tushiramiz
     bot_thread = threading.Thread(target=run_bot, daemon=True)
     bot_thread.start()
     
-    # Veb-serverni ishga tushiramiz
     await start_web_server()
     
     while True:
@@ -370,6 +368,6 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
-
+ 
 
  
