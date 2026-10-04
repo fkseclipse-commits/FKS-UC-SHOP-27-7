@@ -8,9 +8,8 @@ import html
 from datetime import datetime, timedelta
 import threading
 
-TOKEN = os.environ.get("TOKEN") 
+TOKEN = os.environ.get("BOT_TOKEN")
 bot = telebot.TeleBot(TOKEN)
-
 
 ADMIN_CHAT_ID = 8269688160
 
