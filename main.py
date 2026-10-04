@@ -233,7 +233,7 @@ def handle_text_messages(message):
         markup.add(types.InlineKeyboardButton("🛍 Do'koni ochish", web_app=web_app))
         bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
         
-    elif message.text == "ℹ️️ Yordam":
+       elif message.text in ["ℹ️ Yordam", "ℹ Yordam"]: 
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
             "Do'kondan foydalanish, balansni to'ldirish va savollar bo'yicha bizning rasmiy kanallarimizga o'ting:\n\n"
