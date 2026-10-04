@@ -7,7 +7,7 @@ from aiohttp import web
 import html
 from datetime import datetime, timedelta
 
-TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
+TOKEN = "8965938163:AAEvThGnmZHEZc3-qwBECWSvFb_57Fv6wYM"
 bot = telebot.TeleBot(TOKEN)
 
 ADMIN_CHAT_ID = 8269688160
