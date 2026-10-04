@@ -16,42 +16,35 @@ ADMIN_CHAT_ID = 8269688160
 BALANCE_FILE = "balances.json"
 ORDERS_FILE = "orders.json"
 
-# Fayllar bilan xavfsiz ishlash uchun qulf (Lock)
-file_lock = threading.Lock()
-
 # O'zbekiston vaqtini olish uchun yordamchi funksiya (UTC +5)
 def get_uzbekistan_time():
     return datetime.utcnow() + timedelta(hours=5)
 
 def load_balances():
-    with file_lock:
-        if os.path.exists(BALANCE_FILE):
-            with open(BALANCE_FILE, "r", encoding="utf-8") as f:
-                try:
-                    return json.load(f)
-                except:
-                    return {}
-        return {}
+    if os.path.exists(BALANCE_FILE):
+        with open(BALANCE_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
 
 def save_balances(data):
-    with file_lock:
-        with open(BALANCE_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+    with open(BALANCE_FILE, "w") as f:
+        json.dump(data, f)
 
 def load_orders():
-    with file_lock:
-        if os.path.exists(ORDERS_FILE):
-            with open(ORDERS_FILE, "r", encoding="utf-8") as f:
-                try:
-                    return json.load(f)
-                except:
-                    return {}
-        return {}
+    if os.path.exists(ORDERS_FILE):
+        with open(ORDERS_FILE, "r") as f:
+            try:
+                return json.load(f)
+            except:
+                return {}
+    return {}
 
 def save_orders(data):
-    with file_lock:
-        with open(ORDERS_FILE, "w", encoding="utf-8") as f:
-            json.dump(data, f, ensure_ascii=False, indent=4)
+    with open(ORDERS_FILE, "w") as f:
+        json.dump(data, f)
 
 # Veb-sayt balansni olishi uchun API
 async def api_balance(request):
@@ -122,68 +115,6 @@ async def api_pay(request):
         return web.json_response({"status": "success"}, headers={"Access-Control-Allow-Origin": "*"})
     except Exception as e:
         print(f"API_PAY XATOLIGI: {e}")
-        return web.json_response({"status": "error", "message": str(e)}, headers={"Access-Control-Allow-Origin": "*"})
-
-# Saytdan UC xarid qilinganda balansdan yechish va buyurtma yaratish uchun API
-async def api_checkout(request):
-    try:
-        data = await request.json()
-        user_id = str(data.get("user_id"))
-        total_price = int(data.get("total_price", 0))
-        items = data.get("items", [])
-        player_id = data.get("player_id", "")
-        username = data.get("username", "Foydalanuvchi")
-        current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
-
-        balances = load_balances()
-        user_data = balances.get(user_id, {"balance": 0, "joined_date": current_time})
-        
-        if isinstance(user_data, (int, float)):
-            current_balance = user_data
-            joined = current_time
-        else:
-            current_balance = user_data.get("balance", 0)
-            joined = user_data.get("joined_date", current_time)
-
-        if current_balance < total_price:
-            return web.json_response({"status": "error", "message": "Balans yetarli emas!"}, headers={"Access-Control-Allow-Origin": "*"})
-
-        # Balansni yangilash
-        new_balance = current_balance - total_price
-        balances[user_id] = {
-            "balance": new_balance,
-            "joined_date": joined
-        }
-        save_balances(balances)
-
-        # Buyurtmani saqlash
-        orders = load_orders()
-        user_orders = orders.get(user_id, [])
-        item_name = items[0] if items else "UC Xarid"
-        user_orders.append({
-            "amount": total_price,
-            "method": f"Saytdan xarid ({item_name}, ID: {player_id})",
-            "status": "✅ Bajarildi (Avtomatik)",
-            "date": current_time
-        })
-        orders[user_id] = user_orders
-        save_orders(orders)
-
-        # Adminga xabar berish
-        safe_username = html.escape(str(username))
-        admin_text = (
-            f"🛒 <b>Saytdan yangi UC xaridi!</b>\n\n"
-            f"👤 Foydalanuvchi: {safe_username} (ID: <code>{user_id}</code>)\n"
-            f"🎮 PUBG ID: <code>{player_id}</code>\n"
-            f"📦 Mahsulot: <b>{item_name}</b>\n"
-            f"💰 Narxi: <b>{total_price:,} so'm</b>\n"
-            f"💎 Qolgan balans: <b>{new_balance:,} so'm</b>".replace(',', ' ')
-        )
-        bot.send_message(ADMIN_CHAT_ID, admin_text, parse_mode="HTML")
-
-        return web.json_response({"status": "success", "new_balance": new_balance}, headers={"Access-Control-Allow-Origin": "*"})
-    except Exception as e:
-        print(f"API_CHECKOUT XATOLIGI: {e}")
         return web.json_response({"status": "error", "message": str(e)}, headers={"Access-Control-Allow-Origin": "*"})
 
 async def index(request):
@@ -404,7 +335,6 @@ async def start_web_server():
     app.router.add_get('/index.html', index)
     app.router.add_get('/api/balance', api_balance)
     app.router.add_post('/api/pay', api_pay)
-    app.router.add_post('/api/checkout', api_checkout)  # <--- Saytdan xarid qilish API'si qo'shildi
     app.router.add_static('/static/', path='./', name='static')
 
     runner = web.AppRunner(app)
@@ -436,11 +366,7 @@ async def main():
     while True:
         await asyncio.sleep(3600)
 
-if __name__ == "__main__":
-    asyncio.run(main())
-
- 
-
+if __name__ == "__main__": 
  
 
  
