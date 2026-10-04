@@ -3,473 +3,246 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FKS PUBGM SHOP</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>FKS UC 27/7 SHOP 💎</title>
+    <!-- Telegram WebApp Script -->
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
-        body { font-family: 'Orbitron', sans-serif; background-color: #0b0e14; color: #fff; overscroll-behavior-y: none; }
-        .card-bg { background: rgba(22, 27, 34, 0.95); border: 1px solid rgba(239, 68, 68, 0.4); }
-        .gradient-btn { background: linear-gradient(135deg, #dc2626, #991b1b); }
-        .glow-red { box-shadow: 0 0 20px rgba(220, 38, 38, 0.4); }
+        :root {
+            --bg-color: var(--tg-theme-bg-color, #121212);
+            --text-color: var(--tg-theme-text-color, #ffffff);
+            --hint-color: var(--tg-theme-hint-color, #aaaaaa);
+            --button-color: var(--tg-theme-button-color, #f59e0b);
+            --button-text-color: var(--tg-theme-button-text-color, #ffffff);
+            --card-bg: #1e1e24;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 16px;
+            box-sizing: border-box;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--card-bg);
+            padding: 14px 18px;
+            border-radius: 14px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+
+        .balance-box {
+            font-size: 16px;
+            font-weight: bold;
+            color: #f59e0b;
+        }
+
+        h2 {
+            font-size: 20px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            color: var(--hint-color);
+            margin-bottom: 6px;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border-radius: 10px;
+            border: 1px solid #333;
+            background: #2a2a32;
+            color: var(--text-color);
+            font-size: 16px;
+            box-sizing: border-box;
+            outline: none;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .product-card {
+            background: var(--card-bg);
+            border: 2px solid transparent;
+            border-radius: 12px;
+            padding: 14px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .product-card.selected {
+            border-color: #f59e0b;
+            background: #28241d;
+        }
+
+        .product-card h3 {
+            margin: 0 0 6px 0;
+            font-size: 18px;
+        }
+
+        .product-card p {
+            margin: 0;
+            color: #f59e0b;
+            font-weight: bold;
+            font-size: 15px;
+        }
+
+        .btn {
+            background-color: var(--button-color);
+            color: var(--button-text-color);
+            border: none;
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+            transition: opacity 0.2s;
+        }
+
+        .btn:active {
+            opacity: 0.8;
+        }
+
+        .loading {
+            text-align: center;
+            color: var(--hint-color);
+            margin-top: 20px;
+        }
     </style>
 </head>
-<body class="pb-24">
+<body>
 
-    <div class="p-3 card-bg border-b border-red-900/50 sticky top-0 z-40 flex justify-between items-center">
+    <div class="header">
         <div>
-            <h1 class="font-black text-xs text-red-500">FKS PUBGM SHOP <i class="fa-solid fa-gamepad"></i></h1>
-            <p class="text-[10px] text-gray-400">XUSH KELIBSIZ <span id="username" class="text-red-400 font-bold">Asilbek</span></p>
+            <div style="font-size: 12px; color: var(--hint-color);">Foydalanuvchi</div>
+            <div id="username" style="font-weight: bold;">Yuklanmoqda...</div>
         </div>
-        <div class="flex items-center gap-2">
-            <span class="text-[9px] bg-red-950 px-2 py-1 rounded text-red-300 border border-red-800" id="user-balance-header">0 so'm</span>
-            <div id="live-clock" class="text-[10px] bg-gray-900 border border-red-900 px-2 py-1 rounded text-red-400 font-mono">00:00</div>
-        </div>
-    </div>
-
-    <div id="view-home">
-        <div class="m-3 p-3.5 rounded-2xl card-bg flex justify-between items-center shadow-lg glow-red">
-            <div>
-                <div class="text-[10px] text-gray-400 font-bold">BALANS</div>
-                <div class="text-xl font-black text-white mt-0.5" id="user-balance">0 so'm</div>
-            </div>
-            <button onclick="switchTab('topup')" class="gradient-btn text-white px-3.5 py-2 rounded-xl text-xs font-bold shadow"><i class="fa-solid fa-plus text-[10px]"></i> To'ldirish</button>
-        </div>
-
-        <div class="mx-3 mb-3">
-            <a href="https://t.me/Jv_asilbek" target="_blank" class="card-bg w-full py-2.5 rounded-xl flex items-center justify-center gap-2 text-xs font-bold text-white hover:border-red-500 transition shadow" style="text-decoration: none;">
-                <i class="fa-solid fa-headset text-red-500"></i> Yordam
-            </a>
-        </div>
-
-        <div class="flex mx-3 mb-3 gap-2">
-            <button onclick="switchCategory('pubg')" id="btn-pubg" class="flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red">PUBG UC</button>
-            <button onclick="switchCategory('prem')" id="btn-prem" class="flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400">Telegram Premium</button>
-        </div>
-
-        <div id="sec-pubg" class="px-3 mb-4 grid grid-cols-2 gap-2.5">
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">60 UC</div><div class="text-[10px] text-gray-400">13,000 so'm</div></div><button onclick="goToCart('60 UC', 13000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">120 UC</div><div class="text-[10px] text-gray-400">26,000 so'm</div></div><button onclick="goToCart('120 UC', 26000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">180 UC</div><div class="text-[10px] text-gray-400">39,000 so'm</div></div><button onclick="goToCart('180 UC', 39000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">300 UC</div><div class="text-[10px] text-gray-400">65,000 so'm</div></div><button onclick="goToCart('300 UC', 65000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">360 UC</div><div class="text-[10px] text-gray-400">78,000 so'm</div></div><button onclick="goToCart('360 UC', 78000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">660 UC</div><div class="text-[10px] text-gray-400">135,000 so'm</div></div><button onclick="goToCart('660 UC', 135000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1,800 UC</div><div class="text-[10px] text-gray-400">360,000 so'm</div></div><button onclick="goToCart('1,800 UC', 360000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">3,850 UC</div><div class="text-[10px] text-gray-400">720,000 so'm</div></div><button onclick="goToCart('3,850 UC', 720000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-solid fa-bolt text-red-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">8,100 UC</div><div class="text-[10px] text-gray-400">1,450,000 so'm</div></div><button onclick="goToCart('8,100 UC', 1450000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between col-span-2"><i class="fa-solid fa-crown text-yellow-400 text-xl mb-1"></i><div><div class="font-bold text-sm text-yellow-400">10,000 UC</div><div class="text-[11px] text-gray-300">1,800,000 so'm</div></div><button onclick="goToCart('10,000 UC', 1800000, 'pubg')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-xs py-2 rounded font-bold">Tanlash</button></div>
-        </div>
-
-        <div id="sec-prem" class="px-3 mb-4 grid grid-cols-2 gap-2.5 hidden">
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">1 Oylik</div><div class="text-[10px] text-gray-400">43,000 so'm</div></div><button onclick="goToCart('Telegram Premium 1 Oy', 43000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">2 Oylik</div><div class="text-[10px] text-gray-400">85,000 so'm</div></div><button onclick="goToCart('Telegram Premium 2 Oy', 85000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">3 Oylik</div><div class="text-[10px] text-gray-400">125,000 so'm</div></div><button onclick="goToCart('Telegram Premium 3 Oy', 125000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">4 Oylik</div><div class="text-[10px] text-gray-400">165,000 so'm</div></div><button onclick="goToCart('Telegram Premium 4 Oy', 165000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">5 Oylik</div><div class="text-[10px] text-gray-400">205,000 so'm</div></div><button onclick="goToCart('Telegram Premium 5 Oy', 205000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">6 Oylik</div><div class="text-[10px] text-gray-400">240,000 so'm</div></div><button onclick="goToCart('Telegram Premium 6 Oy', 240000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">7 Oylik</div><div class="text-[10px] text-gray-400">280,000 so'm</div></div><button onclick="goToCart('Telegram Premium 7 Oy', 280000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">8 Oylik</div><div class="text-[10px] text-gray-400">320,000 so'm</div></div><button onclick="goToCart('Telegram Premium 8 Oy', 320000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">9 Oylik</div><div class="text-[10px] text-gray-400">360,000 so'm</div></div><button onclick="goToCart('Telegram Premium 9 Oy', 360000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">10 Oylik</div><div class="text-[10px] text-gray-400">400,000 so'm</div></div><button onclick="goToCart('Telegram Premium 10 Oy', 400000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">11 Oylik</div><div class="text-[10px] text-gray-400">440,000 so'm</div></div><button onclick="goToCart('Telegram Premium 11 Oy', 440000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
-            <div class="card-bg p-3 rounded-xl flex flex-col items-center text-center justify-between"><i class="fa-brands fa-telegram text-blue-500 text-lg mb-1"></i><div><div class="font-bold text-xs text-red-500">12 Oylik</div><div class="text-[10px] text-gray-400">475,000 so'm</div></div><button onclick="goToCart('Telegram Premium 12 Oy', 475000, 'prem')" class="mt-2.5 w-full bg-red-950 border border-red-600/40 hover:bg-red-600 text-white text-[10px] py-1.5 rounded font-bold">Tanlash</button></div>
+        <div class="balance-box" id="user-balance">
+            💰 0 UZS
         </div>
     </div>
 
-    <div id="view-topup" class="p-3 hidden">
-        <div id="topup-menu">
-            <h2 class="text-sm font-black text-red-500 mb-3 uppercase">Balansni to'ldirish</h2>
-            <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAutoCardScreen()">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-yellow-600/20 border border-yellow-500 flex items-center justify-center text-yellow-400 font-bold text-xs">UZS</div>
-                    <div><div class="text-xs font-bold text-white">AVTO KARTA</div><div class="text-[9px] text-gray-400">Click va Payme orqali</div></div>
-                </div>
-                <span class="text-xs text-gray-400">&gt;</span>
-            </div>
-            <div class="card-bg p-3 rounded-xl mb-2 flex justify-between items-center cursor-pointer hover:border-red-500 transition" onclick="openAtmScreen()">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 rounded-lg bg-green-600/20 border border-green-500 flex items-center justify-center text-green-400"><i class="fa-solid fa-building-columns"></i></div>
-                    <div><div class="text-xs font-bold text-white">BANKAMAT</div><div class="text-[9px] text-gray-400">Naqd pul orqali to'ldirish</div></div>
-                </div>
-                <span class="text-xs text-gray-400">&gt;</span>
-            </div>
-        </div>
+    <div class="input-group">
+        <label for="player-id">🎮 PUBG Mobile ID raqamingiz:</label>
+        <input type="number" id="player-id" placeholder="Masalan: 5123456789">
+    </div>
 
-        <div id="topup-step2" class="hidden">
-            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> AVTO KARTA</button>
-            <div class="card-bg p-4 rounded-2xl">
-                <label class="text-[10px] text-gray-400 font-bold uppercase mb-1 block">To'ldirish summasi (so'm)</label>
-                <input type="number" id="amount" placeholder="Masalan: 13000" oninput="checkTopupSum()" class="w-full bg-gray-900 border border-red-900/50 rounded-xl p-3 text-sm text-white focus:outline-none mb-3">
-                <div id="calc-result" class="text-xs text-green-400 font-bold mb-3">⚡ Hisobingizga tushadi: 0 SUM</div>
-                <button onclick="showCardDetails()" id="get-card-btn" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow opacity-50 pointer-events-none">Karta olish</button>
-            </div>
+    <h2>🛒 UC Paketlari</h2>
+    <div class="products-grid" id="products-container">
+        <div class="product-card selected" onclick="selectProduct(this, '60 UC', 9500)">
+            <h3>60 UC</h3>
+            <p>9,500 so'm</p>
         </div>
-
-        <div id="topup-atm" class="hidden">
-            <button onclick="backToTopupMenu()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
-            <div class="bg-gradient-to-br from-green-950 to-stone-900 border border-green-600/50 p-4 rounded-2xl mb-3 shadow-lg">
-                <div class="flex justify-between items-center text-xs text-green-400 mb-2"><span>BANKAMAT ORQALI:</span><span class="bg-green-600/30 px-2 py-0.5 rounded text-[10px] font-bold">NAQD</span></div>
-                <div class="text-base font-black tracking-widest text-white mb-2">6262 5708 2039 1383</div>
-                <div class="text-[11px] text-gray-300 mb-2">Egasi: RAVSHANOVA XULKAR ISRAILOV</div>
-            </div>
-            <button onclick="submitOrderAtm()" class="w-full bg-green-700 hover:bg-green-600 text-white py-3 rounded-xl font-bold text-xs shadow glow-red mb-2">Chekni yuborish / Tasdiqlash</button>
+        <div class="product-card" onclick="selectProduct(this, '325 UC', 48000)">
+            <h3>325 UC</h3>
+            <p>48,000 so'm</p>
         </div>
-
-        <div id="topup-step3" class="hidden">
-            <button onclick="backToStep2()" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
-            <div class="bg-gradient-to-br from-amber-950 to-stone-900 border border-amber-600/50 p-4 rounded-2xl mb-3 shadow-lg">
-                <div class="text-base font-black tracking-widest text-white mb-2">6262 5708 2039 1383</div>
-                <div class="text-[11px] text-gray-300">Egasi: RAVSHANOVA XULKAR ISRAILOV</div>
-            </div>
-            <div class="card-bg p-4 rounded-2xl mb-3">
-                <div class="text-[10px] text-gray-400 mb-1">SUMMA:</div>
-                <div id="final-sum-display" class="text-xl font-black text-yellow-400 mb-3">0 so'm</div>
-                <div class="bg-gray-900 p-2.5 rounded-xl flex justify-between items-center text-xs border border-red-900/40"><span class="text-gray-400">Vaqt</span><span id="timer" class="font-mono font-bold text-white">05:00</span></div>
-            </div>
-            <button onclick="submitOrder()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red mb-2">To'lov qildim (Adminga yuborish)</button>
+        <div class="product-card" onclick="selectProduct(this, '660 UC', 95000)">
+            <h3>660 UC</h3>
+            <p>95,000 so'm</p>
+        </div>
+        <div class="product-card" onclick="selectProduct(this, '1800 UC', 255000)">
+            <h3>1800 UC</h3>
+            <p>255,000 so'm</p>
         </div>
     </div>
 
-    <div id="view-history" class="p-3 hidden">
-        <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-clock-rotate-left"></i> Xaridlar tarixi</h2>
-        <div class="card-bg p-3 rounded-2xl"><div id="history-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Tarix bo'sh</div></div></div>
-    </div>
-
-    <div id="view-top" class="p-3 hidden">
-        <h2 class="text-sm font-black text-red-500 mb-3 uppercase"><i class="fa-solid fa-trophy"></i> Top Xaridorlar</h2>
-        <div class="card-bg p-3 rounded-2xl"><div id="top-buyers-list" class="space-y-2"><div class="text-center text-xs text-gray-400 py-4">Tarix bo'sh</div></div></div>
-    </div>
-
-    <div id="view-cart" class="px-3 hidden mb-6">
-        <button onclick="switchTab('home')" class="mb-3 text-xs text-red-400 font-bold flex items-center gap-1.5 bg-gray-900 px-3 py-1.5 rounded-lg border border-red-900/50 w-max"><i class="fa-solid fa-arrow-left"></i> Orqaga</button>
-        <div class="card-bg p-4 rounded-2xl mb-3">
-            <h3 class="font-black text-xs text-red-500 mb-3 uppercase"><i class="fa-solid fa-cart-shopping"></i> Savatcha</h3>
-            <div class="mb-3">
-                <label id="id-label" class="text-[10px] text-gray-400 font-bold block mb-1">PLAYER ID</label>
-                <div class="flex gap-2">
-                    <input type="text" id="player-id-input" placeholder="ID kiriting..." class="flex-1 bg-gray-900 border border-red-900/50 rounded-xl p-2.5 text-xs text-white focus:outline-none">
-                    <button onclick="verifyId()" class="bg-red-950 border border-red-600 text-white px-3 py-2 rounded-xl text-xs font-bold">Tekshirish</button>
-                </div>
-                <div id="verify-result" class="mt-2 text-xs font-bold hidden"></div>
-            </div>
-            <div class="border-t border-gray-800 pt-3 flex justify-between items-center text-xs">
-                <div id="cart-item-desc" class="text-gray-300 font-bold">Mahsulot: -</div>
-                <div id="cart-item-price" class="text-red-400 font-black">0 so'm</div>
-            </div>
-        </div>
-        <button onclick="checkout()" class="w-full gradient-btn text-white py-3 rounded-xl font-bold text-xs shadow glow-red" id="checkout-btn">Balansdan to'lash</button>
-    </div>
-
-    <div class="fixed bottom-0 left-0 right-0 card-bg border-t border-red-900/50 p-2 flex justify-around items-center text-[10px] text-gray-400 z-40">
-        <div onclick="switchTab('home')" id="nav-home" class="flex flex-col items-center text-red-500 cursor-pointer"><i class="fa-solid fa-house text-sm"></i><span>Bosh</span></div>
-        <div onclick="switchTab('topup')" id="nav-topup" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-wallet text-sm"></i><span>Balans</span></div>
-        <div class="flex flex-col items-center -mt-4"><div onclick="switchTab('topup')" class="w-10 h-10 gradient-btn text-white rounded-full flex items-center justify-center shadow text-base cursor-pointer border-2 border-[#0b0e14]"><i class="fa-solid fa-plus"></i></div></div>
-        <div onclick="switchTab('history')" id="nav-history" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-clock-rotate-left text-sm"></i><span>Tarix</span></div>
-        <div onclick="switchTab('top')" id="nav-top" class="flex flex-col items-center cursor-pointer"><i class="fa-solid fa-trophy text-sm"></i><span>Top</span></div>
-    </div>
+    <button class="btn" onclick="makePurchase()">Sotib olish ⚡</button>
 
     <script>
-        const SERVER_URL = "https://fks-uc-shop-27-7-production.up.railway.app";
+        let tg = window.Telegram.WebApp;
+        tg.expand();
 
-        let uid = "8269688160";
-        let userName = "Asilbek";
-        let userBalance = 0;
-        let selectedProduct = null;
-        let isVerified = false;
-        let finalTopupAmount = 0;
-        let timerInterval;
+        // Test uchun (agar Telegram'dan ochilmagan bo'lsa)
+        let user = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : {
+            id: 8269688160, 
+            first_name: "Asilbek",
+            username: "FKS_PUBGM"
+        };
 
-        window.addEventListener('DOMContentLoaded', () => {
+        document.getElementById('username').innerText = user.first_name;
+
+        let selectedItem = { name: "60 UC", price: 9500 };
+
+        function selectProduct(element, name, price) {
+            document.querySelectorAll('.product-card').forEach(card => card.classList.remove('selected'));
+            element.classList.add('selected');
+            selectedItem = { name: name, price: price };
+        }
+
+        // Balansni serverdan olish
+        async function fetchBalance() {
             try {
-                const tg = window.Telegram.WebApp; 
-                tg.ready();
-                if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
-                    if(tg.initDataUnsafe.user.first_name) {
-                        userName = tg.initDataUnsafe.user.first_name;
-                        document.getElementById('username').innerText = userName;
-                    }
-                }
-            } catch(e) {}
-            
-            fetchBalanceFromServer();
-            fetchHistory();
-            fetchTopBuyers();
-        });
+                let response = await fetch(`/api/balance?user_id=${user.id}`);
+                let data = await response.json();
+                let formattedBalance = Number(data.balance).toLocaleString('uz-UZ');
+                document.getElementById('user-balance').innerText = `💰 ${formattedBalance} UZS`;
+            } catch (e) {
+                console.error("Balansni olishda xatolik:", e);
+            }
+        }
 
-        function fetchBalanceFromServer() {
-            fetch(`${SERVER_URL}/api/balance?user_id=${uid}`)
-                .then(res => res.json())
-                .then(data => {
-                    if (data && typeof data.balance !== 'undefined') {
-                        userBalance = Number(data.balance);
-                        updateUIBalance();
-                    }
-                })
-                .catch(err => {
-                    console.error("Balansni olishda xatolik:", err);
+        fetchBalance();
+
+        // Xarid qilish funksiyasi
+        async function makePurchase() {
+            let playerId = document.getElementById('player-id').value.trim();
+            if (!playerId) {
+                alert("⚠️ Iltimos, PUBG ID raqamingizni kiriting!");
+                return;
+            }
+
+            if (!confirm(`Siz rostan ham ${selectedItem.name} (${selectedItem.price.toLocaleString()} so'm) sotib olmoqchimisiz?`)) {
+                return;
+            }
+
+            try {
+                let response = await fetch('/api/checkout', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        user_id: user.id,
+                        username: user.first_name,
+                        player_id: playerId,
+                        total_price: selectedItem.price,
+                        items: [selectedItem.name]
+                    })
                 });
-        }
 
-        setInterval(() => {
-            const d = new Date();
-            document.getElementById('live-clock').innerText = String(d.getHours()).padStart(2,'0') + ":" + String(d.getMinutes()).padStart(2,'0');
-        }, 1000);
-
-        function updateUIBalance() {
-            const bStr = userBalance.toLocaleString() + " so'm";
-            document.getElementById('user-balance').innerText = bStr;
-            document.getElementById('user-balance-header').innerText = bStr;
-        }
-
-        function switchTab(tab) {
-            ['home', 'topup', 'history', 'top', 'cart'].forEach(t => {
-                const el = document.getElementById('view-' + t);
-                const nav = document.getElementById('nav-' + t);
-                if(el) el.classList.add('hidden');
-                if(nav) nav.className = "flex flex-col items-center text-gray-400 cursor-pointer";
-            });
-            const activeView = document.getElementById('view-' + tab);
-            const activeNav = document.getElementById('nav-' + tab);
-            if(activeView) activeView.classList.remove('hidden');
-            if(activeNav) activeNav.className = "flex flex-col items-center text-red-500 cursor-pointer";
-            if(tab === 'topup') backToTopupMenu();
-            if(tab === 'home') {
-                fetchBalanceFromServer();
-            }
-        }
-
-        function openAutoCardScreen() {
-            document.getElementById('topup-menu').classList.add('hidden');
-            document.getElementById('topup-step2').classList.remove('hidden');
-            document.getElementById('topup-atm').classList.add('hidden');
-            document.getElementById('topup-step3').classList.add('hidden');
-        }
-
-        function openAtmScreen() {
-            document.getElementById('topup-menu').classList.add('hidden');
-            document.getElementById('topup-step2').classList.add('hidden');
-            document.getElementById('topup-atm').classList.remove('hidden');
-            document.getElementById('topup-step3').classList.add('hidden');
-        }
-
-        function backToTopupMenu() {
-            document.getElementById('topup-menu').classList.remove('hidden');
-            document.getElementById('topup-step2').classList.add('hidden');
-            document.getElementById('topup-atm').classList.add('hidden');
-            document.getElementById('topup-step3').classList.add('hidden');
-            clearInterval(timerInterval);
-        }
-
-        function backToStep2() {
-            document.getElementById('topup-step3').classList.add('hidden');
-            document.getElementById('topup-step2').classList.remove('hidden');
-            clearInterval(timerInterval);
-        }
-
-        function checkTopupSum() {
-            let val = parseInt(document.getElementById('amount').value);
-            let getBtn = document.getElementById('get-card-btn');
-            if(!val || val <= 0) {
-                document.getElementById('calc-result').innerText = "⚡ Hisobingizga tushadi: 0 SUM";
-                getBtn.style.opacity = "0.5"; getBtn.style.pointerEvents = "none";
-                return;
-            }
-            finalTopupAmount = val;
-            document.getElementById('calc-result').innerText = "⚡ Hisobingizga tushadi: " + val.toLocaleString() + " SUM";
-            getBtn.style.opacity = "1"; getBtn.style.pointerEvents = "auto";
-        }
-
-        function showCardDetails() {
-            if(!finalTopupAmount) return;
-            document.getElementById('topup-step2').classList.add('hidden');
-            document.getElementById('topup-step3').classList.remove('hidden');
-            document.getElementById('final-sum-display').innerText = finalTopupAmount.toLocaleString() + " so'm";
-            startTimer(300);
-        }
-
-        function submitOrder() {
-            if (!finalTopupAmount || finalTopupAmount <= 0) {
-                alert("Summa noto'g'ri kiritilgan!");
-                return;
-            }
-
-            fetch(`${SERVER_URL}/api/pay`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: uid,
-                    amount: finalTopupAmount,
-                    username: userName,
-                    payment_method: 'AVTO KARTA'
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert("To'lov so'rovi adminga yuborildi! Tasdiqlashini kuting.");
-                    switchTab('home');
+                let result = await response.json();
+                if (result.status === 'success') {
+                    alert("🎉 Xarid muvaffaqiyatli amalga oshirildi! Botdan buyurtmalar holatini tekshirishingiz mumkin.");
+                    fetchBalance();
+                    tg.close();
                 } else {
-                    alert("Xatolik yuz berdi: " + (data.message || "Noma'lum xato"));
+                    alert("❌ Xatolik: " + (result.message || "Balans yetarli emas yoki xatolik yuz berdi!"));
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Serverga ulanib bo'lmadi! Railway yoki tarmoqni tekshiring.");
-            });
-        }
-
-        function submitOrderAtm() {
-            fetch(`${SERVER_URL}/api/pay`, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    user_id: uid,
-                    amount: 0,
-                    username: userName,
-                    payment_method: 'BANKAMAT (Naqd)'
-                })
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.status === 'success') {
-                    alert("Bankamat orqali chek yuborildi! Tasdiqlangach balansga qo'shiladi.");
-                    switchTab('home');
-                } else {
-                    alert("Xatolik yuz berdi.");
-                }
-            })
-            .catch(err => {
-                console.error(err);
-                alert("Serverga ulanib bo'lmadi!");
-            });
-        }
-
-        function startTimer(duration) {
-            clearInterval(timerInterval);
-            let timer = duration, m, s;
-            let display = document.querySelector('#timer');
-            timerInterval = setInterval(() => {
-                m = parseInt(timer / 60, 10); s = parseInt(timer % 60, 10);
-                if(display) display.textContent = (m < 10 ? "0" + m : m) + ":" + (s < 10 ? "0" + s : s);
-                if (--timer < 0) { clearInterval(timerInterval); backToStep2(); }
-            }, 1000);
-        }
-
-        function switchCategory(cat) {
-            if(cat === 'pubg') {
-                document.getElementById('sec-pubg').classList.remove('hidden');
-                document.getElementById('sec-prem').classList.add('hidden');
-                document.getElementById('btn-pubg').className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
-                document.getElementById('btn-prem').className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
-            } else {
-                document.getElementById('sec-prem').classList.remove('hidden');
-                document.getElementById('sec-pubg').classList.add('hidden');
-                document.getElementById('btn-prem').className = "flex-1 py-2 rounded-xl text-xs font-bold bg-red-600 text-white shadow glow-red";
-                document.getElementById('btn-pubg').className = "flex-1 py-2 rounded-xl text-xs font-bold card-bg text-gray-400";
+            } catch (e) {
+                console.error("Xarid xatoligi:", e);
+                alert("Server bilan aloqada xatolik yuz berdi.");
             }
-        }
-
-        function fetchTopBuyers() {
-            const container = document.getElementById('top-buyers-list');
-            container.innerHTML = '<div class="text-center text-xs text-gray-400 py-4">Tarix bo\'sh</div>';
-        }
-
-        function fetchHistory() {
-            const container = document.getElementById('history-list');
-            const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
-            if(history.length === 0) {
-                container.innerHTML = '<div class="text-center text-xs text-gray-400 py-4">Tarix bo\'sh</div>';
-                return;
-            }
-            let html = '';
-            history.forEach(item => {
-                html += `
-                    <div class="bg-gray-900 border border-red-900/40 p-2.5 rounded-xl flex justify-between items-center text-xs">
-                        <div>
-                            <div class="text-white font-bold">${item.item_name}</div>
-                            <div class="text-[9px] text-gray-400">ID/User: ${item.extra_info}</div>
-                        </div>
-                        <div class="text-right">
-                            <div class="text-red-400 font-bold">${Number(item.price).toLocaleString()} so'm</div>
-                            <div class="text-[8px] text-gray-500">${item.date || ''}</div>
-                        </div>
-                    </div>
-                `;
-            });
-            container.innerHTML = html;
-        }
-
-        function goToCart(name, price, cat) {
-            selectedProduct = { name, price, cat };
-            switchTab('cart');
-            document.getElementById('cart-item-desc').innerText = name;
-            document.getElementById('cart-item-price').innerText = price.toLocaleString() + " so'm";
-            document.getElementById('checkout-btn').innerText = `Balansdan to'lash (${price.toLocaleString()} so'm)`;
-            
-            const label = document.getElementById('id-label');
-            const input = document.getElementById('player-id-input');
-            if(cat === 'pubg') { label.innerText = "PLAYER ID"; input.placeholder = "PUBG ID kiriting..."; }
-            else { label.innerText = "TELEGRAM USERNAME"; input.placeholder = "@username kiriting..."; }
-            input.value = '';
-            isVerified = false;
-            document.getElementById('verify-result').classList.add('hidden');
-        }
-
-        function verifyId() {
-            const val = document.getElementById('player-id-input').value.trim();
-            const resDiv = document.getElementById('verify-result');
-            resDiv.classList.remove('hidden');
-
-            if(!val) {
-                isVerified = false;
-                resDiv.innerHTML = '<span class="text-red-500"><i class="fa-solid fa-triangle-exclamation"></i> Iltimos, ID kiriting!</span>';
-                return;
-            }
-
-            if(selectedProduct.cat === 'pubg' && val.length < 8) {
-                isVerified = false;
-                resDiv.innerHTML = `<span class="text-red-500"><i class="fa-solid fa-circle-xmark"></i> ID topilmadi: ${val}</span>`;
-                return;
-            }
-
-            resDiv.innerHTML = '<span class="text-yellow-500">Tekshirilmoqda...</span>';
-            
-            setTimeout(() => {
-                isVerified = true;
-                if(selectedProduct.cat === 'pubg') {
-                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Topildi! ID: <b class="text-white">${val}</b></span>`;
-                } else {
-                    resDiv.innerHTML = `<span class="text-green-500"><i class="fa-solid fa-circle-check"></i> Tasdiqlandi: ${val}</span>`;
-                }
-            }, 400);
-        }
-
-        function checkout() {
-            const extra = document.getElementById('player-id-input').value.trim();
-            if(!extra || !isVerified) { alert("ID ni to'g'ri kiriting va tekshirib oling!"); return; }
-
-            if(userBalance < selectedProduct.price) {
-                alert("Balansda mablag' yetarli emas! Avval balansni to'ldirish bo'limidan to'ldiring.");
-                return;
-            }
-
-            userBalance -= selectedProduct.price;
-            updateUIBalance();
-
-            const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
-            const dateStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
-            history.unshift({
-                item_name: selectedProduct.name,
-                price: selectedProduct.price,
-                extra_info: extra,
-                date: dateStr
-            });
-            localStorage.setItem('history_' + uid, JSON.stringify(history));
-
-            alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi!");
-            switchTab('home');
-            fetchHistory();
         }
     </script>
 </body>
