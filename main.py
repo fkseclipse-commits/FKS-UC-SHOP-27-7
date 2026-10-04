@@ -107,7 +107,7 @@ def send_welcome(message):
     text = (
         "<b>Xush kelibsiz! 🎉</b>\n\n"
         "💎 <b>FKS UC 27/7 SHOP —</b>\n"
-        "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡️💳"
+        "PUBG Mobile UC va Telegram Premium xarid qilish xizmati. ⚡️️💳"
     )
     
     bot.send_message(message.chat.id, "Qo'shimcha funksiyalar uchun pastdagi menyudan foydalaning:", reply_markup=reply_markup)
@@ -163,12 +163,13 @@ def handle_text_messages(message):
             types.InlineKeyboardButton("💬 Murojaat qilish", url="https://t.me/FKS_PUBGM")
         )
         
-        photo_path = "20028.png"  # Siz yuborgan rasm fayl nomi
+        photo_path = "20028.png"  # Bot papkasiga shu nom bilan tashlangan bo'lishi shart!
         if os.path.exists(photo_path):
             with open(photo_path, 'rb') as photo:
                 bot.send_photo(message.chat.id, photo, caption=help_text, reply_markup=markup, parse_mode="HTML")
         else:
-            bot.send_message(message.chat.id, help_text, reply_markup=markup, parse_mode="HTML")
+            # Agar rasm topilmasa xato chiqib ketmasligi uchun matn yuboradi va ogohlantiradi
+            bot.send_message(message.chat.id, help_text + "\n\n⚠️ <i>(Diqqat: 20028.png rasmi topilmadi!)</i>", reply_markup=markup, parse_mode="HTML")
 
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
@@ -238,6 +239,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
  
  
 
