@@ -5,7 +5,7 @@ import os
 import asyncio
 from aiohttp import web
 import html
-from datetime import datetime
+from datetime import datetime, timedelta
 
 TOKEN = "8965938163:AAE5-fezkpV-zUI_Ti4k5JRavmw6pWRjN78"
 bot = telebot.TeleBot(TOKEN)
@@ -14,6 +14,10 @@ ADMIN_CHAT_ID = 8269688160
 
 BALANCE_FILE = "balances.json"
 ORDERS_FILE = "orders.json"
+
+# O'zbekiston vaqtini olish uchun yordamchi funksiya (UTC +5)
+def get_uzbekistan_time():
+    return datetime.utcnow() + timedelta(hours=5)
 
 def load_balances():
     if os.path.exists(BALANCE_FILE):
@@ -68,7 +72,7 @@ async def api_pay(request):
         
         amount_int = int(amount) if amount else 0
         safe_username = html.escape(str(username))
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+        current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
         
         # Buyurtmani avtomatik saqlash
         orders = load_orders()
@@ -119,9 +123,8 @@ async def index(request):
 def send_welcome(message):
     user_id = str(message.from_user.id)
     balances = load_balances()
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+    current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
     
-    # Agar foydalanuvchi bazada bo'lmasa, balansni 0 va vaqtni shu onda saqlaymiz
     if user_id not in balances:
         balances[user_id] = {
             "balance": 0,
@@ -174,9 +177,8 @@ def handle_text_messages(message):
         
     elif message.text == "👤 Profil":
         balances = load_balances()
-        current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+        current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
         
-        # Agar foydalanuvchi bazada umuman bo'lmasa, uni shu yerda ham avtomat ro'yxatga qo'shamiz
         if user_id not in balances:
             balances[user_id] = {
                 "balance": 0,
@@ -257,7 +259,7 @@ def handle_text_messages(message):
 @bot.callback_query_handler(func=lambda call: True)
 def callback_inline(call):
     data = call.data
-    current_time = datetime.now().strftime("%Y-%m-%d %H:%M")
+    current_time = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
     
     if data.startswith("approve_"):
         parts = data.split("_")
@@ -299,7 +301,7 @@ def callback_inline(call):
             text=call.message.text + f"\n\n✅ HOLAT: Tasdiqlandi ({amount:,} so'm qo'shildi)".replace(',', ' ')
         )
 
-    elif data.startswith("reject_"):
+    elif data.startswith(("reject_",)):
         parts = data.split("_")
         target_user_id = str(parts[1])
         
@@ -344,6 +346,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+
 
  
  
