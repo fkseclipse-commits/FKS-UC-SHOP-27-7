@@ -154,10 +154,8 @@ def handle_text_messages(message):
     elif message.text == "ℹ️ Yordam":
         help_text = (
             "ℹ️ <b>Qo'llanma va Yordam</b>\n\n"
-            "<b>1️⃣ Do'konga kirish:</b> Pastdagi 'Do'kon' tugmasini bosing.\n\n"
-            "<b>2️⃣ Balans to'ldirish:</b> Saytdagi 'Balans to'ldirish' bo'limidan rekvizitlarga pul o'tkazib chek yuboring.\n\n"
-            "<b>3️⃣ Xarid qilish:</b> PUBG UC yoki boshqa xizmatni tanlang, Player ID kiriting va xarid qiling.\n\n"
-            "❓ <b>Savollar bo'yicha admin:</b> @FKS_PUBGM"
+            "Do'kondan foydalanish va balansni to'ldirish bo'yicha savollar uchun admin bilan bog'laning:\n\n"
+            "💬 <b>Admin:</b> @FKS_PUBGM"
         )
         
         markup = types.InlineKeyboardMarkup()
@@ -165,7 +163,7 @@ def handle_text_messages(message):
             types.InlineKeyboardButton("💬 Murojaat qilish", url="https://t.me/FKS_PUBGM")
         )
         
-        photo_path = "20028.png"  # Rasm fayl nomi
+        photo_path = "20028.png"  # Siz yuborgan rasm fayl nomi
         if os.path.exists(photo_path):
             with open(photo_path, 'rb') as photo:
                 bot.send_photo(message.chat.id, photo, caption=help_text, reply_markup=markup, parse_mode="HTML")
@@ -240,6 +238,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
  
 
  
