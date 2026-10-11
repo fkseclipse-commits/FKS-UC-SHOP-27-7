@@ -11,11 +11,14 @@ import psycopg
 from psycopg.rows import dict_row
 
 # Railway Variables:
-# BOT_TOKEN = your Telegram bot token
-# DATABASE_URL = Railway PostgreSQL connection URL
+# BOT_TOKEN = Telegram bot tokeni
+# DATABASE_URL = Railway PostgreSQL ulanish havolasi
+# WEBAPP_URL = Web App domen havolasi
+# ADMIN_CHAT_ID = Admin Telegram ID raqami
 TOKEN = os.environ.get("BOT_TOKEN")
 DATABASE_URL = os.environ.get("DATABASE_URL")
-ADMIN_CHAT_ID = 8269688160
+WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://fks-uc-shop-27-7-production.up.railway.app/")
+ADMIN_CHAT_ID = int(os.environ.get("ADMIN_CHAT_ID", 8269688160))
 
 if not TOKEN:
     raise RuntimeError("BOT_TOKEN Railway Variables ichida sozlanmagan.")
@@ -157,7 +160,6 @@ async def api_pay(request):
             bot.send_message(ADMIN_CHAT_ID, text, reply_markup=markup, parse_mode="HTML")
         except Exception as e:
             print(f"Adminga xabar yuborilmadi: {e}")
-            # Don't leave an unnotified request pending.
             with db_connect() as conn:
                 conn.execute(
                     "UPDATE orders SET status = %s WHERE order_id = %s AND status = %s",
@@ -199,7 +201,7 @@ def send_welcome(message):
     )
 
     markup = types.InlineKeyboardMarkup(row_width=1)
-    web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+    web_app = types.WebAppInfo(url=WEBAPP_URL)
     markup.add(types.InlineKeyboardButton("🛍 Do'kon", web_app=web_app))
 
     text = (
@@ -267,7 +269,7 @@ def handle_text_messages(message):
             text = text.replace(",", " ")
 
         markup = types.InlineKeyboardMarkup()
-        web_app = types.WebAppInfo(url="https://fks-uc-shop-27-7.vercel.app/")
+        web_app = types.WebAppInfo(url=WEBAPP_URL)
         markup.add(types.InlineKeyboardButton("🛍 Do'konni ochish", web_app=web_app))
         bot.send_message(message.chat.id, text, reply_markup=markup, parse_mode="HTML")
 
@@ -296,7 +298,6 @@ def callback_inline(call):
     action, target_user_id, order_id = data.split("_", 2)
     now = get_uzbekistan_time().strftime("%Y-%m-%d %H:%M")
 
-    # Atomic PostgreSQL transaction: only one admin click can process this order.
     try:
         with db_connect() as conn:
             order = conn.execute(
@@ -315,7 +316,6 @@ def callback_inline(call):
                 return
 
             if action == "approve":
-                # Mark and add balance in the same transaction.
                 updated = conn.execute(
                     """UPDATE orders SET status = %s, processed_at = %s
                        WHERE order_id = %s AND status = %s RETURNING amount""",
@@ -438,6 +438,5 @@ async def main():
 if __name__ == "__main__":
     asyncio.run(main())
 
- 
 
  
