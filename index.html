@@ -185,6 +185,9 @@
                 const tg = window.Telegram.WebApp; 
                 tg.ready();
                 if(tg.initDataUnsafe && tg.initDataUnsafe.user) {
+                    if(tg.initDataUnsafe.user.id) {
+                        uid = String(tg.initDataUnsafe.user.id);
+                    }
                     if(tg.initDataUnsafe.user.first_name) {
                         userName = tg.initDataUnsafe.user.first_name;
                         document.getElementById('username').innerText = userName;
@@ -454,26 +457,49 @@
                 return;
             }
 
-            userBalance -= selectedProduct.price;
-            updateUIBalance();
+            fetch(`${SERVER_URL}/api/buy`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    user_id: uid,
+                    username: userName,
+                    item_name: selectedProduct.name,
+                    price: selectedProduct.price,
+                    extra_info: extra
+                })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi! Adminga xabar yuborildi.");
+                    
+                    fetchBalanceFromServer();
+                    
+                    const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
+                    const dateStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
+                    history.unshift({
+                        item_name: selectedProduct.name,
+                        price: selectedProduct.price,
+                        extra_info: extra,
+                        date: dateStr
+                    });
+                    localStorage.setItem('history_' + uid, JSON.stringify(history));
 
-            const history = JSON.parse(localStorage.getItem('history_' + uid) || '[]');
-            const dateStr = new Date().toISOString().slice(0, 16).replace('T', ' ');
-            history.unshift({
-                item_name: selectedProduct.name,
-                price: selectedProduct.price,
-                extra_info: extra,
-                date: dateStr
+                    switchTab('home');
+                    fetchHistory();
+                } else {
+                    alert("Xatolik: " + (data.message || "Xarid amalga oshmadi"));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert("Serverga ulanib bo'lmadi!");
             });
-            localStorage.setItem('history_' + uid, JSON.stringify(history));
-
-            alert(selectedProduct.name + " muvaffaqiyatli xarid qilindi!");
-            switchTab('home');
-            fetchHistory();
         }
     </script>
 </body>
 </html>
+ 
  
  
 
