@@ -11,10 +11,6 @@ import psycopg
 from psycopg.rows import dict_row
 
 # Railway Variables:
-# BOT_TOKEN = Telegram bot tokeni
-# DATABASE_URL = Railway PostgreSQL ulanish havolasi
-# WEBAPP_URL = Web App domen havolasi
-# ADMIN_CHAT_ID = Admin Telegram ID raqami
 TOKEN = os.environ.get("BOT_TOKEN")
 DATABASE_URL = os.environ.get("DATABASE_URL")
 WEBAPP_URL = os.environ.get("WEBAPP_URL", "https://fks-uc-shop-27-7-production.up.railway.app/")
@@ -179,6 +175,79 @@ async def api_pay(request):
         print(f"API_PAY XATOLIGI: {e}")
         return web.json_response(
             {"status": "error", "message": "To'lov so'rovini yuborib bo'lmadi"},
+            status=500,
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
+
+
+async def api_buy(request):
+    try:
+        data = await request.json()
+        raw_user_id = str(data.get("user_id", ""))
+        username = str(data.get("username", "Foydalanuvchi"))
+        item_name = str(data.get("item_name", "Mahsulot"))
+        extra_info = str(data.get("extra_info", ""))
+
+        try:
+            price = int(data.get("price", 0))
+        except (TypeError, ValueError):
+            price = 0
+
+        if not raw_user_id.isdigit() or price <= 0:
+            return web.json_response(
+                {"status": "error", "message": "Ma'lumotlar noto'g'ri"},
+                status=400,
+                headers={"Access-Control-Allow-Origin": "*"}
+            )
+
+        user_id = int(raw_user_id)
+        with db_connect() as conn:
+            user = conn.execute(
+                "SELECT balance FROM users WHERE user_id = %s",
+                (user_id,)
+            ).fetchone()
+
+            current_balance = int(user["balance"]) if user else 0
+
+            if current_balance < price:
+                return web.json_response(
+                    {"status": "error", "message": "Balansda mablag' yetarli emas!"},
+                    status=400,
+                    headers={"Access-Control-Allow-Origin": "*"}
+                )
+
+            # Balansdan ayirish
+            conn.execute(
+                "UPDATE users SET balance = balance - %s WHERE user_id = %s",
+                (price, user_id)
+            )
+
+        safe_username = html.escape(username)
+        safe_item = html.escape(item_name)
+        safe_extra = html.escape(extra_info)
+
+        admin_text = (
+            "🛒 <b>Yangi xarid amalga oshirildi!</b>\n\n"
+            f"👤 Xaridor: {safe_username}\n"
+            f"🆔 ID: <code>{user_id}</code>\n"
+            f"📦 Mahsulot: <b>{safe_item}</b>\n"
+            f"🎯 PUBG ID / Username: <code>{safe_extra}</code>\n"
+            f"💰 Narxi: <b>{price:,} so'm</b>"
+        ).replace(",", " ")
+
+        try:
+            bot.send_message(ADMIN_CHAT_ID, admin_text, parse_mode="HTML")
+        except Exception as e:
+            print(f"Adminga xarid xabari yuborilmadi: {e}")
+
+        return web.json_response(
+            {"status": "success", "message": "Xarid muvaffaqiyatli bajarildi!"},
+            headers={"Access-Control-Allow-Origin": "*"}
+        )
+    except Exception as e:
+        print(f"API_BUY XATOLIGI: {e}")
+        return web.json_response(
+            {"status": "error", "message": "Server xatoligi"},
             status=500,
             headers={"Access-Control-Allow-Origin": "*"}
         )
@@ -401,6 +470,7 @@ async def start_web_server():
     app.router.add_get("/index.html", index)
     app.router.add_get("/api/balance", api_balance)
     app.router.add_post("/api/pay", api_pay)
+    app.router.add_post("/api/buy", api_buy)
     app.router.add_static("/static/", path="./", name="static")
 
     runner = web.AppRunner(app)
@@ -437,6 +507,7 @@ async def main():
 
 if __name__ == "__main__":
     asyncio.run(main())
+ 
 
 
  
